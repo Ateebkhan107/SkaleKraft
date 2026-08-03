@@ -87,8 +87,8 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
-                      <Phone className="text-secondary" />
+                    <div className="w-12 h-12 rounded-full border border-[#805948]/30 bg-[#805948]/18 flex items-center justify-center shrink-0 shadow-[0_0_24px_rgba(128,89,72,0.18)]">
+                      <Phone className="text-[#c19a88]" />
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Phone</p>
