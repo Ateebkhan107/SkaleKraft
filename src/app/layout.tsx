@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,22 +7,18 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "SkaleKraft | Enterprise AI & Software Agency",
-  description: "We build world-class products, AI agents, and growth systems that help businesses scale faster.",
+  metadataBase: new URL("https://skalekraft.com"),
+  title: "SkaleKraft",
+  description: "Websites, apps, AI, and branding. We build cool stuff.",
   openGraph: {
-    title: "SkaleKraft | Enterprise AI & Software Agency",
-    description: "We build world-class products, AI agents, and growth systems that help businesses scale faster.",
+    title: "SkaleKraft",
+    description: "Websites, apps, AI, and branding. We build cool stuff.",
     url: "https://skalekraft.com",
     siteName: "SkaleKraft",
     images: [
       {
-        url: "/images/og-image.jpg", // We will create this
+        url: "/images/og-image.jpg", 
         width: 1200,
         height: 630,
       },
@@ -40,9 +36,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {children}
       </body>
     </html>

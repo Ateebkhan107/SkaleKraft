@@ -56,7 +56,7 @@ export function CTA() {
             Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">scale</span> your business?
           </h2>
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Book a free strategy call to discuss your project. We'll analyze your current setup and provide actionable insights.
+            Book a free strategy call to discuss your project. We&apos;ll analyze your current setup and provide actionable insights.
           </p>
           <Button asChild size="lg" className="h-16 px-10 bg-foreground text-background hover:bg-foreground/90 text-xl group rounded-full w-full sm:w-auto font-bold">
             <Link href="/contact">

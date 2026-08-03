@@ -29,7 +29,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-heading font-bold text-foreground mb-6"
           >
-            Let's <span className="text-primary">Build</span> Something
+            Let&apos;s <span className="text-primary">Build</span> Something
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -37,7 +37,7 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-xl text-muted-foreground"
           >
-            Ready to scale? Fill out the form below and we'll get back to you within 24 hours to schedule a strategy call.
+            Ready to scale? Fill out the form below and we&apos;ll get back to you within 24 hours to schedule a strategy call.
           </motion.p>
         </div>
 

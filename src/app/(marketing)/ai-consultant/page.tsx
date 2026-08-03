@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, Send, Sparkles, RefreshCw } from "lucide-react";
+import { Bot, Send, Sparkles, RefreshCw, TrendingUp, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function AiConsultantPage() {

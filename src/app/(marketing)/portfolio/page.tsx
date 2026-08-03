@@ -54,7 +54,7 @@ export default function PortfolioPage() {
           transition={{ delay: 0.1 }}
           className="text-xl text-muted-foreground"
         >
-          Explore how we've helped industry leaders build scalable technology and achieve explosive growth.
+          Explore how we&apos;ve helped industry leaders build scalable technology and achieve explosive growth.
         </motion.p>
       </section>
 
