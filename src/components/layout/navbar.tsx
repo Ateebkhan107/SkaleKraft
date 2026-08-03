@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -35,7 +36,14 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/images/skalekraft-logo.png"
+              alt=""
+              width={44}
+              height={44}
+              className="h-10 w-10 rounded-xl object-cover shadow-[0_0_22px_rgba(128,89,72,0.18)]"
+            />
             <span className="text-2xl font-heading font-bold tracking-tighter text-foreground">
               SKALE<span className="text-primary">KRAFT</span>
             </span>

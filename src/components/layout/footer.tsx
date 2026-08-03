@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { FaGithub as Github, FaTwitter as Twitter, FaLinkedin as Linkedin } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <Image
+                src="/images/skalekraft-logo.png"
+                alt=""
+                width={46}
+                height={46}
+                className="h-11 w-11 rounded-xl object-cover shadow-[0_0_22px_rgba(128,89,72,0.16)]"
+              />
               <span className="text-2xl font-heading font-bold tracking-tighter text-foreground">
                 SKALE<span className="text-primary">KRAFT</span>
               </span>
