@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Bot, Layers3, Mail, MonitorSmartphone, Palette, UserPlus, type LucideIcon } from "lucide-react";
-import { categories, projects, shelves, type Project, type ProjectCategory } from "@/lib/projects";
+import { ArrowLeft, ArrowRight, Bot, Clapperboard, Layers3, Mail, MonitorSmartphone, UserPlus, type LucideIcon } from "lucide-react";
+import { categories, projects, serviceCategories, shelves, type Project, type ProjectCategory } from "@/lib/projects";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -79,7 +79,7 @@ const categoryIcons: Record<ProjectCategory, LucideIcon> = {
   Websites: MonitorSmartphone,
   Apps: Layers3,
   AI: Bot,
-  Branding: Palette,
+  Editing: Clapperboard,
 };
 
 function CategoryMark({ Icon, label, active }: { Icon: LucideIcon; label: ProjectCategory; active: boolean }) {
@@ -158,19 +158,100 @@ function ProjectShelf({
   );
 }
 
+function ServiceCategoryGrid({
+  service,
+  selectedCategory,
+  onSelect,
+  onBack,
+}: {
+  service: ProjectCategory;
+  selectedCategory: string | null;
+  onSelect: (category: string) => void;
+  onBack: () => void;
+}) {
+  const Icon = categoryIcons[service];
+
+  return (
+    <section className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 pr-0 md:pr-10">
+        <div>
+          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">{service}</p>
+          <h2 className="mt-2 text-2xl font-medium text-white sm:text-3xl">
+            {selectedCategory ? selectedCategory : `Choose a ${service === "AI" ? "AI" : service.toLowerCase()} category.`}
+          </h2>
+        </div>
+        {selectedCategory && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/65 transition duration-300 hover:border-[#805948] hover:bg-[#805948]/15 hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+        )}
+      </div>
+
+      {!selectedCategory && (
+        <motion.div
+          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -18 }}
+          transition={{ duration: 0.5, ease }}
+        >
+          {serviceCategories[service].map((category) => (
+            <motion.button
+              key={category}
+              type="button"
+              onClick={() => onSelect(category)}
+              className="group relative min-h-[118px] overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-5 text-left transition-colors duration-500 hover:border-[#805948]/70"
+              whileHover={{ scale: 1.025 }}
+              whileTap={{ scale: 0.985 }}
+              transition={{ duration: 0.45, ease }}
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(128,89,72,0.18),transparent_38%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="relative flex h-full flex-col justify-between gap-5">
+                <Icon className="h-6 w-6 text-[#c19a88] transition duration-500 group-hover:scale-110 group-hover:text-white" strokeWidth={1.7} />
+                <span className="text-lg font-medium text-white">{category}</span>
+              </div>
+            </motion.button>
+          ))}
+        </motion.div>
+      )}
+    </section>
+  );
+}
+
 export default function StreamingExperience() {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.sessionStorage.getItem("skalekraftIntroSeen") !== "true";
+  });
   const [activeCategory, setActiveCategory] = useState<ProjectCategory | "All">("All");
+  const [selectedServiceCategory, setSelectedServiceCategory] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!showSplash) return;
+
+    window.sessionStorage.setItem("skalekraftIntroSeen", "true");
     const timer = window.setTimeout(() => setShowSplash(false), 2600);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [showSplash]);
 
   const visibleProjects = useMemo(() => {
     if (activeCategory === "All") return projects;
-    return projects.filter((project) => project.category === activeCategory);
-  }, [activeCategory]);
+    return projects.filter((project) => {
+      if (project.category !== activeCategory) return false;
+      if (!selectedServiceCategory) return true;
+      return project.serviceCategories.includes(selectedServiceCategory);
+    });
+  }, [activeCategory, selectedServiceCategory]);
+
+  const handleServiceSelect = (category: ProjectCategory) => {
+    setActiveCategory(category);
+    setSelectedServiceCategory(null);
+  };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white">
@@ -223,55 +304,76 @@ export default function StreamingExperience() {
                   key={category.label}
                   {...category}
                   active={activeCategory === category.label}
-                  onClick={() => setActiveCategory(category.label)}
+                  onClick={() => handleServiceSelect(category.label)}
                 />
               ))}
             </div>
 
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeCategory}
+                key={`${activeCategory}-${selectedServiceCategory ?? "categories"}`}
                 className="mt-16 space-y-14"
                 initial={{ opacity: 0, scale: 0.965, y: 24 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 1.03, y: -16 }}
                 transition={{ duration: 0.55, ease }}
               >
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setActiveCategory("All")}
-                    className={`rounded-full border px-4 py-2 text-sm transition duration-300 ${
-                      activeCategory === "All"
-                        ? "border-[#805948] bg-[#805948]/20 text-white"
-                        : "border-white/10 text-white/55 hover:border-white/30 hover:text-white"
-                    }`}
-                  >
-                    All
-                  </button>
-                  {categories.map((category) => (
-                    <button
-                      key={`filter-${category.label}`}
-                      type="button"
-                      onClick={() => setActiveCategory(category.label)}
-                      className={`rounded-full border px-4 py-2 text-sm transition duration-300 ${
-                        activeCategory === category.label
-                          ? "border-[#805948] bg-[#805948]/20 text-white"
-                          : "border-white/10 text-white/55 hover:border-white/30 hover:text-white"
-                      }`}
-                    >
-                      {category.label}
-                    </button>
-                  ))}
-                </div>
+                {activeCategory === "All" ? (
+                  <>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        className="rounded-full border border-[#805948] bg-[#805948]/20 px-4 py-2 text-sm text-white transition duration-300"
+                      >
+                        All
+                      </button>
+                      {categories.map((category) => (
+                        <button
+                          key={`filter-${category.label}`}
+                          type="button"
+                          onClick={() => handleServiceSelect(category.label)}
+                          className="rounded-full border border-white/10 px-4 py-2 text-sm text-white/55 transition duration-300 hover:border-white/30 hover:text-white"
+                        >
+                          {category.label}
+                        </button>
+                      ))}
+                    </div>
 
-                {shelves.map((shelf) => (
-                  <ProjectShelf
-                    key={shelf}
-                    title={shelf}
-                    items={visibleProjects.filter((project) => project.shelves.includes(shelf))}
-                  />
-                ))}
+                    {shelves.map((shelf) => (
+                      <ProjectShelf
+                        key={shelf}
+                        title={shelf}
+                        items={visibleProjects.filter((project) => project.shelves.includes(shelf))}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <ServiceCategoryGrid
+                      service={activeCategory}
+                      selectedCategory={selectedServiceCategory}
+                      onSelect={setSelectedServiceCategory}
+                      onBack={() => setSelectedServiceCategory(null)}
+                    />
+
+                    {selectedServiceCategory && (
+                      <>
+                        {shelves.map((shelf) => (
+                          <ProjectShelf
+                            key={`${selectedServiceCategory}-${shelf}`}
+                            title={shelf}
+                            items={visibleProjects.filter((project) => project.shelves.includes(shelf))}
+                          />
+                        ))}
+                        {visibleProjects.length === 0 && (
+                          <div className="rounded-[22px] border border-white/10 bg-[#101010] p-6 text-white/55">
+                            Nothing here yet. Pick another category.
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
 
                 <section className="max-w-3xl py-8">
                   <p className="text-3xl font-light leading-tight text-white sm:text-5xl">We build cool stuff.</p>

@@ -1,9 +1,10 @@
-export type ProjectCategory = "Websites" | "Apps" | "AI" | "Branding";
+export type ProjectCategory = "Websites" | "Apps" | "AI" | "Editing";
 
 export type Project = {
   slug: string;
   title: string;
   category: ProjectCategory;
+  serviceCategories: string[];
   short: string;
   story: string;
   image: string;
@@ -19,14 +20,66 @@ export const categories: Array<{
   { label: "Websites", line: "Sharp sites with room to breathe." },
   { label: "Apps", line: "Tools people actually enjoy using." },
   { label: "AI", line: "Helpful systems, no weird theater." },
-  { label: "Branding", line: "Identity work with a steady hand." },
+  { label: "Editing", line: "Clean cuts, sharp pacing, better stories." },
 ];
+
+export const serviceCategories: Record<ProjectCategory, string[]> = {
+  Websites: [
+    "Business Websites",
+    "Landing Pages",
+    "Portfolio Websites",
+    "E-commerce Stores",
+    "SaaS Platforms",
+    "Dashboards",
+    "Booking Systems",
+    "Blogs & CMS",
+    "Custom Web Apps",
+  ],
+  Apps: [
+    "Android Apps",
+    "iOS Apps",
+    "Cross Platform Apps",
+    "Business Apps",
+    "SaaS Apps",
+    "Finance Apps",
+    "Healthcare Apps",
+    "Education Apps",
+    "Social Apps",
+    "Marketplace Apps",
+  ],
+  AI: [
+    "AI Chatbots",
+    "AI Agents",
+    "Voice AI",
+    "Customer Support AI",
+    "Sales AI",
+    "Machine Learning Models",
+    "Computer Vision",
+    "OCR & Document AI",
+    "Recommendation Systems",
+    "Predictive Analytics",
+    "Workflow Automation",
+    "RAG Systems",
+  ],
+  Editing: [
+    "YouTube Videos",
+    "Instagram Reels",
+    "Shorts",
+    "Commercial Ads",
+    "Product Videos",
+    "Motion Graphics",
+    "Podcast Editing",
+    "Color Grading",
+    "Thumbnail Design",
+  ],
+};
 
 export const projects: Project[] = [
   {
     slug: "northline",
     title: "Northline Studio",
     category: "Websites",
+    serviceCategories: ["Business Websites", "Landing Pages", "Portfolio Websites", "SaaS Platforms", "Dashboards"],
     short: "A calm booking site for a modern interiors team.",
     story:
       "Northline needed a place that felt edited, warm, and easy to move through. We kept the pages quiet, gave the work big breathing room, and made the enquiry path feel like a natural next step.",
@@ -44,6 +97,7 @@ export const projects: Project[] = [
     slug: "ledgerly",
     title: "Ledgerly",
     category: "Apps",
+    serviceCategories: ["Cross Platform Apps", "Business Apps", "SaaS Apps", "Finance Apps", "Marketplace Apps"],
     short: "A finance dashboard for founders who hate clutter.",
     story:
       "Ledgerly turns messy numbers into a clean daily cockpit. The key was restraint: fewer panels, stronger hierarchy, and little touches that make repeated use feel lighter.",
@@ -61,6 +115,20 @@ export const projects: Project[] = [
     slug: "briefbot",
     title: "Briefbot",
     category: "AI",
+    serviceCategories: [
+      "AI Chatbots",
+      "AI Agents",
+      "Voice AI",
+      "Customer Support AI",
+      "Sales AI",
+      "Machine Learning Models",
+      "Computer Vision",
+      "OCR & Document AI",
+      "Recommendation Systems",
+      "Predictive Analytics",
+      "Workflow Automation",
+      "RAG Systems",
+    ],
     short: "An AI workspace that turns loose ideas into usable briefs.",
     story:
       "Briefbot was built for teams with too many half-formed ideas. It asks better questions, shapes the rough notes, and gives people a clean brief they can act on.",
@@ -77,8 +145,19 @@ export const projects: Project[] = [
   {
     slug: "sable-market",
     title: "Sable Market",
-    category: "Branding",
-    short: "A food brand with a darker, more tactile feel.",
+    category: "Editing",
+    serviceCategories: [
+      "YouTube Videos",
+      "Instagram Reels",
+      "Shorts",
+      "Commercial Ads",
+      "Product Videos",
+      "Motion Graphics",
+      "Podcast Editing",
+      "Color Grading",
+      "Thumbnail Design",
+    ],
+    short: "A darker, more tactile product story with tight pacing.",
     story:
       "Sable Market wanted to look refined without becoming stiff. We built a brand system around rich contrast, simple packaging rules, and a voice that sounds like a person.",
     image:
@@ -95,6 +174,7 @@ export const projects: Project[] = [
     slug: "clinicflow",
     title: "ClinicFlow",
     category: "Websites",
+    serviceCategories: ["E-commerce Stores", "Booking Systems", "Blogs & CMS", "Custom Web Apps", "Dashboards"],
     short: "A fast patient intake site for a growing clinic.",
     story:
       "ClinicFlow keeps the front desk from becoming the bottleneck. The site answers common questions, captures the right details, and gets people booked without friction.",
@@ -112,6 +192,7 @@ export const projects: Project[] = [
     slug: "pocketchef",
     title: "PocketChef",
     category: "Apps",
+    serviceCategories: ["Android Apps", "iOS Apps", "Cross Platform Apps", "Healthcare Apps", "Education Apps", "Social Apps"],
     short: "A tiny meal-planning app with a friendly rhythm.",
     story:
       "PocketChef is for people who want dinner decided before 6pm. We designed quick picks, tidy grocery lists, and a mood that feels useful without getting loud.",

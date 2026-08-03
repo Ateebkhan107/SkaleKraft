@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Monitor, Smartphone, Bot, TrendingUp, Palette, Zap } from "lucide-react";
+import { Monitor, Smartphone, Bot, TrendingUp, Clapperboard, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -35,11 +35,11 @@ const detailedServices = [
     features: ["SEO", "Google Ads", "Social Media Marketing", "Email Marketing"],
   },
   {
-    id: "branding",
-    title: "Branding",
-    icon: <Palette className="w-12 h-12 text-primary" />,
-    description: "Premium visual identities and UX/UI design that command authority and trust in your industry.",
-    features: ["Logo Design", "Brand Identity", "UI / UX Design"],
+    id: "editing",
+    title: "Editing",
+    icon: <Clapperboard className="w-12 h-12 text-primary" />,
+    description: "Clean edits, short-form cuts, and launch-ready visuals that make the story land faster.",
+    features: ["Short-Form Editing", "Product Videos", "Social Cuts"],
   },
   {
     id: "automation",

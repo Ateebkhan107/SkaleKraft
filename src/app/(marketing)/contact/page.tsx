@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail, Phone, Send, CheckCircle } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function ContactPage() {
@@ -40,6 +41,10 @@ export default function ContactPage() {
   return (
     <div className="pt-32 pb-24 min-h-screen relative">
       <div className="container mx-auto px-4 md:px-6">
+        <Link href="/" className="mb-10 inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" />
+          Back to home
+        </Link>
         <div className="max-w-3xl mx-auto text-center mb-16">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -159,7 +164,7 @@ export default function ContactPage() {
                         <option value="App Development">App Development</option>
                         <option value="AI Agents">AI Agents</option>
                         <option value="Digital Marketing">Digital Marketing</option>
-                        <option value="Branding">Branding</option>
+                        <option value="Editing">Editing</option>
                         <option value="Automation">Automation</option>
                       </select>
                     </div>

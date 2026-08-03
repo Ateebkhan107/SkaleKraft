@@ -16,7 +16,7 @@ export default function SimpleFooter() {
             SKALE<span className="text-[#805948]">KRAFT</span>
           </Link>
           <p className="mt-3 max-w-md text-sm leading-6 text-white/50">
-            We build cool stuff. Websites, apps, AI, and brands with a clean hand.
+            We build cool stuff. Websites, apps, AI, and edits with a clean hand.
           </p>
         </div>
 

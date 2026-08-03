@@ -104,7 +104,7 @@ export default function JoinPage() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-white">Skills *</label>
-                  <textarea name="skills" required rows={4} className="w-full resize-none rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="Next.js, UI design, branding, motion, AI automation..." />
+                  <textarea name="skills" required rows={4} className="w-full resize-none rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="Next.js, UI design, editing, motion, AI automation..." />
                 </div>
 
                 <div className="space-y-2">
