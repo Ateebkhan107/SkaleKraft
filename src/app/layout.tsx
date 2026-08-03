@@ -9,11 +9,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://skalekraft.com"),
-  title: "SkaleKraft",
-  description: "Websites, apps, AI, and editing. We build cool stuff.",
+  title: "SkaleKraft | Software Engineering & AI Studio",
+  description: "SkaleKraft designs and engineers modern websites, mobile apps, AI solutions and business systems from idea to production.",
   openGraph: {
-    title: "SkaleKraft",
-    description: "Websites, apps, AI, and editing. We build cool stuff.",
+    title: "SkaleKraft | Software Engineering & AI Studio",
+    description: "SkaleKraft designs and engineers modern websites, mobile apps, AI solutions and business systems from idea to production.",
     url: "https://skalekraft.com",
     siteName: "SkaleKraft",
     images: [

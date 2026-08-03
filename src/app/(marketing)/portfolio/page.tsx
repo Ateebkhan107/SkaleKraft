@@ -1,115 +1,25 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
-const projects = [
-  {
-    title: "FinTech Dashboard Pro",
-    category: "Web Application",
-    image: "/images/portfolio-1.jpg", // Placeholder
-    tech: ["Next.js", "TailwindCSS", "Supabase"],
-    results: "200% Increase in User Retention",
-  },
-  {
-    title: "AI Legal Assistant",
-    category: "AI Agent",
-    image: "/images/portfolio-2.jpg",
-    tech: ["OpenAI", "React", "Node.js"],
-    results: "80% Reduction in Query Time",
-  },
-  {
-    title: "E-Commerce Replatforming",
-    category: "Website Development",
-    image: "/images/portfolio-3.jpg",
-    tech: ["Shopify Plus", "React", "Sanity CMS"],
-    results: "$2.5M Increase in Q1 Revenue",
-  },
-  {
-    title: "HealthTech Mobile App",
-    category: "App Development",
-    image: "/images/portfolio-4.jpg",
-    tech: ["React Native", "Firebase", "HealthKit"],
-    results: "50k+ Downloads in Month 1",
-  },
-];
+import { ArrowRight } from "lucide-react";
 
 export default function PortfolioPage() {
   return (
-    <div className="pt-32 pb-24 min-h-screen">
-      {/* Header */}
-      <section className="container mx-auto px-4 md:px-6 mb-20 text-center max-w-4xl">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-heading font-bold text-foreground mb-6"
+    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-32 text-white md:px-10">
+      <section className="mx-auto max-w-4xl">
+        <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Work</p>
+        <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
+          We are not showing public case studies yet.
+        </h1>
+        <p className="mt-6 text-lg leading-8 text-white/58">
+          We do not publish fake projects, fake client logos, fake results or made-up testimonials. If you want to understand how we would approach your product, tell us what you are building.
+        </p>
+        <Link
+          href="/contact"
+          className="mt-9 inline-flex h-13 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-[#0B0B0B] transition duration-300 hover:bg-[#805948] hover:text-white"
         >
-          Featured <span className="text-primary">Work</span>
-        </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-xl text-muted-foreground"
-        >
-          Explore how we&apos;ve helped industry leaders build scalable technology and achieve explosive growth.
-        </motion.p>
+          Start Your Project
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </section>
-
-      {/* Grid */}
-      <section className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative"
-            >
-              <div className="relative h-[400px] md:h-[500px] w-full rounded-3xl overflow-hidden mb-6 bg-card border border-foreground/10">
-                {/* Fallback gradient if no image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-card to-background group-hover:scale-105 transition-transform duration-700"></div>
-                
-                <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                  <span className="font-heading font-bold text-4xl tracking-widest uppercase">{project.title}</span>
-                </div>
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-foreground/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                  <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full h-14 px-8 text-lg transform translate-y-8 group-hover:translate-y-0 transition-all duration-300">
-                    <Link href={`/case-studies`}>
-                      Read Case Study <ArrowUpRight className="ml-2" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-primary font-medium">{project.category}</p>
-                  <p className="text-sm font-medium text-foreground/50 bg-foreground/5 px-3 py-1 rounded-full">
-                    {project.results}
-                  </p>
-                </div>
-                <h3 className="text-2xl font-heading font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((t, i) => (
-                    <span key={i} className="text-xs font-medium text-muted-foreground bg-card border border-foreground/10 px-2.5 py-1 rounded-md">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }
