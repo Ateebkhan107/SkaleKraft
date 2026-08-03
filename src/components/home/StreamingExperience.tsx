@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Mail, UserPlus } from "lucide-react";
+import { ArrowRight, Bot, Layers3, Mail, MonitorSmartphone, Palette, UserPlus, type LucideIcon } from "lucide-react";
 import { categories, projects, shelves, type Project, type ProjectCategory } from "@/lib/projects";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -40,17 +40,17 @@ function SplashScreen() {
 
 function CategoryCard({
   label,
-  icon,
   line,
   active,
   onClick,
 }: {
   label: ProjectCategory;
-  icon: string;
   line: string;
   active: boolean;
   onClick: () => void;
 }) {
+  const Icon = categoryIcons[label];
+
   return (
     <motion.button
       type="button"
@@ -65,15 +65,38 @@ function CategoryCard({
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(128,89,72,0.2),transparent_34%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="relative flex h-full flex-col justify-between gap-8">
-        <span className="text-5xl" aria-hidden>
-          {icon}
-        </span>
+        <CategoryMark Icon={Icon} label={label} active={active} />
         <span>
           <span className="block text-2xl font-medium text-white">{label}</span>
           <span className="mt-2 block text-sm leading-6 text-white/50">{line}</span>
         </span>
       </div>
     </motion.button>
+  );
+}
+
+const categoryIcons: Record<ProjectCategory, LucideIcon> = {
+  Websites: MonitorSmartphone,
+  Apps: Layers3,
+  AI: Bot,
+  Branding: Palette,
+};
+
+function CategoryMark({ Icon, label, active }: { Icon: LucideIcon; label: ProjectCategory; active: boolean }) {
+  return (
+    <span
+      className={`relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border transition duration-500 ${
+        active
+          ? "border-[#805948]/80 bg-[#805948]/18 shadow-[0_0_32px_rgba(128,89,72,0.28)]"
+          : "border-white/10 bg-white/[0.03] group-hover:border-[#805948]/60 group-hover:bg-[#805948]/12"
+      }`}
+      aria-label={label}
+    >
+      <span className="absolute inset-x-3 top-3 h-px bg-white/20" />
+      <span className="absolute bottom-3 left-3 h-px w-5 bg-[#805948]/70" />
+      <span className="absolute -right-5 -top-5 h-12 w-12 rounded-full bg-[#805948]/25 blur-xl transition duration-500 group-hover:bg-[#805948]/45" />
+      <Icon className="relative h-8 w-8 text-white transition duration-500 group-hover:scale-110 group-hover:text-[#d1aa98]" strokeWidth={1.7} />
+    </span>
   );
 }
 

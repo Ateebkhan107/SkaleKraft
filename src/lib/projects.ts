@@ -14,13 +14,12 @@ export type Project = {
 
 export const categories: Array<{
   label: ProjectCategory;
-  icon: string;
   line: string;
 }> = [
-  { label: "Websites", icon: "🌐", line: "Sharp sites with room to breathe." },
-  { label: "Apps", icon: "📱", line: "Tools people actually enjoy using." },
-  { label: "AI", icon: "🤖", line: "Helpful systems, no weird theater." },
-  { label: "Branding", icon: "🎨", line: "Identity work with a steady hand." },
+  { label: "Websites", line: "Sharp sites with room to breathe." },
+  { label: "Apps", line: "Tools people actually enjoy using." },
+  { label: "AI", line: "Helpful systems, no weird theater." },
+  { label: "Branding", line: "Identity work with a steady hand." },
 ];
 
 export const projects: Project[] = [
