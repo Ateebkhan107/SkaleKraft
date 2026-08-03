@@ -43,7 +43,6 @@ export default function PremiumCursor() {
   const pointer = useRef({ x: 0, y: 0 });
   const dot = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
-  const hoveredCard = useRef<HTMLElement | null>(null);
   const hoveredImage = useRef<HTMLElement | null>(null);
   const [state, setState] = useState<CursorState>({ mode: "default", color: defaultColor, visible: false });
 
@@ -59,8 +58,6 @@ export default function PremiumCursor() {
 
     const resetInteractiveElement = (element: HTMLElement | null) => {
       if (!element) return;
-      element.style.removeProperty("--cursor-tilt-x");
-      element.style.removeProperty("--cursor-tilt-y");
       element.style.removeProperty("--cursor-glow-opacity");
     };
 
@@ -72,24 +69,10 @@ export default function PremiumCursor() {
         return { mode: nextMode, color: nextColor, visible: true };
       });
 
-      const nextCard = target?.closest("[data-cursor-card], article") as HTMLElement | null;
-      if (hoveredCard.current !== nextCard) {
-        resetInteractiveElement(hoveredCard.current);
-        hoveredCard.current = nextCard;
-      }
-
       const nextImage = target?.closest("[data-cursor-image], img, picture") as HTMLElement | null;
       if (hoveredImage.current !== nextImage) {
         resetInteractiveElement(hoveredImage.current);
         hoveredImage.current = nextImage;
-      }
-
-      if (event && nextMode === "card" && hoveredCard.current) {
-        const rect = hoveredCard.current.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width - 0.5;
-        const y = (event.clientY - rect.top) / rect.height - 0.5;
-        hoveredCard.current.style.setProperty("--cursor-tilt-x", `${(-y * 5).toFixed(2)}deg`);
-        hoveredCard.current.style.setProperty("--cursor-tilt-y", `${(x * 5).toFixed(2)}deg`);
       }
 
       if (event && nextMode === "image" && hoveredImage.current) {
@@ -117,9 +100,7 @@ export default function PremiumCursor() {
 
     const onPointerLeave = () => {
       setState((current) => ({ ...current, visible: false }));
-      resetInteractiveElement(hoveredCard.current);
       resetInteractiveElement(hoveredImage.current);
-      hoveredCard.current = null;
       hoveredImage.current = null;
     };
 
@@ -151,7 +132,6 @@ export default function PremiumCursor() {
       window.removeEventListener("pointermove", onPointerMove);
       document.documentElement.removeEventListener("pointerleave", onPointerLeave);
       document.documentElement.classList.remove("premium-cursor-enabled");
-      resetInteractiveElement(hoveredCard.current);
       resetInteractiveElement(hoveredImage.current);
     };
   }, [state.mode]);

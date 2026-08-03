@@ -10,28 +10,28 @@ const detailedServices = [
     id: "web",
     title: "Website Development",
     icon: <Monitor className="w-12 h-12 text-primary" />,
-    description: "We build high-performance, beautifully designed marketing websites and complex web applications that convert visitors into customers.",
+    description: "Websites, landing pages, dashboards, and custom web apps built to be fast, clear, and easy to use.",
     features: ["Business Websites", "Portfolio Websites", "Landing Pages", "Ecommerce Websites", "Custom Web Applications"],
   },
   {
     id: "app",
     title: "App Development",
     icon: <Smartphone className="w-12 h-12 text-secondary" />,
-    description: "Native and cross-platform mobile experiences that users love to engage with, backed by scalable cloud infrastructure.",
+    description: "Mobile apps for Android and iOS with clean product flows and reliable backend support.",
     features: ["Android Apps", "iOS Apps", "Cross Platform Apps", "AI Applications"],
   },
   {
     id: "ai",
     title: "AI Agents",
     icon: <Bot className="w-12 h-12 text-primary" />,
-    description: "Custom AI solutions to automate support, qualify leads, and scale operations 24/7 without adding headcount.",
+    description: "AI chatbots, agents, and workflows that help with support, sales, operations, and internal knowledge.",
     features: ["Customer Support Agents", "Lead Qualification Agents", "Sales Agents", "Knowledge Base Agents", "Workflow Automation"],
   },
   {
     id: "marketing",
     title: "Digital Marketing",
     icon: <TrendingUp className="w-12 h-12 text-secondary" />,
-    description: "Data-driven SEO, ads, and social campaigns that drive measurable revenue and dominate your market.",
+    description: "Simple digital campaigns, launch content, and search-friendly improvements for growing businesses.",
     features: ["SEO", "Google Ads", "Social Media Marketing", "Email Marketing"],
   },
   {
@@ -45,7 +45,7 @@ const detailedServices = [
     id: "automation",
     title: "Automation",
     icon: <Zap className="w-12 h-12 text-secondary" />,
-    description: "Connect your tools and eliminate manual tasks with bespoke automation workflows.",
+    description: "Connect tools, reduce repeat work, and make everyday business systems easier to manage.",
     features: ["CRM Automation", "Email Automation", "WhatsApp Automation"],
   },
 ];
@@ -68,7 +68,7 @@ export default function ServicesPage() {
           transition={{ delay: 0.1 }}
           className="text-xl text-muted-foreground"
         >
-          Comprehensive digital solutions designed to help ambitious companies scale faster and dominate their markets.
+          Useful websites, apps, AI systems, and creative work for businesses that want to move clearly.
         </motion.p>
       </section>
 
@@ -109,11 +109,17 @@ export default function ServicesPage() {
                   </Link>
                 </Button>
               </div>
-              <div className="w-full md:w-1/2 h-[400px] bg-card border border-foreground/10 rounded-3xl overflow-hidden relative group">
-                 {/* Placeholder for 3D graphic or screenshot */}
-                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
-                    <span className="font-heading font-bold text-foreground/20 text-4xl tracking-widest">{service.title.toUpperCase()}</span>
-                 </div>
+              <div className="w-full md:w-1/2">
+                <div className="rounded-3xl border border-foreground/10 bg-card p-6">
+                  <p className="text-sm uppercase tracking-[0.22em] text-primary">What this can include</p>
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    {service.features.map((feature) => (
+                      <div key={feature} className="rounded-2xl border border-foreground/10 bg-background/60 px-4 py-3 text-sm text-foreground/75">
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}

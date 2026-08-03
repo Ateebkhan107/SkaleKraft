@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 export default function JoinPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [startedAt] = useState(() => Date.now().toString());
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -80,6 +81,15 @@ export default function JoinPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                <input type="hidden" name="startedAt" value={startedAt} />
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-white">Name *</label>
