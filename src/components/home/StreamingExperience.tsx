@@ -244,7 +244,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
 function Header() {
   return (
     <header className="fixed left-0 right-0 top-0 z-30 border-b border-white/10 bg-[#0B0B0B]/72 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center justify-between gap-4 px-5 py-4 md:px-10 md:pl-24">
+      <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center justify-between gap-4 px-5 py-4 md:px-10">
         <Link href="/" className="text-lg font-semibold tracking-[0.24em] text-white">
           SKALE<span className="text-[#805948]">KRAFT</span>
         </Link>
@@ -267,7 +267,7 @@ function Header() {
 
 function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: string) => void }) {
   return (
-    <aside className="fixed left-3 top-1/2 z-40 hidden -translate-y-1/2 rounded-[24px] border border-white/10 bg-[#0B0B0B]/70 p-2 text-white shadow-[0_18px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500 hover:w-42 md:block md:w-[68px]">
+    <aside className="fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 rounded-[24px] border border-white/10 bg-[#0B0B0B]/70 p-2 text-white shadow-[0_18px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500 md:block">
       <nav className="flex flex-col gap-2">
         {sidebarLinks.map((link) => {
           const Icon = link.icon;
@@ -285,7 +285,7 @@ function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: stri
               aria-label={link.label}
             >
               <Icon className="h-5 w-5 shrink-0" />
-              <span className="whitespace-nowrap text-sm opacity-0 transition duration-300 group-hover:opacity-100">{link.label}</span>
+              <span className="whitespace-nowrap text-sm opacity-90 transition duration-300 group-hover/item:opacity-100">{link.label}</span>
             </button>
           );
         })}
@@ -300,7 +300,7 @@ function CinematicHero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden px-5 py-28 md:px-10 md:pl-24 lg:py-32"
+      className="relative flex min-h-screen items-center overflow-hidden px-5 py-28 md:px-10 md:pl-56 lg:py-32"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         setGlow({
@@ -645,7 +645,7 @@ export default function StreamingExperience() {
           <Header />
           <Sidebar active={activeSection} onNavigate={navigate} />
           <CinematicHero />
-          <main className="mx-auto max-w-[1500px] px-5 pb-24 md:px-10 md:pl-24">
+          <main className="mx-auto max-w-[1500px] px-5 pb-24 md:px-10 md:pl-56">
             <div className="py-12">
               <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
                 <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Services</p>
