@@ -2,22 +2,39 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { Mail, Phone, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate server action delay
-    setTimeout(() => {
+    setError("");
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      formData.set("source", "Contact page");
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Message failed");
+      }
+
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 1500);
+      e.currentTarget.reset();
+    } catch {
+      setIsSubmitting(false);
+      setError("Could not send right now. Please email us directly at skalekraft@gmail.com.");
+    }
   };
 
   return (
@@ -59,8 +76,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Email</p>
-                      <a href="mailto:hello@skalekraft.com" className="text-foreground hover:text-primary transition-colors font-medium">
-                        hello@skalekraft.com
+                      <a href="mailto:skalekraft@gmail.com" className="text-foreground hover:text-primary transition-colors font-medium">
+                        skalekraft@gmail.com
                       </a>
                     </div>
                   </div>
@@ -73,17 +90,6 @@ export default function ContactPage() {
                       <a href="tel:+1234567890" className="text-foreground hover:text-secondary transition-colors font-medium">
                         +1 (555) 123-4567
                       </a>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center shrink-0">
-                      <MapPin className="text-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Office</p>
-                      <p className="text-foreground font-medium">
-                        San Francisco, CA<br />Remote Worldwide
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -125,29 +131,29 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Full Name *</label>
-                      <input required type="text" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="John Doe" />
+                      <input name="name" required type="text" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="John Doe" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Email Address *</label>
-                      <input required type="email" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="john@company.com" />
+                      <input name="email" required type="email" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="john@company.com" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Phone Number</label>
-                      <input type="tel" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="+1 (555) 000-0000" />
+                      <input name="phone" type="tel" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="+1 (555) 000-0000" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Company Name</label>
-                      <input type="text" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="Acme Corp" />
+                      <input name="company" type="text" className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors" placeholder="Acme Corp" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Service of Interest *</label>
-                      <select required className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors appearance-none">
+                      <select name="service" required className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors appearance-none">
                         <option value="">Select a service</option>
                         <option value="Website Development">Website Development</option>
                         <option value="App Development">App Development</option>
@@ -159,7 +165,7 @@ export default function ContactPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Estimated Budget *</label>
-                      <select required className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors appearance-none">
+                      <select name="budget" required className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors appearance-none">
                         <option value="">Select budget range</option>
                         <option value="<10k">Under $10,000</option>
                         <option value="10k-25k">$10,000 - $25,000</option>
@@ -173,11 +179,18 @@ export default function ContactPage() {
                     <label className="text-sm font-medium text-foreground">Project Description *</label>
                     <textarea 
                       required 
+                      name="message"
                       rows={4} 
                       className="w-full bg-background border border-foreground/10 rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors resize-none" 
                       placeholder="Tell us about your goals, current challenges, and timeline..."
                     />
                   </div>
+
+                  {error && (
+                    <p className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                      {error}
+                    </p>
+                  )}
 
                   <Button type="submit" disabled={isSubmitting} className="w-full h-14 bg-primary text-primary-foreground text-lg rounded-xl flex items-center justify-center gap-2">
                     {isSubmitting ? "Sending..." : (

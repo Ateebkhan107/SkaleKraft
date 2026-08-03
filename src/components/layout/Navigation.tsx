@@ -40,16 +40,14 @@ export default function Navigation() {
           </Link>
         </nav>
 
-        {/* Right: CTA (Can trigger EnquiryPanel or anchor) */}
         <div className="flex items-center">
-          {/* We'll use the floating panel instead, but keeping a minimal link here if desired */}
-          <button 
-            onClick={() => window.dispatchEvent(new Event("open-enquiry"))}
+          <Link
+            href="/contact"
             className="hidden md:inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-transparent border border-white/20 rounded-full hover:border-[#805948] hover:bg-[#805948]/10 transition-all duration-300 group"
           >
             Start Project
             <span className="ml-2 w-1.5 h-1.5 rounded-full bg-[#805948] group-hover:scale-150 transition-transform duration-300"></span>
-          </button>
+          </Link>
         </div>
       </div>
     </motion.header>

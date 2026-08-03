@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Info } from "lucide-react";
-import EnquiryPanel from "@/components/layout/EnquiryPanel";
 import ContactTrigger from "@/components/layout/ContactTrigger";
 import { getProject, projects } from "@/lib/projects";
 
@@ -20,7 +19,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="min-h-screen bg-[#0B0B0B] text-white">
-      <EnquiryPanel />
       <header className="fixed left-0 right-0 top-0 z-30 border-b border-white/10 bg-[#0B0B0B]/72 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 md:px-10">
           <Link href="/#work" className="inline-flex items-center gap-2 text-sm text-white/60 transition hover:text-white">

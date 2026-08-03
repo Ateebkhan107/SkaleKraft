@@ -4,9 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, UserPlus } from "lucide-react";
 import { categories, projects, shelves, type Project, type ProjectCategory } from "@/lib/projects";
-import EnquiryPanel from "@/components/layout/EnquiryPanel";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -158,20 +157,27 @@ export default function StreamingExperience() {
         animate={{ opacity: showSplash ? 0 : 1, scale: showSplash ? 0.97 : 1 }}
         transition={{ duration: 0.9, ease }}
       >
-        <EnquiryPanel />
         <header className="fixed left-0 right-0 top-0 z-30 border-b border-white/10 bg-[#0B0B0B]/72 backdrop-blur-xl">
           <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 md:px-10">
             <Link href="/" className="text-lg font-semibold tracking-[0.24em] text-white">
               SKALE<span className="text-[#805948]">KRAFT</span>
             </Link>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new Event("open-enquiry"))}
-              className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 px-4 text-sm text-white/80 transition duration-300 hover:border-[#805948] hover:bg-[#805948]/15 hover:text-white"
-            >
-              <Mail className="h-4 w-4" />
-              Start
-            </button>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/join"
+                className="hidden h-11 items-center gap-2 rounded-full border border-[#805948]/50 bg-[#805948]/15 px-4 text-sm text-white transition duration-300 hover:border-[#805948] hover:bg-[#805948]/25 sm:inline-flex"
+              >
+                <UserPlus className="h-4 w-4" />
+                Join the Agency
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 px-4 text-sm text-white/80 transition duration-300 hover:border-[#805948] hover:bg-[#805948]/15 hover:text-white"
+              >
+                <Mail className="h-4 w-4" />
+                Start
+              </Link>
+            </div>
           </div>
         </header>
 
@@ -247,6 +253,13 @@ export default function StreamingExperience() {
                 <section className="max-w-3xl py-8">
                   <p className="text-3xl font-light leading-tight text-white sm:text-5xl">We build cool stuff.</p>
                   <p className="mt-4 text-lg leading-8 text-white/55">Pick a project. Poke around. When something clicks, let&apos;s make something.</p>
+                  <Link
+                    href="/join"
+                    className="mt-8 inline-flex h-12 items-center gap-2 rounded-full border border-[#805948]/50 bg-[#805948]/15 px-5 text-sm text-white transition duration-300 hover:border-[#805948] hover:bg-[#805948]/25 sm:hidden"
+                  >
+                    <UserPlus className="h-4 w-4" />
+                    Join the Agency
+                  </Link>
                 </section>
               </motion.div>
             </AnimatePresence>
