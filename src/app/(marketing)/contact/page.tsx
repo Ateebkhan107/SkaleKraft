@@ -35,7 +35,7 @@ const services: Option[] = [
   { label: "Brand Identity", value: "Brand Identity", icon: Palette },
 ];
 
-const budgets = ["<$2k", "$2k-$5k", "$5k-$10k", "$10k+", "Custom"];
+const budgets = ["<$600", "$600-$2.5k", "$2.5k-$6k", "$6k+", "Custom"];
 const timelines = ["ASAP", "2 Weeks", "1 Month", "2+ Months", "Flexible"];
 
 const faqs = [
@@ -175,7 +175,7 @@ function FAQItem({ item, open, onClick }: { item: (typeof faqs)[number]; open: b
 
 export default function ContactPage() {
   const [service, setService] = useState("AI System");
-  const [budget, setBudget] = useState("$5k-$10k");
+  const [budget, setBudget] = useState("$600-$2.5k");
   const [timeline, setTimeline] = useState("1 Month");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -302,7 +302,22 @@ export default function ContactPage() {
                 <section>
                   <h2 className="text-sm uppercase tracking-[0.22em] text-white/42">Budget</h2>
                   <div className="mt-4 grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
-                    {budgets.map((item) => <ChoiceCard key={item} label={item} selected={budget === item} onClick={() => setBudget(item)} />)}
+                    {budgets.slice(0, 4).map((item) => (
+                      <ChoiceCard key={item} label={item} selected={budget === item} onClick={() => setBudget(item)} />
+                    ))}
+                    {budget === "Custom" || !budgets.includes(budget) ? (
+                      <input
+                        type="text"
+                        autoFocus
+                        value={budget === "Custom" ? "" : budget}
+                        onChange={(e) => setBudget(e.target.value)}
+                        onBlur={(e) => { if (!e.target.value.trim()) setBudget("$600-$2.5k"); }}
+                        placeholder="Type amount"
+                        className="rounded-2xl border border-[#805948]/70 bg-[#805948]/14 px-4 py-3 text-sm font-medium text-white shadow-[0_0_28px_rgba(128,89,72,.12)] outline-none placeholder:text-white/40"
+                      />
+                    ) : (
+                      <ChoiceCard label="Custom" selected={false} onClick={() => setBudget("Custom")} />
+                    )}
                   </div>
                 </section>
 
@@ -377,7 +392,7 @@ export default function ContactPage() {
               <div className="mt-7 space-y-5">
                 {[
                   ["Project", service],
-                  ["Budget", budget],
+                  ["Budget", budget || "Custom"],
                   ["Timeline", timeline],
                 ].map(([label, value]) => (
                   <motion.div key={label} layout className="flex items-center justify-between gap-6 border-b border-white/10 pb-4">

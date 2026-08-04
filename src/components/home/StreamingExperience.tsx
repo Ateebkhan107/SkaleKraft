@@ -63,7 +63,7 @@ const services: Record<ServiceKey, {
     technology: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase"],
     process: ["Discovery", "Architecture", "Interface Design", "Development", "Testing", "Launch"],
     timeline: "2-8 weeks",
-    pricing: "Project pricing starts from $1,500.",
+    pricing: "Project pricing starts from $350.",
     faq: [
       { q: "Can you build both marketing pages and app dashboards?", a: "Yes. We can build public websites, private dashboards, portals and custom web applications." },
       { q: "Will it work well on mobile?", a: "Yes. Responsive behavior is planned from the start, not patched in later." },
@@ -83,7 +83,7 @@ const services: Record<ServiceKey, {
     technology: ["React Native", "Flutter", "Node.js", "Supabase", "PostgreSQL"],
     process: ["Scope", "Product Flow", "Prototype", "Build", "QA", "Store Prep"],
     timeline: "4-12 weeks",
-    pricing: "Project pricing starts from $3,000.",
+    pricing: "Project pricing starts from $1,000.",
     faq: [
       { q: "Can one app work for both Android and iOS?", a: "Yes. Cross-platform builds are often the right choice when speed and budget matter." },
       { q: "Do you handle backend APIs too?", a: "Yes. We can build the mobile app and the backend it depends on." },
@@ -103,7 +103,7 @@ const services: Record<ServiceKey, {
     technology: ["OpenAI", "Claude", "Gemini", "LangChain", "Python", "FastAPI"],
     process: ["Use Case", "Data Review", "Prototype", "Integration", "Testing", "Monitoring"],
     timeline: "2-10 weeks",
-    pricing: "Project pricing starts from $2,000.",
+    pricing: "Project pricing starts from $600.",
     faq: [
       { q: "Can AI connect with our existing tools?", a: "Yes. Integrations are usually the most useful part of an AI system." },
       { q: "Do you build RAG systems?", a: "Yes. We can build retrieval systems for documents, knowledge bases and internal content." },
@@ -123,7 +123,7 @@ const services: Record<ServiceKey, {
     technology: ["Premiere Pro", "After Effects", "Figma", "Photoshop"],
     process: ["Brief", "Asset Review", "Edit", "Motion", "Polish", "Export"],
     timeline: "2 days to 3 weeks",
-    pricing: "Project pricing starts from $300.",
+    pricing: "Project pricing starts from $60.",
     faq: [
       { q: "Do you edit short-form content?", a: "Yes. Reels, Shorts and ad creatives are part of the studio offer." },
       { q: "Can you create thumbnails too?", a: "Yes. Thumbnail design can be included with editing work." },
@@ -190,20 +190,21 @@ function SplashScreen() {
 function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: DestinationKey) => void; onSkip: () => void }) {
   return (
     <motion.section
-      className="fixed inset-0 z-[70] flex min-h-screen items-center justify-center overflow-y-auto bg-[#0B0B0B] px-5 py-16 text-white"
+      className="fixed inset-0 z-[70] overflow-y-auto overflow-x-hidden bg-[#0B0B0B] text-white"
       initial={{ opacity: 0, scale: 1.02 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.7, ease }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(128,89,72,0.18),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_32%)]" />
-      <button
-        type="button"
-        onClick={onSkip}
-        className="absolute right-6 top-6 rounded-full border border-white/10 px-4 py-2 text-sm text-white/45 transition duration-300 hover:border-white/25 hover:text-white"
-      >
-        Skip
-      </button>
+      <div className="flex min-h-screen flex-col items-center justify-center px-5 py-16">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(128,89,72,0.18),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_32%)] pointer-events-none" />
+        <button
+          type="button"
+          onClick={onSkip}
+          className="absolute right-6 top-6 z-10 rounded-full border border-white/10 px-4 py-2 text-sm text-white/45 transition duration-300 hover:border-white/25 hover:text-white"
+        >
+          Skip
+        </button>
       <div className="relative mx-auto w-full max-w-6xl text-center">
         <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">SkaleKraft</p>
         <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">What are we building today?</h1>
@@ -239,6 +240,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
             );
           })}
         </div>
+        </div>
       </div>
     </motion.section>
   );
@@ -260,6 +262,9 @@ function Header() {
         </Link>
         <div className="flex flex-wrap items-center justify-end gap-3">
           <span className="hidden text-sm text-white/45 lg:inline">Engineering software that scales.</span>
+          <Link href="/about" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
+            About
+          </Link>
           <Link href="/join" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
             <UserPlus className="h-4 w-4" />
             Join
@@ -408,7 +413,7 @@ function HeroSoftwareVisual() {
         transition={{ duration: 6, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
       >
         <p className="text-xs text-white/40">Revenue</p>
-        <p className="mt-1 text-2xl font-semibold text-white">$24.8k</p>
+        <p className="mt-1 text-2xl font-semibold text-white">$29.8k</p>
         <p className="mt-2 text-xs text-emerald-300">up +24%</p>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <div className="rounded-xl bg-black/24 p-2"><p className="text-[10px] text-white/36">Projects</p><p className="text-sm text-white">148</p></div>
@@ -604,7 +609,7 @@ function WebsiteShowcase({ active }: { active: boolean }) {
             {pricing.map((item, index) => (
               <motion.div key={item} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4" initial={{ opacity: 0, y: 18 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0.45, y: 18 }} transition={{ delay: index * 0.12, duration: 0.55, ease }}>
                 <p className="text-sm font-medium text-white">{item}</p>
-                <p className="mt-4 text-2xl font-semibold text-white">${[1.5, 3, 6][index]}k</p>
+                <p className="mt-4 text-2xl font-semibold text-white">{["$350", "$1k", "$2.4k"][index]}</p>
                 <div className="mt-4 h-1.5 rounded-full bg-white/10"><motion.div className="h-full rounded-full bg-[#D8A25A]" animate={active ? { width: ["18%", "74%", "42%"] } : { width: "38%" }} transition={{ duration: 4, repeat: active ? Infinity : 0 }} /></div>
               </motion.div>
             ))}
@@ -619,7 +624,7 @@ function WebsiteShowcase({ active }: { active: boolean }) {
 
 const phoneScreens = [
   { title: "Fitness", metric: "68%", color: "#8B5CF6", items: ["Workout", "Meals", "Sleep"] },
-  { title: "Finance", metric: "$8.4k", color: "#22C55E", items: ["Budget", "Cards", "Invest"] },
+  { title: "Finance", metric: "$2.9k", color: "#22C55E", items: ["Budget", "Cards", "Invest"] },
   { title: "Travel", metric: "12", color: "#38BDF8", items: ["Trips", "Hotels", "Routes"] },
 ];
 

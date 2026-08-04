@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle, Send, Upload } from "lucide-react";
+import { ArrowLeft, CheckCircle, Send, Upload, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function JoinPage() {
@@ -11,6 +11,15 @@ export default function JoinPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [startedAt] = useState(() => Date.now().toString());
   const [error, setError] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileName(e.target.files[0].name);
+    } else {
+      setFileName("");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -93,43 +102,53 @@ export default function JoinPage() {
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-white">Name *</label>
-                    <input name="name" required className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="Your name" />
+                    <input name="name" required className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-white">Email *</label>
-                    <input name="email" type="email" required className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="you@email.com" />
+                    <input name="email" type="email" required className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" />
                   </div>
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white">Role</label>
-                    <input name="role" className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="Designer, developer, editor..." />
+                    <label className="text-sm font-medium text-white">Role *</label>
+                    <input name="role" required className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white">Portfolio</label>
-                    <input name="portfolio" type="url" className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="https://yourwork.com" />
+                    <label className="text-sm font-medium text-white">Portfolio, GitHub, or LinkedIn *</label>
+                    <input name="portfolio" type="text" required className="w-full rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-white">Skills *</label>
-                  <textarea name="skills" required rows={4} className="w-full resize-none rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="Next.js, UI design, editing, motion, AI automation..." />
+                  <textarea name="skills" required rows={4} className="w-full resize-none rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">CV</label>
+                  <label className="text-sm font-medium text-white">CV *</label>
                   <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-[#0B0B0B] px-4 py-8 text-center transition hover:border-[#805948]">
-                    <Upload className="mb-3 h-6 w-6 text-[#c19a88]" />
-                    <span className="text-sm text-white/70">Upload CV, resume, or profile PDF</span>
-                    <span className="mt-1 text-xs text-white/35">PDF, DOC, or DOCX under 8MB</span>
-                    <input name="cv" type="file" accept=".pdf,.doc,.docx" className="sr-only" />
+                    {fileName ? (
+                      <>
+                        <FileText className="mb-3 h-6 w-6 text-[#805948]" />
+                        <span className="text-sm font-medium text-white/90">{fileName}</span>
+                        <span className="mt-1 text-xs text-white/50">Click to change file</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mb-3 h-6 w-6 text-[#c19a88]" />
+                        <span className="text-sm text-white/70">Upload CV, resume, or profile PDF</span>
+                        <span className="mt-1 text-xs text-white/35">PDF, DOC, or DOCX under 8MB</span>
+                      </>
+                    )}
+                    <input name="cv" type="file" required accept=".pdf,.doc,.docx" className="sr-only" onChange={handleFileChange} />
                   </label>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-white">Anything else?</label>
-                  <textarea name="message" rows={3} className="w-full resize-none rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" placeholder="A short note is enough." />
+                  <textarea name="message" rows={3} className="w-full resize-none rounded-xl border border-white/10 bg-[#0B0B0B] px-4 py-3 text-white outline-none transition focus:border-[#805948]" />
                 </div>
 
                 {error && (
