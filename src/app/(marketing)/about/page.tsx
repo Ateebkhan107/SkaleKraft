@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft,
   ArrowRight,
   Eye,
   Paintbrush,
@@ -13,6 +12,7 @@ import {
   Globe,
 } from "lucide-react";
 import Image from "next/image";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 
 const values = [
   {
@@ -65,10 +65,7 @@ export default function AboutPage() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 pb-32 pt-28 md:px-10">
-        <Link href="/" className="mb-12 inline-flex items-center gap-2 text-sm text-white/45 transition hover:text-white">
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+        <BackHomeLink className="mb-12" />
 
         {/* Hero Section */}
         <motion.section 

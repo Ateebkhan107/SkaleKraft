@@ -1,4 +1,4 @@
-import Link from "next/link";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 
 type LegalPageProps = {
   title: string;
@@ -14,9 +14,7 @@ export default function LegalPage({ title, updated, intro, sections }: LegalPage
   return (
     <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-32 text-white md:px-10">
       <section className="mx-auto max-w-3xl">
-        <Link href="/" className="text-sm text-white/45 transition hover:text-white">
-          Back to home
-        </Link>
+        <BackHomeLink />
         <p className="mt-10 text-sm uppercase tracking-[0.26em] text-[#c19a88]">SkaleKraft</p>
         <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">{title}</h1>
         <p className="mt-4 text-sm text-white/40">Last updated: {updated}</p>

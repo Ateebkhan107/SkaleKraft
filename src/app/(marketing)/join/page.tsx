@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle, Send, Upload, FileText } from "lucide-react";
+import { CheckCircle, Send, Upload, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 
 export default function JoinPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,10 +49,7 @@ export default function JoinPage() {
   return (
     <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10">
       <section className="mx-auto max-w-5xl">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-white/45 transition hover:text-white">
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+        <BackHomeLink />
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <motion.div

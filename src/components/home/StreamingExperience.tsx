@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
+import { showcaseProjects } from "@/lib/showcase-projects";
 import {
   ArrowRight,
   BrainCircuit,
+  BriefcaseBusiness,
   Check,
   Clapperboard,
   Home,
@@ -145,6 +147,7 @@ const sidebarLinks: Array<{ id: string; label: string; icon: LucideIcon; color?:
   { id: "apps", label: "Apps", icon: Smartphone, color: "apps" },
   { id: "ai", label: "AI", icon: BrainCircuit, color: "ai" },
   { id: "creative", label: "Creative", icon: Clapperboard, color: "creative" },
+  { id: "work", label: "Our Work", icon: BriefcaseBusiness },
   { id: "contact", label: "Contact", icon: Mail },
 ];
 
@@ -510,6 +513,41 @@ function CinematicHero() {
           <div className="absolute inset-0 rounded-[36px] bg-[radial-gradient(circle_at_50%_50%,rgba(128,89,72,0.22),transparent_54%)] blur-2xl" />
           <HeroSoftwareVisual />
         </div>
+      </div>
+    </section>
+  );
+}
+
+function SelectedWork() {
+  return (
+    <section id="work" className="scroll-mt-24 py-20 sm:py-28">
+      <motion.div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.6, ease }}>
+        <div className="max-w-3xl">
+          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
+          <h2 className="mt-3 text-4xl font-medium tracking-tight text-white sm:text-6xl">A closer look at what we build.</h2>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/52">A selection of practical AI systems built around prediction, intelligent routing, and customer support.</p>
+        </div>
+        <Link href="/portfolio" className="group inline-flex w-fit items-center gap-2 text-sm font-medium text-white/62 transition hover:text-white">
+          View all work
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      </motion.div>
+
+      <div className="mt-12 grid gap-4 lg:grid-cols-12">
+        {showcaseProjects.map((project, index) => (
+          <motion.article key={project.number} data-cursor-card className={`group relative min-h-[430px] overflow-hidden rounded-[28px] border border-white/10 bg-[#101010] ${project.shape}`} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.6, delay: index * 0.08, ease }}>
+            <div className={`absolute inset-0 bg-gradient-to-br ${project.tone} via-transparent to-transparent opacity-70 transition duration-700 group-hover:opacity-100`} />
+            <div className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:52px_52px]" />
+            {project.image ? <div className="absolute inset-x-6 top-6 h-48 overflow-hidden rounded-[20px] border border-white/10 bg-white/95 sm:inset-x-auto sm:right-8 sm:w-[46%]"><Image src={project.image} alt={`${project.title} dashboard preview`} fill sizes="(max-width: 640px) calc(100vw - 5rem), 520px" className="object-cover object-top transition duration-700 group-hover:scale-[1.03]" /></div> : <div className="absolute left-1/2 top-1/2 h-40 w-64 -translate-x-1/2 -translate-y-1/2 rounded-[22px] border border-white/10 bg-black/25 shadow-[0_30px_90px_rgba(0,0,0,.35)] backdrop-blur-sm transition duration-700 group-hover:-translate-y-[54%] group-hover:rotate-[-2deg]">
+              <div className="flex h-8 items-center gap-1.5 border-b border-white/8 px-3"><span className="h-1.5 w-1.5 rounded-full bg-[#c19a88]/70" /><span className="h-1.5 w-1.5 rounded-full bg-white/18" /><span className="h-1.5 w-1.5 rounded-full bg-white/18" /></div>
+              <div className="space-y-3 p-5"><div className="h-3 w-2/3 rounded-full bg-white/12" /><div className="h-2 w-full rounded-full bg-white/7" /><div className="h-2 w-4/5 rounded-full bg-white/7" /><div className="mt-5 h-7 w-20 rounded-full bg-[#805948]/35" /></div>
+            </div>}
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-6 sm:p-8">
+              <div className="max-w-xl"><p className="text-xs uppercase tracking-[0.22em] text-[#c19a88]">{project.category}</p><h3 className="mt-2 text-2xl font-medium text-white sm:text-3xl">{project.title}</h3><p className="mt-3 text-sm leading-6 text-white/48">{project.short}</p>{project.url && <a href={project.url} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-white/70 transition hover:text-white">Open live project <ArrowRight className="h-4 w-4" /></a>}</div>
+              <span className="text-sm tabular-nums text-white/32">{project.number}</span>
+            </div>
+          </motion.article>
+        ))}
       </div>
     </section>
   );
@@ -1016,15 +1054,32 @@ export default function StreamingExperience() {
   useEffect(() => {
     if (stage !== "home") return;
     const sections = sidebarLinks.map((link) => document.getElementById(link.id)).filter((section): section is HTMLElement => Boolean(section));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(visible.target.id);
-      },
-      { rootMargin: "-35% 0px -55% 0px", threshold: [0.12, 0.3, 0.55] },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    let frame: number | undefined;
+
+    const updateActiveSection = () => {
+      frame = undefined;
+      const readingLine = window.innerHeight * 0.38;
+      const current = sections.find((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= readingLine && rect.bottom > readingLine;
+      });
+
+      if (current) setActiveSection(current.id);
+    };
+
+    const scheduleUpdate = () => {
+      if (frame === undefined) frame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    };
   }, [stage]);
 
   const chooseDestination = (destination: DestinationKey) => {
@@ -1061,6 +1116,8 @@ export default function StreamingExperience() {
               <ServiceBlock service={services.ai} onExplore={setActiveModal} />
               <ServiceBlock service={services.creative} align="right" onExplore={setActiveModal} />
             </div>
+
+            <SelectedWork />
 
             <motion.section data-cursor-card id="contact" className="my-20 scroll-mt-24 overflow-hidden rounded-[30px] border border-white/10 bg-[#101010] p-8 shadow-[0_30px_110px_rgba(0,0,0,0.4)] md:p-12" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.6, ease }}>
               <div className="max-w-3xl">

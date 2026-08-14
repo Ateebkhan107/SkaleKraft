@@ -1,10 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowLeft,
   ArrowRight,
   BrainCircuit,
   Check,
@@ -20,6 +18,7 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 
 type Option = {
   label: string;
@@ -248,10 +247,7 @@ export default function ContactPage() {
       ))}
 
       <div className="relative mx-auto max-w-[1500px]">
-        <Link href="/" className="mb-10 inline-flex items-center gap-2 text-sm text-white/45 transition hover:text-white">
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+        <BackHomeLink className="mb-10" />
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(360px,.9fr)]">
           <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>

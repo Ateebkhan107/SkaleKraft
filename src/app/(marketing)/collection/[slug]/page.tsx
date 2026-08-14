@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   await params;
@@ -7,10 +8,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10">
       <section className="mx-auto max-w-3xl">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-white/45 transition hover:text-white">
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+        <BackHomeLink />
         <p className="mt-14 text-sm uppercase tracking-[0.26em] text-[#c19a88]">Private work</p>
         <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
           Project details are not public right now.

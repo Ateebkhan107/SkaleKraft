@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 
 export default function NotFound() {
   return (
@@ -12,13 +11,7 @@ export default function NotFound() {
         <p className="mt-5 text-lg leading-8 text-white/58">
           The link may have moved, or the page may no longer exist.
         </p>
-        <Link
-          href="/"
-          className="mt-9 inline-flex h-12 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-[#0B0B0B] transition duration-300 hover:bg-[#805948] hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+        <BackHomeLink className="mt-9" />
       </section>
     </main>
   );
