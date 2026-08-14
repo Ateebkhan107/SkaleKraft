@@ -1,6 +1,17 @@
 export const showcaseProjects = [
   {
     number: "01",
+    title: "Prepzii",
+    category: "EdTech Platform",
+    short: "A premium JEE and NEET preparation workspace combining PYQs, mock tests, revision tools, performance analytics, and focused study workflows.",
+    url: "https://www.prepzii.com/",
+    image: "/images/prepzii-workspace-thumbnail.png",
+    tags: ["EdTech", "Full-stack Platform", "Analytics"],
+    tone: "from-violet-500/22",
+    shape: "lg:col-span-12",
+  },
+  {
+    number: "02",
     title: "Heart Disease Analysis & Prediction",
     category: "Healthcare AI",
     short: "An interactive machine-learning application for exploring health indicators and generating a heart-disease risk prediction.",
@@ -11,7 +22,7 @@ export const showcaseProjects = [
     shape: "lg:col-span-7",
   },
   {
-    number: "02",
+    number: "03",
     title: "AI Grievance Routing System",
     category: "Workflow AI",
     short: "An AI system that automatically classifies public grievances and predicts the appropriate civic department with high accuracy.",
@@ -22,7 +33,7 @@ export const showcaseProjects = [
     shape: "lg:col-span-5",
   },
   {
-    number: "03",
+    number: "04",
     title: "Customer Support Chatbot",
     category: "Conversational AI",
     short: "An e-commerce support assistant built to respond to customer questions through a simple conversational interface.",
@@ -33,7 +44,7 @@ export const showcaseProjects = [
     shape: "lg:col-span-12",
   },
   {
-    number: "04",
+    number: "05",
     title: "Pizza Sales Analytics Dashboard",
     category: "Business Intelligence",
     short: "An interactive sales dashboard for exploring pizza-order performance, product trends, and business insights through clear visual reporting.",

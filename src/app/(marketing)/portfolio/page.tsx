@@ -13,7 +13,7 @@ export default function PortfolioPage() {
           <BackHomeLink className="mb-12" />
           <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
           <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">The work behind the craft.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">Explore practical AI applications created around healthcare prediction, automated grievance routing, and customer support.</p>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">Explore how SkaleKraft transforms ambitious ideas into scalable digital products—combining thoughtful design, intelligent systems, and dependable engineering to create experiences people enjoy using.</p>
         </div>
         <div className="relative mt-14 grid gap-4 md:grid-cols-3">
           {showcaseProjects.map((project) => (

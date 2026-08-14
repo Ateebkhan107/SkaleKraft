@@ -525,7 +525,7 @@ function SelectedWork() {
         <div className="max-w-3xl">
           <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
           <h2 className="mt-3 text-4xl font-medium tracking-tight text-white sm:text-6xl">A closer look at what we build.</h2>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/52">A selection of practical AI systems built around prediction, intelligent routing, and customer support.</p>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/52">A selection of scalable digital products shaped through thoughtful design, intelligent systems, and dependable engineering.</p>
         </div>
         <Link href="/portfolio" className="group inline-flex w-fit items-center gap-2 text-sm font-medium text-white/62 transition hover:text-white">
           View all work
