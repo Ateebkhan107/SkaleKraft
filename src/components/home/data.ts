@@ -10,7 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export type Stage = "booting" | "splash" | "selection" | "home";
+export type Stage = "selection" | "home";
 export type ServiceKey = "websites" | "apps" | "ai" | "creative";
 export type DestinationKey = ServiceKey | "everything";
 

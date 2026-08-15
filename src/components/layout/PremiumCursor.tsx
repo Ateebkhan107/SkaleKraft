@@ -44,6 +44,7 @@ export default function PremiumCursor() {
   const dot = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const hoveredImage = useRef<HTMLElement | null>(null);
+  const modeRef = useRef<CursorMode>("default");
   const [state, setState] = useState<CursorState>({ mode: "default", color: defaultColor, visible: false });
 
   useEffect(() => {
@@ -55,6 +56,9 @@ export default function PremiumCursor() {
     let mounted = true;
 
     document.documentElement.classList.add("premium-cursor-enabled");
+    pointer.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    dot.current = pointer.current;
+    ring.current = pointer.current;
 
     const resetInteractiveElement = (element: HTMLElement | null) => {
       if (!element) return;
@@ -64,6 +68,7 @@ export default function PremiumCursor() {
     const updateHoverState = (target: Element | null, event?: PointerEvent) => {
       const nextMode = getMode(target);
       const nextColor = getSectionColor(target);
+      modeRef.current = nextMode;
       setState((current) => {
         if (current.mode === nextMode && current.color === nextColor && current.visible) return current;
         return { mode: nextMode, color: nextColor, visible: true };
@@ -79,6 +84,8 @@ export default function PremiumCursor() {
         hoveredImage.current.style.setProperty("--cursor-glow-opacity", "1");
       }
     };
+
+    updateHoverState(document.elementFromPoint(pointer.current.x, pointer.current.y));
 
     const onPointerMove = (event: PointerEvent) => {
       const target = event.target instanceof Element ? event.target : null;
@@ -107,10 +114,11 @@ export default function PremiumCursor() {
     const animate = () => {
       if (!mounted) return;
 
-      dot.current.x = lerp(dot.current.x, pointer.current.x, state.mode === "text" ? 0.48 : 0.36);
-      dot.current.y = lerp(dot.current.y, pointer.current.y, state.mode === "text" ? 0.48 : 0.36);
-      ring.current.x = lerp(ring.current.x, dot.current.x, state.mode === "text" ? 0.34 : 0.18);
-      ring.current.y = lerp(ring.current.y, dot.current.y, state.mode === "text" ? 0.34 : 0.18);
+      const mode = modeRef.current;
+      dot.current.x = lerp(dot.current.x, pointer.current.x, mode === "text" ? 0.48 : 0.36);
+      dot.current.y = lerp(dot.current.y, pointer.current.y, mode === "text" ? 0.48 : 0.36);
+      ring.current.x = lerp(ring.current.x, dot.current.x, mode === "text" ? 0.34 : 0.18);
+      ring.current.y = lerp(ring.current.y, dot.current.y, mode === "text" ? 0.34 : 0.18);
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${dot.current.x}px, ${dot.current.y}px, 0) translate(-50%, -50%)`;
@@ -134,7 +142,7 @@ export default function PremiumCursor() {
       document.documentElement.classList.remove("premium-cursor-enabled");
       resetInteractiveElement(hoveredImage.current);
     };
-  }, [state.mode]);
+  }, []);
 
   const size = state.mode === "button" ? 42 : state.mode === "image" ? 36 : state.mode === "card" ? 30 : state.mode === "text" ? 18 : 24;
 
@@ -142,7 +150,7 @@ export default function PremiumCursor() {
     <>
       <div
         ref={ringRef}
-        className="premium-cursor-ring"
+        className="premium-cursor-ring hidden md:block"
         style={{
           borderColor: state.color,
           color: state.color,
@@ -151,7 +159,7 @@ export default function PremiumCursor() {
           width: size,
         }}
       />
-      <div ref={dotRef} className="premium-cursor-dot" style={{ opacity: state.visible ? 1 : 0 }} />
+      <div ref={dotRef} className="premium-cursor-dot hidden md:block" style={{ opacity: state.visible ? 1 : 0 }} />
     </>
   );
 }

@@ -162,9 +162,99 @@
   }
 }
 
-@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+/* ─── Splash screen keyframes ─── */
+@keyframes splash-logo-enter {
+  from { opacity: 0; transform: scale(0.82) translateY(18px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes splash-logo-pulse {
+  0%, 100% { filter: drop-shadow(0 0 28px rgba(128,89,72,0.22)); transform: scale(1);    }
+  50%       { filter: drop-shadow(0 0 60px rgba(128,89,72,0.44)); transform: scale(1.03); }
+}
+
+@keyframes splash-glow-breathe {
+  0%, 100% { opacity: 0.4; transform: scale(0.92); }
+  50%       { opacity: 0.9; transform: scale(1.08); }
+}
+
+@keyframes splash-text-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes splash-dots-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes splash-dot-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1.2); }
+}
+
+.skalekraft-intro-splash {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition:
+    opacity 480ms ease,
+    visibility 0s linear 480ms;
+}
+
+.skalekraft-intro-splash[data-state="leaving"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.skalekraft-splash-glow {
+  animation: splash-glow-breathe 3.5s ease-in-out infinite;
+}
+
+.skalekraft-splash-logo {
+  animation:
+    splash-logo-enter 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    splash-logo-pulse 3s ease-in-out 0.75s infinite;
+}
+
+.skalekraft-splash-text {
+  animation: splash-text-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+}
+
+.skalekraft-splash-dots {
+  animation: splash-dots-enter 0.4s ease 0.8s both;
+}
+
+.skalekraft-dot   { animation: splash-dot-pulse 1.2s ease-in-out infinite; }
+.skalekraft-dot-1 { animation-delay: 0s;    }
+.skalekraft-dot-2 { animation-delay: 0.2s;  }
+.skalekraft-dot-3 { animation-delay: 0.4s;  }
+
+@media (hover: none), (pointer: coarse) {
   .premium-cursor-dot,
   .premium-cursor-ring {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-cursor-dot,
+  .premium-cursor-ring {
+    display: none;
+  }
+
+  .skalekraft-intro-splash {
+    transition:
+      opacity 120ms ease,
+      visibility 0s linear 120ms;
+  }
+
+  .skalekraft-splash-logo {
+    animation: splash-logo-enter 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .skalekraft-splash-glow,
+  .skalekraft-dot {
+    animation: none;
   }
 }

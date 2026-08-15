@@ -5,7 +5,6 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
-  ArrowRight,
   BrainCircuit,
   Check,
   CheckCircle,
@@ -84,21 +83,21 @@ function OptionCard({
     <motion.button
       type="button"
       onClick={onClick}
-      className={`group relative overflow-hidden rounded-[22px] border p-4 text-left transition duration-300 ${
+      className={`group relative h-24 w-full overflow-hidden rounded-[20px] border p-3 text-left transition duration-300 sm:h-auto sm:min-h-16 sm:p-4 ${
         selected ? "border-[#805948]/70 bg-[#805948]/14 shadow-[0_0_34px_rgba(128,89,72,.14)]" : "border-white/10 bg-white/[0.025] hover:border-white/22 hover:bg-white/[0.045]"
       }`}
       whileHover={{ y: -3, scale: 1.015 }}
       whileTap={{ scale: 0.985 }}
     >
       <span className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(128,89,72,.18),transparent_34%)] opacity-0 transition duration-300 group-hover:opacity-100" />
-      <span className="relative flex items-center gap-3">
+      <span className="relative flex h-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         {Icon && (
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-black/24">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/24">
             <Icon className={selected ? "h-5 w-5 text-[#c19a88]" : "h-5 w-5 text-white/52"} strokeWidth={1.7} />
           </span>
         )}
-        <span className="font-medium text-white">{option.label}</span>
-        {selected && <Check className="ml-auto h-4 w-4 text-[#c19a88]" />}
+        <span className="font-medium leading-tight text-white">{option.label}</span>
+        {selected && <Check className="absolute right-0 top-0 h-4 w-4 text-[#c19a88] sm:static sm:ml-auto" />}
       </span>
     </motion.button>
   );
@@ -109,7 +108,7 @@ function ChoiceCard({ label, selected, onClick }: { label: string; selected: boo
     <motion.button
       type="button"
       onClick={onClick}
-      className={`rounded-2xl border px-4 py-3 text-left text-sm font-medium transition duration-300 ${
+      className={`flex min-h-11 w-full items-center rounded-2xl border px-4 py-3 text-left text-sm font-medium transition duration-300 ${
         selected ? "border-[#805948]/70 bg-[#805948]/14 text-white shadow-[0_0_28px_rgba(128,89,72,.12)]" : "border-white/10 bg-white/[0.025] text-white/62 hover:border-white/22 hover:text-white"
       }`}
       whileHover={{ y: -2, scale: 1.01 }}
@@ -255,7 +254,7 @@ export default function ContactPage() {
       ))}
 
       <div className="relative mx-auto max-w-[1500px]">
-        <Link href="/" className="mb-10 inline-flex items-center gap-2 text-sm text-white/45 transition hover:text-white">
+        <Link href="/" className="mb-10 inline-flex min-h-11 items-center gap-2 text-sm text-white/45 transition hover:text-white">
           <ArrowLeft className="h-4 w-4" />
           Back to home
         </Link>
@@ -283,7 +282,7 @@ export default function ContactPage() {
                 })}
               </div>
 
-              <form onSubmit={handleSubmit} className="mt-10 space-y-10">
+              <form onSubmit={handleSubmit} className="mt-8 space-y-7 sm:mt-10 sm:space-y-10">
                 <input type="hidden" name="service" value={service} />
                 <input type="hidden" name="budget" value={budget} />
                 <input type="hidden" name="timeline" value={timeline} />
@@ -299,7 +298,7 @@ export default function ContactPage() {
 
                 <section>
                   <h2 className="text-sm uppercase tracking-[0.22em] text-white/42">Service</h2>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-3">
                     {services.map((item) => (
                       <OptionCard key={item.value} option={item} selected={service === item.value} onClick={() => setService(item.value)} />
                     ))}
@@ -308,19 +307,19 @@ export default function ContactPage() {
 
                 <section>
                   <h2 className="text-sm uppercase tracking-[0.22em] text-white/42">Budget</h2>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 xl:grid-cols-5">
                     {budgets.map((item) => <ChoiceCard key={item} label={item} selected={budget === item} onClick={() => setBudget(item)} />)}
                   </div>
                 </section>
 
                 <section>
                   <h2 className="text-sm uppercase tracking-[0.22em] text-white/42">Timeline</h2>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 xl:grid-cols-5">
                     {timelines.map((item) => <ChoiceCard key={item} label={item} selected={timeline === item} onClick={() => setTimeline(item)} />)}
                   </div>
                 </section>
 
-                <section className="grid gap-4 md:grid-cols-2">
+                <section className="grid gap-3 sm:gap-4 md:grid-cols-2">
                   <FloatingField label="Name" name="name" required value={name} onChange={setName} />
                   <FloatingField label="Email" name="email" type="email" required value={email} onChange={setEmail} />
                   <FloatingField label="Company" name="company" value={company} onChange={setCompany} />
@@ -419,12 +418,11 @@ export default function ContactPage() {
 
               <div className="mt-8 border-t border-white/10 pt-7">
                 <h3 className="text-lg font-medium text-white">What happens next</h3>
-                <div className="mt-5 space-y-3">
+                <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3">
                   {["We review your idea", "Discovery call", "Proposal", "Design", "Development", "Launch"].map((item, index) => (
-                    <motion.div key={item} className="flex items-center gap-3" initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.04 }}>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/24 text-xs text-[#c19a88]">{index + 1}</span>
-                      <span className="text-sm text-white/62">{item}</span>
-                      {index < 5 && <ArrowRight className="ml-auto h-4 w-4 text-white/18" />}
+                    <motion.div key={item} className="flex min-h-14 items-center gap-2 rounded-2xl border border-white/10 bg-black/18 px-3 py-2" initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.04 }}>
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/24 text-xs text-[#c19a88]">{index + 1}</span>
+                      <span className="text-xs leading-4 text-white/62 sm:text-sm">{item}</span>
                     </motion.div>
                   ))}
                 </div>

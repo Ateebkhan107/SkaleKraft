@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Menu,
@@ -43,140 +43,85 @@ const ServiceVisual = dynamic(
   },
 );
 
-function BootingScreen() {
+
+function IntroSplash({ isLeaving }: { isLeaving: boolean }) {
   return (
-    <motion.div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-[#0B0B0B]"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+    <div
+      className="skalekraft-intro-splash fixed inset-0 z-[90] flex flex-col items-center justify-center bg-[#0B0B0B]"
+      data-state={isLeaving ? "leaving" : "visible"}
+      aria-hidden="true"
     >
-      <div className="relative h-[min(58vw,420px)] w-[min(58vw,420px)]">
-        <Image
-          src="/images/skalekraft-logo.png"
-          alt="SkaleKraft"
-          fill
-          sizes="(max-width: 768px) 58vw, 420px"
-          className="object-contain"
-          priority
-        />
+      <div className="skalekraft-splash-glow pointer-events-none absolute rounded-full bg-[#805948]/14 blur-[120px]"
+        style={{ width: "min(80vw,600px)", height: "min(80vw,600px)" }}
+      />
+      <div className="skalekraft-splash-logo relative h-[min(42vw,300px)] w-[min(42vw,300px)]">
+        <Image src="/images/skalekraft-logo.png" alt="" fill sizes="(max-width:768px) 42vw, 300px" className="object-contain" priority />
       </div>
-    </motion.div>
-  );
-}
-
-function SplashScreen({ onComplete }: { onComplete: () => void }) {
-  const prefersReducedMotion = useReducedMotion();
-  const duration = prefersReducedMotion ? 0.5 : 2.8;
-  const isCompleted = useRef(false);
-
-  const handleComplete = useCallback(() => {
-    if (isCompleted.current) return;
-    isCompleted.current = true;
-    window.sessionStorage.setItem("skalekraftIntroSeen", "true");
-    onComplete();
-  }, [onComplete]);
-
-  useEffect(() => {
-    const timer = window.setTimeout(handleComplete, duration * 1000 + 100);
-    return () => window.clearTimeout(timer);
-  }, [handleComplete, duration]);
-
-  return (
-    <motion.div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-[#0B0B0B]"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: prefersReducedMotion ? 1 : 1.04 }}
-      transition={{ duration: 0.9, ease }}
-    >
-      <motion.div
-        className="relative h-[min(58vw,420px)] w-[min(58vw,420px)]"
-        initial={{ opacity: 1, scale: prefersReducedMotion ? 1 : 0.96, textShadow: "0 0 0 rgba(128,89,72,0)" }}
-        animate={{
-          opacity: 1,
-          scale: prefersReducedMotion ? 1 : [0.96, 1, 1],
-          textShadow: prefersReducedMotion
-            ? "0 0 0 rgba(128,89,72,0)"
-            : [
-                "0 0 0 rgba(128,89,72,0)",
-                "0 0 42px rgba(128,89,72,0.5)",
-                "0 0 22px rgba(128,89,72,0.28)",
-              ],
-        }}
-        transition={{ duration, times: prefersReducedMotion ? undefined : [0, 0.58, 1], ease }}
-        onAnimationComplete={handleComplete}
-      >
-        <Image
-          src="/images/skalekraft-logo.png"
-          alt="SkaleKraft"
-          fill
-          sizes="(max-width: 768px) 58vw, 420px"
-          className="object-contain drop-shadow-[0_0_42px_rgba(128,89,72,0.32)]"
-          priority
-        />
-      </motion.div>
-    </motion.div>
+      <p className="skalekraft-splash-text mt-7 text-sm font-medium tracking-[0.32em] text-white/55 uppercase">
+        SKALE<span className="text-[#c19a88]">KRAFT</span>
+      </p>
+      <div className="skalekraft-splash-dots mt-8 flex items-center gap-1.5">
+        <span className="skalekraft-dot skalekraft-dot-1 h-1 w-1 rounded-full bg-[#805948]/70" />
+        <span className="skalekraft-dot skalekraft-dot-2 h-1 w-1 rounded-full bg-[#805948]/70" />
+        <span className="skalekraft-dot skalekraft-dot-3 h-1 w-1 rounded-full bg-[#805948]/70" />
+      </div>
+    </div>
   );
 }
 
 function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: DestinationKey) => void; onSkip: () => void }) {
   return (
-    <motion.section
+    <section
       className="fixed inset-0 z-[70] min-h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#0B0B0B] pb-[calc(env(safe-area-inset-bottom)+2rem)] text-white"
-      initial={{ opacity: 0, scale: 1.02 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.98 }}
-      transition={{ duration: 0.7, ease }}
+      style={{ position: "fixed", inset: 0, zIndex: 70, backgroundColor: "#0B0B0B" }}
     >
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(128,89,72,0.18),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_32%)]" />
-      <div className="relative flex min-h-full w-full flex-col items-center justify-center p-5 py-24">
-        <button
-          type="button"
-          onClick={onSkip}
+      <div className="relative flex min-h-full w-full flex-col items-center justify-center p-4 py-16 sm:p-5 sm:py-20 lg:py-16">
+        <Link
+          href="/?dest=everything"
+          onClick={(e) => { e.preventDefault(); onSkip(); }}
           className="absolute right-6 top-6 z-10 rounded-full border border-white/10 px-4 py-2 text-sm text-white/45 transition duration-300 hover:border-white/25 hover:text-white"
         >
           Skip
-        </button>
+        </Link>
         <div className="relative mx-auto w-full max-w-6xl text-center">
-          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">SkaleKraft</p>
-          <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">What are we building today?</h1>
-          <p className="mt-4 text-lg text-white/50">Choose your destination.</p>
-          <div className="mt-12 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {destinations.map((destination, index) => {
+          <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm sm:tracking-[0.26em]">SkaleKraft</p>
+          <h1 className="mt-3 text-3xl font-medium tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">What are we building today?</h1>
+          <p className="mt-3 text-base text-white/50 sm:mt-4 sm:text-lg">Choose your destination.</p>
+          <div className="mt-8 grid min-w-0 grid-cols-2 gap-2 sm:mt-10 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-4">
+            {destinations.map((destination) => {
               const Icon = destination.icon;
               const key = destination.key === "everything" ? "websites" : destination.key;
+              const isEverything = destination.key === "everything";
               return (
-                <motion.button
+                <Link
                   key={destination.key}
-                  type="button"
-                  onClick={() => onChoose(destination.key)}
-                  className="group relative min-w-0 min-h-[230px] overflow-hidden rounded-[24px] border border-white/10 bg-[#101010] p-5 text-left shadow-[0_18px_70px_rgba(0,0,0,0.28)] transition duration-500"
+                  href={`/?dest=${destination.key}`}
+                  onClick={(e) => { e.preventDefault(); onChoose(destination.key); }}
+                  className={`group relative h-32 min-w-0 overflow-hidden rounded-[20px] border border-white/10 bg-[#101010] p-3 text-left shadow-[0_18px_70px_rgba(0,0,0,0.28)] transition duration-500 sm:h-40 sm:p-4 lg:h-[200px] lg:rounded-[24px] lg:p-5 ${
+                    isEverything ? "col-span-2 sm:col-span-1" : ""
+                  }`}
                   style={{ "--service": accent[key].rgb } as React.CSSProperties}
-                  initial={{ opacity: 0, y: 28 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.14 + index * 0.04, ease }}
-                  whileHover={{ scale: 1.035, y: -6, borderColor: `rgba(${accent[key].rgb},0.75)`, boxShadow: `0 26px 85px rgba(0,0,0,.44), 0 0 36px rgba(${accent[key].rgb},.2)` }}
-                  whileTap={{ scale: 0.985 }}
                 >
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(var(--service),0.2),transparent_38%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  <div className="relative flex h-full flex-col justify-between gap-10">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.035]">
-                      <Icon className="h-7 w-7" style={{ color: accent[key].hex }} strokeWidth={1.7} />
+                  <div className="relative flex h-full flex-col justify-between gap-4 sm:gap-6 lg:gap-6">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.035] sm:h-12 sm:w-12 lg:h-14 lg:w-14">
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" style={{ color: accent[key].hex }} strokeWidth={1.7} />
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-2xl font-medium">{destination.label}</span>
-                      <span className="mt-3 block text-sm leading-6 text-white/48">{destination.subtitle}</span>
+                      <span className="block text-base font-medium sm:text-lg lg:text-xl">{destination.label}</span>
+                      <span className="mt-3 hidden overflow-hidden text-sm leading-6 text-white/48 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box]">
+                        {destination.subtitle}
+                      </span>
                     </span>
                   </div>
-                </motion.button>
+                </Link>
               );
             })}
           </div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
@@ -393,12 +338,12 @@ function SelectedWork() {
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-4">
         {showcaseProjects.map((project, index) => (
           <motion.article
             key={project.url}
             data-cursor-card
-            className="group overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.045),rgba(16,16,16,.96)_42%)] p-2.5 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.48)] sm:p-3"
+            className="group overflow-hidden rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.045),rgba(16,16,16,.96)_42%)] p-2 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.48)] sm:rounded-[28px] sm:p-3"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
@@ -406,13 +351,13 @@ function SelectedWork() {
           >
             <a href={project.url} target="_blank" rel="noreferrer" className="block">
               <ProjectThumbnail src={project.image} title={project.title} sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw" />
-              <div className="px-3 pb-4 pt-5 sm:px-4 sm:pb-5">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-[11px] uppercase tracking-[0.22em] text-[#c19a88]">{project.category}</p>
+              <div className="px-2 pb-3 pt-3 sm:px-4 sm:pb-5 sm:pt-5">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="truncate text-[9px] uppercase tracking-[0.18em] text-[#c19a88] sm:text-[11px] sm:tracking-[0.22em]">{project.category}</p>
                   <span className="text-xs text-white/25">{project.number}</span>
                 </div>
-                <h3 className="mt-3 text-xl font-medium text-white sm:text-2xl">{project.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-white/52">{project.short}</p>
+                <h3 className="mt-3 text-base font-medium leading-tight text-white sm:text-lg lg:text-xl">{project.title}</h3>
+                <p className="mt-2 hidden overflow-hidden text-sm leading-6 text-white/52 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box]">{project.short}</p>
               </div>
             </a>
           </motion.article>
@@ -429,7 +374,7 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
   return (
     <motion.section
       id={service.key}
-      className="scroll-mt-24 py-10"
+      className="scroll-mt-24 lg:py-10"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
@@ -437,28 +382,32 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
     >
       <div
         data-cursor-card
-        className={`grid min-h-[520px] gap-6 rounded-[30px] border border-white/10 bg-[#101010] p-5 shadow-[0_30px_110px_rgba(0,0,0,.35)] md:p-8 lg:grid-cols-2 ${
+        className={`group flex h-[246px] min-w-0 flex-col overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-3 shadow-[0_24px_85px_rgba(0,0,0,.32)] transition duration-500 hover:border-white/18 sm:h-[360px] sm:rounded-[26px] sm:p-4 lg:grid lg:h-auto lg:min-h-[520px] lg:grid-cols-2 lg:gap-6 lg:rounded-[30px] lg:p-8 lg:shadow-[0_30px_110px_rgba(0,0,0,.35)] ${
           align === "right" ? "lg:[&>*:first-child]:order-2" : ""
         }`}
         style={{ boxShadow: `0 30px 110px rgba(0,0,0,.35), 0 0 44px rgba(${color.rgb},.08)` }}
       >
-        <div className="h-full min-h-[360px] w-full overflow-hidden">
-          <ServiceVisual serviceKey={service.key} />
+        <div className="h-24 w-full overflow-hidden rounded-[18px] border border-white/10 sm:h-36 lg:h-full lg:min-h-[360px] lg:border-0 xl:min-h-[360px]">
+          <div className="h-[360px] w-[520px] origin-top-left scale-[0.3] sm:scale-[0.48] lg:h-full lg:w-full lg:scale-100">
+            <ServiceVisual serviceKey={service.key} />
+          </div>
         </div>
-        <div className="flex flex-col justify-center p-2 md:p-6">
+        <div className="flex min-w-0 flex-1 flex-col lg:justify-center lg:p-6">
           <motion.div
-            className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]"
+            className="mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] sm:h-12 sm:w-12 lg:mt-0 lg:h-16 lg:w-16"
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Icon className="h-8 w-8" style={{ color: color.hex }} strokeWidth={1.7} />
+            <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8" style={{ color: color.hex }} strokeWidth={1.7} />
           </motion.div>
-          <h2 className="mt-8 text-3xl sm:text-4xl font-medium tracking-tight text-white md:text-6xl">{service.title}</h2>
-          <p className="mt-5 max-w-xl text-base sm:text-lg leading-8 text-white/58">{service.short}</p>
+          <h2 className="mt-3 text-base font-medium leading-tight tracking-tight text-white sm:mt-4 sm:text-lg lg:mt-8 lg:text-4xl xl:text-6xl">{service.title}</h2>
+          <p className="mt-2 hidden overflow-hidden text-sm leading-6 text-white/58 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box] lg:mt-5 lg:max-w-xl lg:text-lg lg:leading-8">
+            {service.short}
+          </p>
           <button
             type="button"
             onClick={() => onExplore(service.key)}
-            className="mt-8 inline-flex h-12 w-fit items-center gap-2 rounded-full px-5 text-sm font-medium text-white transition duration-300"
+            className="mt-auto inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-4 text-sm font-medium text-white transition duration-300 group-hover:scale-[1.02] lg:mt-8 lg:h-12 lg:w-fit lg:px-5"
             style={{ backgroundColor: `rgba(${color.rgb},0.22)`, border: `1px solid rgba(${color.rgb},0.42)` }}
           >
             Explore
@@ -470,46 +419,36 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
   );
 }
 
-export default function StreamingExperience() {
-  const [stage, setStage] = useState<Stage>("booting");
+export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
+  const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
   const [activeSection, setActiveSection] = useState("home");
   const [activeModal, setActiveModal] = useState<ServiceKey | null>(null);
   const [animateHome, setAnimateHome] = useState(false);
-  const pendingTarget = useRef<string | null>(null);
+  const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
+  const [isIntroLeaving, setIsIntroLeaving] = useState(false);
+  // If initialDest is set (from ?dest= param), scroll to that section on mount
+  const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
 
   useEffect(() => {
-    const selectedDestination = window.sessionStorage.getItem("skalekraftDestination") as DestinationKey | null;
-    const hasSeenIntro = window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
+    window.history.scrollRestoration = "manual";
+    window.sessionStorage.removeItem("skalekraftDestination");
+    window.sessionStorage.removeItem("skalekraftIntroSeen");
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
-    if (hasSeenIntro) {
-      const id = window.setTimeout(() => {
-        if (selectedDestination) {
-          pendingTarget.current = selectedDestination === "everything" ? "home" : selectedDestination;
-          setAnimateHome(false);
-          setStage("home");
-        } else {
-          setStage("selection");
-        }
-      }, 0);
-      return () => window.clearTimeout(id);
-    } else {
-      const id = window.setTimeout(() => {
-        setStage("splash");
-      }, 0);
-      return () => window.clearTimeout(id);
-    }
-  }, []);
+    if (initialDest) return;
 
-  const handleSplashComplete = useCallback(() => {
-    const selectedDestination = window.sessionStorage.getItem("skalekraftDestination") as DestinationKey | null;
-    if (selectedDestination) {
-      pendingTarget.current = selectedDestination === "everything" ? "home" : selectedDestination;
-      setAnimateHome(true);
-      setStage("home");
-    } else {
-      setStage("selection");
-    }
-  }, []);
+    const beginExit = window.setTimeout(() => {
+      setIsIntroLeaving(true);
+    }, 1850);
+    const removeIntro = window.setTimeout(() => {
+      setIsIntroMounted(false);
+    }, 2350);
+
+    return () => {
+      window.clearTimeout(beginExit);
+      window.clearTimeout(removeIntro);
+    };
+  }, [initialDest]);
 
   useEffect(() => {
     if (stage !== "home" || !pendingTarget.current) return;
@@ -537,6 +476,7 @@ export default function StreamingExperience() {
 
   const chooseDestination = (destination: DestinationKey) => {
     window.sessionStorage.setItem("skalekraftDestination", destination);
+    window.sessionStorage.setItem("skalekraftIntroSeen", "true");
     pendingTarget.current = destination === "everything" ? "home" : destination;
     setAnimateHome(true);
     setStage("home");
@@ -549,24 +489,17 @@ export default function StreamingExperience() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white">
-      {/* Overlay layer: splash and service-selection share this AnimatePresence.
-          Keys on the element (not inside the component) let AnimatePresence
-          correctly track mounting/unmounting for exit animations. */}
-      <AnimatePresence mode="wait">
-        {stage === "booting" && <BootingScreen key="booting" />}
-        {stage === "splash" && <SplashScreen key="splash" onComplete={handleSplashComplete} />}
-        {stage === "selection" && (
+      {stage === "selection" && (
+        <>
+          {isIntroMounted && <IntroSplash isLeaving={isIntroLeaving} />}
           <ServiceSelection
-            key="selection"
             onChoose={chooseDestination}
             onSkip={() => chooseDestination("everything")}
           />
-        )}
-      </AnimatePresence>
+        </>
+      )}
 
-      {/* Main homepage — rendered outside AnimatePresence so it mounts
-          before the splash finishes exiting. The overlay sits on top (z-[70+])
-          so the home content is never visible until the overlay has gone. */}
+      {/* Main homepage renders only after a destination is chosen or restored. */}
       {stage === "home" && (
         <motion.div
           key="home"
@@ -583,10 +516,12 @@ export default function StreamingExperience() {
                 <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Services</p>
                 <h2 className="mt-3 text-3xl font-medium tracking-tight text-white sm:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
-              <ServiceBlock service={services.websites} onExplore={setActiveModal} />
-              <ServiceBlock service={services.apps} align="right" onExplore={setActiveModal} />
-              <ServiceBlock service={services.ai} onExplore={setActiveModal} />
-              <ServiceBlock service={services.creative} align="right" onExplore={setActiveModal} />
+              <div className="mt-8 grid grid-cols-2 gap-2 sm:mt-10 sm:grid-cols-3 sm:gap-3 lg:mt-0 lg:block">
+                <ServiceBlock service={services.websites} onExplore={setActiveModal} />
+                <ServiceBlock service={services.apps} align="right" onExplore={setActiveModal} />
+                <ServiceBlock service={services.ai} onExplore={setActiveModal} />
+                <ServiceBlock service={services.creative} align="right" onExplore={setActiveModal} />
+              </div>
             </div>
 
             <SelectedWork />

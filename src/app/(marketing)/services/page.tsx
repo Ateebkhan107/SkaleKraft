@@ -74,8 +74,8 @@ export default function ServicesPage() {
 
       {/* Services List */}
       <section className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col space-y-24">
-          {detailedServices.map((service, index) => (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-3 lg:gap-5">
+          {detailedServices.map((service) => (
             <motion.div 
               key={service.id}
               id={service.id}
@@ -83,43 +83,31 @@ export default function ServicesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
-              className={`flex flex-col md:flex-row gap-12 items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}
+              className="flex min-w-0 flex-col rounded-[22px] border border-foreground/10 bg-card p-3 sm:rounded-3xl sm:p-5 lg:p-6"
             >
-              <div className="w-full md:w-1/2">
-                <div className="bg-foreground/5 w-24 h-24 rounded-2xl flex items-center justify-center mb-8">
+              <div className="w-full">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground/5 sm:mb-6 sm:h-16 sm:w-16 [&_svg]:h-7 [&_svg]:w-7 sm:[&_svg]:h-9 sm:[&_svg]:w-9">
                   {service.icon}
                 </div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-6">
+                <h2 className="mb-3 text-base font-heading font-bold leading-tight text-foreground sm:text-xl lg:text-2xl">
                   {service.title}
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                <p className="hidden text-sm leading-6 text-muted-foreground sm:block">
                   {service.description}
                 </p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <ul className="mt-4 flex flex-wrap gap-2">
                   {service.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-center space-x-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                      <span className="text-foreground/80">{feature}</span>
+                    <li key={fIndex} className="hidden items-center gap-2 rounded-full border border-foreground/10 px-3 py-1 text-xs text-foreground/70 sm:flex">
+                      <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
-                <Button asChild size="lg" className="bg-foreground text-background hover:bg-foreground/90">
+                <Button asChild size="lg" className="mt-4 min-h-11 w-full bg-foreground text-background hover:bg-foreground/90 sm:mt-6">
                   <Link href={`/contact?service=${service.title}`}>
-                    Discuss your project
+                    Discuss
                   </Link>
                 </Button>
-              </div>
-              <div className="w-full md:w-1/2">
-                <div className="rounded-3xl border border-foreground/10 bg-card p-6">
-                  <p className="text-sm uppercase tracking-[0.22em] text-primary">What this can include</p>
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    {service.features.map((feature) => (
-                      <div key={feature} className="rounded-2xl border border-foreground/10 bg-background/60 px-4 py-3 text-sm text-foreground/75">
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </motion.div>
           ))}

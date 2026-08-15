@@ -25,9 +25,9 @@ export default function AiConsultantPage() {
           Tell us about your business, tools, and workflow. We&apos;ll review it and suggest a practical direction before anything gets built.
         </p>
 
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-2 sm:mt-10 sm:grid-cols-3 sm:gap-3">
           {areas.map((area) => (
-            <div key={area} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#101010] px-4 py-4 text-white/72">
+            <div key={area} className="flex min-h-14 items-center gap-2 rounded-2xl border border-white/10 bg-[#101010] px-3 py-3 text-sm text-white/72 sm:gap-3 sm:px-4 sm:py-4 sm:text-base">
               <Check className="h-4 w-4 text-[#c19a88]" />
               {area}
             </div>

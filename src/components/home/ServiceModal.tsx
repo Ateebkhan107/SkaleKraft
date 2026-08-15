@@ -70,7 +70,7 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4">
-          <Link href="/" className="flex items-center gap-3 text-sm font-semibold tracking-[0.24em] text-white">
+          <Link href="/" className="flex min-h-11 items-center gap-3 text-sm font-semibold tracking-[0.24em] text-white">
             <Image
               src="/images/skalekraft-logo.png"
               alt=""
@@ -80,7 +80,7 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
             />
             <span>SKALE<span className="text-[#805948]">KRAFT</span></span>
           </Link>
-          <button ref={closeButtonRef} type="button" onClick={onClose} className="rounded-full border border-white/10 p-2 text-white/55 transition hover:border-white/25 hover:text-white" aria-label="Close service details">
+          <button ref={closeButtonRef} type="button" onClick={onClose} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/55 transition hover:border-white/25 hover:text-white" aria-label="Close service details">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -100,7 +100,7 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
                   </Link>
                 </div>
               </div>
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <InfoGroup title="Overview">
                   <p className="leading-7 text-white/58">{service.subtitle}</p>
                 </InfoGroup>

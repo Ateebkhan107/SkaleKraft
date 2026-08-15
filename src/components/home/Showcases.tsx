@@ -121,10 +121,11 @@ function PhoneMock({ index, side, active }: { index: number; side: "left" | "cen
   const screen = phoneScreens[index % phoneScreens.length];
   const scale = side === "center" ? 1 : 0.78;
   const blur = side === "center" ? "" : "blur-[1px] opacity-55";
+  const visibility = side === "center" ? "" : "hidden sm:block";
 
   return (
     <motion.div
-      className={`relative h-[300px] w-[148px] shrink-0 rounded-[34px] border border-white/15 bg-[#050505] p-2 shadow-[0_30px_90px_rgba(0,0,0,.45)] ${blur}`}
+      className={`relative h-[300px] w-[148px] shrink-0 rounded-[34px] border border-white/15 bg-[#050505] p-2 shadow-[0_30px_90px_rgba(0,0,0,.45)] ${blur} ${visibility}`}
       animate={active ? { y: side === "center" ? [0, -12, 0] : [10, 0, 10], rotate: side === "left" ? [-8, -5, -8] : side === "right" ? [8, 5, 8] : [-2, 2, -2], scale } : { scale }}
       transition={{ duration: 6, repeat: active ? Infinity : 0, ease: "easeInOut" }}
     >
@@ -184,7 +185,7 @@ function AIShowcase({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center p-5">
-      <div className="relative h-full w-full max-w-[640px]">
+      <div className="relative h-[360px] w-[640px] max-w-none scale-[0.34] sm:scale-[0.58] lg:scale-100">
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 640 360" aria-hidden="true">
           <defs>
             <linearGradient id="ai-line" x1="0" x2="1">

@@ -64,7 +64,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(128,89,72,0.15),transparent_40%),radial-gradient(circle_at_80%_100%,rgba(255,255,255,0.02),transparent_40%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1200px] px-5 pb-32 pt-28 md:px-10">
+      <div className="relative z-10 mx-auto max-w-[1200px] px-5 pb-24 pt-28 md:px-10">
         <BackHomeLink className="mb-12" />
 
         {/* Hero Section */}
@@ -89,7 +89,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7 }}
-          className="mt-32 max-w-3xl"
+          className="mt-20 max-w-3xl sm:mt-32"
         >
           <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">The Problem</p>
           <h2 className="mt-4 text-3xl font-medium sm:text-4xl">Why SkaleKraft exists</h2>
@@ -102,17 +102,17 @@ export default function AboutPage() {
         </motion.section>
 
         {/* Mission & Vision */}
-        <section className="mt-32 grid gap-6 md:grid-cols-2">
+        <section className="mt-20 grid grid-cols-2 gap-2 sm:mt-32 sm:gap-4 md:gap-6">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-[#101010] p-8 md:p-12"
+            className="group relative overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-4 sm:rounded-[32px] sm:p-8 md:p-12"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(128,89,72,0.1),transparent_50%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <Rocket className="h-8 w-8 text-[#c19a88]" />
-            <h3 className="mt-8 text-2xl font-medium text-white">Our Mission</h3>
-            <p className="mt-4 text-white/60 leading-relaxed">
+            <Rocket className="h-6 w-6 text-[#c19a88] sm:h-8 sm:w-8" />
+            <h3 className="mt-5 text-base font-medium text-white sm:mt-8 sm:text-2xl">Our Mission</h3>
+            <p className="mt-3 hidden text-sm leading-relaxed text-white/60 sm:block md:text-base">
               To build software that feels calm, runs incredibly fast, and helps businesses scale effortlessly without adding technical debt.
             </p>
           </motion.div>
@@ -122,24 +122,24 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.1 }}
-            className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-[#101010] p-8 md:p-12"
+            className="group relative overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-4 sm:rounded-[32px] sm:p-8 md:p-12"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(255,255,255,0.05),transparent_50%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <Globe className="h-8 w-8 text-white/80" />
-            <h3 className="mt-8 text-2xl font-medium text-white">Our Vision</h3>
-            <p className="mt-4 text-white/60 leading-relaxed">
+            <Globe className="h-6 w-6 text-white/80 sm:h-8 sm:w-8" />
+            <h3 className="mt-5 text-base font-medium text-white sm:mt-8 sm:text-2xl">Our Vision</h3>
+            <p className="mt-3 hidden text-sm leading-relaxed text-white/60 sm:block md:text-base">
               To become the default, undisputed engineering partner for forward-thinking brands, startups, and founders globally.
             </p>
           </motion.div>
         </section>
 
         {/* Values */}
-        <section className="mt-32">
+        <section className="mt-20 sm:mt-32">
           <div className="max-w-2xl">
             <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Culture</p>
             <h2 className="mt-4 text-3xl font-medium sm:text-4xl">Our Core Values</h2>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-2 sm:mt-12 sm:gap-4 lg:grid-cols-4">
             {values.map((value, index) => {
               const Icon = value.icon;
               return (
@@ -149,11 +149,11 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: index * 0.1 }}
-                  className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 hover:bg-white/[0.04] transition-colors"
+                  className="rounded-2xl border border-white/5 bg-white/[0.02] p-4 transition-colors hover:bg-white/[0.04] sm:p-6"
                 >
                   <Icon className="h-6 w-6 text-[#805948]" />
-                  <h3 className="mt-5 text-lg font-medium text-white">{value.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/50">{value.description}</p>
+                  <h3 className="mt-4 text-base font-medium text-white sm:mt-5 sm:text-lg">{value.title}</h3>
+                  <p className="mt-2 hidden text-sm leading-relaxed text-white/50 sm:block">{value.description}</p>
                 </motion.div>
               );
             })}
@@ -161,12 +161,12 @@ export default function AboutPage() {
         </section>
 
         {/* How you work */}
-        <section className="mt-32 rounded-[40px] border border-white/10 bg-[#101010] p-8 md:p-16">
+        <section className="mt-20 rounded-[28px] border border-white/10 bg-[#101010] p-5 sm:mt-32 sm:rounded-[40px] sm:p-8 md:p-16">
           <div className="max-w-2xl">
             <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Process</p>
             <h2 className="mt-4 text-3xl font-medium sm:text-4xl">How we work</h2>
           </div>
-          <div className="mt-16 grid gap-10 md:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:grid-cols-4 sm:gap-5 md:mt-16 md:gap-10">
             {steps.map((step, index) => (
               <motion.div 
                 key={step.title}
@@ -182,8 +182,8 @@ export default function AboutPage() {
                 <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-[#805948]/30 bg-[#805948]/10 text-sm font-medium text-[#c19a88]">
                   0{index + 1}
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-white">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/50">{step.description}</p>
+                <h3 className="mt-4 text-sm font-medium leading-tight text-white sm:mt-6 sm:text-lg">{step.title}</h3>
+                <p className="mt-3 hidden text-sm leading-relaxed text-white/50 sm:block">{step.description}</p>
               </motion.div>
             ))}
           </div>
