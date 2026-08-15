@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 const baseUrl = "https://skalekraft.in";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/contact", "/join", "/services", "/portfolio", "/privacy", "/terms"];
+  const routes = ["", "/contact", "/join", "/services", "/work", "/portfolio", "/privacy", "/terms"];
 
   return routes.map((route) => ({
     url: `${baseUrl}${route}`,
