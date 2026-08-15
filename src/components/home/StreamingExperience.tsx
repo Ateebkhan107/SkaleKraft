@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { showcaseProjects } from "@/lib/showcase-projects";
+import ProjectThumbnail from "@/components/work/ProjectThumbnail";
 
 import {
   Stage,
@@ -208,6 +209,9 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
           </Link>
           <div className="flex flex-wrap items-center justify-end gap-3">
             <span className="hidden text-sm text-white/45 lg:inline">Engineering software that scales.</span>
+            <Link href="/about" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
+              About
+            </Link>
             <Link href="/join" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
               <UserPlus className="h-4 w-4" />
               Join
@@ -273,6 +277,9 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
                 );
               })}
               <div className="mt-8 flex flex-col gap-3 pb-8">
+                <Link href="/about" className="flex h-14 items-center justify-center rounded-2xl border border-white/10 px-5 text-base text-white/55 transition duration-300">
+                  About
+                </Link>
                 <Link href="/contact" className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#805948] px-5 text-base font-medium text-white transition duration-300">
                   <Mail className="h-5 w-5" />
                   Start a Project
@@ -386,25 +393,25 @@ function SelectedWork() {
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {showcaseProjects.map((project, index) => (
           <motion.article
             key={project.url}
             data-cursor-card
-            className="group overflow-hidden rounded-[26px] border border-white/10 bg-[#101010] shadow-[0_26px_90px_rgba(0,0,0,.32)]"
+            className="group overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.045),rgba(16,16,16,.96)_42%)] p-2.5 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.48)] sm:p-3"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.55, delay: index * 0.08, ease }}
           >
             <a href={project.url} target="_blank" rel="noreferrer" className="block">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/12 to-transparent" />
-              </div>
-              <div className="p-5">
-                <p className="text-xs uppercase tracking-[0.22em] text-[#c19a88]">{project.category}</p>
-                <h3 className="mt-3 text-2xl font-medium text-white">{project.title}</h3>
+              <ProjectThumbnail src={project.image} title={project.title} sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw" />
+              <div className="px-3 pb-4 pt-5 sm:px-4 sm:pb-5">
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-[#c19a88]">{project.category}</p>
+                  <span className="text-xs text-white/25">{project.number}</span>
+                </div>
+                <h3 className="mt-3 text-xl font-medium text-white sm:text-2xl">{project.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-white/52">{project.short}</p>
               </div>
             </a>

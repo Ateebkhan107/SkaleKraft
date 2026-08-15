@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { showcaseProjects } from "@/lib/showcase-projects";
 import BackHomeLink from "@/components/ui/BackHomeLink";
+import ProjectThumbnail from "@/components/work/ProjectThumbnail";
 
 export default function PortfolioPage() {
   return (
@@ -15,11 +15,18 @@ export default function PortfolioPage() {
           <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">The work behind the craft.</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">Explore how SkaleKraft transforms ambitious ideas into scalable digital products—combining thoughtful design, intelligent systems, and dependable engineering to create experiences people enjoy using.</p>
         </div>
-        <div className="relative mt-14 grid gap-4 md:grid-cols-3">
-          {showcaseProjects.map((project) => (
-            <article key={project.number} className="flex min-h-[390px] flex-col justify-between overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(145deg,rgba(128,89,72,.16),#101010_48%)] p-6">
-              <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-white/35"><span>{project.category}</span><span>{project.number}</span></div>
-              <div>{project.image && <div className="relative mb-6 h-36 overflow-hidden rounded-2xl bg-white"><Image src={project.image} alt={`${project.title} preview`} fill sizes="(max-width: 768px) calc(100vw - 5rem), 360px" className="object-cover object-top" /></div>}<div className="mb-6 h-px bg-gradient-to-r from-[#c19a88]/50 to-transparent" /><h2 className="text-2xl font-medium">{project.title}</h2><p className="mt-3 text-sm leading-6 text-white/48">{project.short}</p><div className="mt-5 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/45">{tag}</span>)}</div>{project.url && <a href={project.url} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/72 transition hover:text-white">Open live project <ArrowRight className="h-4 w-4" /></a>}</div>
+        <div className="relative mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {showcaseProjects.map((project, index) => (
+            <article key={project.number} className="group flex min-w-0 flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.05),rgba(16,16,16,.98)_42%)] p-2.5 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.5)] sm:p-3">
+              <ProjectThumbnail src={project.image} title={project.title} sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw" priority={index < 2} />
+              <div className="flex flex-1 flex-col px-3 pb-4 pt-5 sm:px-4 sm:pb-5">
+                <div className="flex items-center justify-between gap-4 text-[11px] uppercase tracking-[0.2em]"><span className="text-[#c19a88]">{project.category}</span><span className="text-white/25">{project.number}</span></div>
+                <div className="my-5 h-px bg-gradient-to-r from-[#c19a88]/45 to-transparent" />
+                <h2 className="text-xl font-medium sm:text-2xl">{project.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-white/48">{project.short}</p>
+                <div className="mt-5 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1 text-xs text-white/45">{tag}</span>)}</div>
+                <a href={project.url} target="_blank" rel="noreferrer" className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-medium text-white/72 transition hover:text-white">Open live project <ArrowRight className="h-4 w-4" /></a>
+              </div>
             </article>
           ))}
         </div>
