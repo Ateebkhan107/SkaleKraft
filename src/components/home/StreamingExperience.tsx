@@ -420,22 +420,38 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
 }
 
 export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
-  const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
+  const [stage, setStage] = useState<Stage>(() => {
+    if (initialDest) return "home";
+    if (typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true") return "home";
+    return "selection";
+  });
   const [activeSection, setActiveSection] = useState("home");
   const [activeModal, setActiveModal] = useState<ServiceKey | null>(null);
   const [animateHome, setAnimateHome] = useState(false);
-  const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
+  const [isIntroMounted, setIsIntroMounted] = useState(() => {
+    if (initialDest) return false;
+    if (typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true") return false;
+    return true;
+  });
   const [isIntroLeaving, setIsIntroLeaving] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
 
   useEffect(() => {
-    window.history.scrollRestoration = "manual";
-    window.sessionStorage.removeItem("skalekraftDestination");
-    window.sessionStorage.removeItem("skalekraftIntroSeen");
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    const hasSeenIntro = typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
 
-    if (initialDest) return;
+    if (!hasSeenIntro && !initialDest) {
+      window.history.scrollRestoration = "manual";
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+
+    if (initialDest || hasSeenIntro) {
+      if (hasSeenIntro && stage !== "home") {
+        setStage("home");
+        setIsIntroMounted(false);
+      }
+      return;
+    }
 
     const beginExit = window.setTimeout(() => {
       setIsIntroLeaving(true);
@@ -448,7 +464,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
       window.clearTimeout(beginExit);
       window.clearTimeout(removeIntro);
     };
-  }, [initialDest]);
+  }, [initialDest, stage]);
 
   useEffect(() => {
     if (stage !== "home" || !pendingTarget.current) return;
@@ -488,7 +504,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   };
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white">
+    <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
       {stage === "selection" && (
         <>
           {isIntroMounted && <IntroSplash isLeaving={isIntroLeaving} />}
