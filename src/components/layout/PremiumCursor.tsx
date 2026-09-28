@@ -150,7 +150,7 @@ export default function PremiumCursor() {
     <>
       <div
         ref={ringRef}
-        className="premium-cursor-ring hidden md:block"
+        className="premium-cursor-ring"
         style={{
           borderColor: state.color,
           color: state.color,
@@ -159,7 +159,7 @@ export default function PremiumCursor() {
           width: size,
         }}
       />
-      <div ref={dotRef} className="premium-cursor-dot hidden md:block" style={{ opacity: state.visible ? 1 : 0 }} />
+      <div ref={dotRef} className="premium-cursor-dot" style={{ opacity: state.visible ? 1 : 0 }} />
     </>
   );
 }

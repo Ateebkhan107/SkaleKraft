@@ -440,18 +440,24 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   useEffect(() => {
     const hasSeenIntro = typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
 
-    if (!hasSeenIntro && !initialDest) {
-      window.history.scrollRestoration = "manual";
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (initialDest) {
+      window.history.replaceState(window.history.state, "", "/");
+      return;
     }
 
-    if (initialDest || hasSeenIntro) {
-      if (hasSeenIntro && stage !== "home") {
-        setStage("home");
-        setIsIntroMounted(false);
+    if (hasSeenIntro) {
+      if (stage !== "home") {
+        const restoreHome = window.setTimeout(() => {
+          setStage("home");
+          setIsIntroMounted(false);
+        }, 0);
+        return () => window.clearTimeout(restoreHome);
       }
       return;
     }
+
+    window.history.scrollRestoration = "manual";
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
     const beginExit = window.setTimeout(() => {
       setIsIntroLeaving(true);
