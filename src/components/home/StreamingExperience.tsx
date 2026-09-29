@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Menu,
   X,
-  Mail,
   UserPlus,
   CheckCircle2,
   Clock3,
@@ -174,11 +173,7 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
               <UserPlus className="h-4 w-4" />
               Join
             </Link>
-            <Link href="/contact" className="group relative hidden h-11 items-center gap-2 overflow-hidden rounded-full border border-[#805948]/70 bg-[#805948] px-5 text-sm font-medium text-white shadow-[0_0_34px_rgba(128,89,72,0.22)] transition duration-300 hover:bg-[#936857] sm:inline-flex">
-              <span className="absolute inset-0 translate-x-[-120%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition duration-700 group-hover:translate-x-[120%]" />
-              <Mail className="relative h-4 w-4" />
-              <span className="relative">Start</span>
-            </Link>
+            <GlassmorphismCta href="/contact" label="Start" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="hidden sm:inline-flex" />
             <button
               type="button"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 md:hidden"
@@ -238,10 +233,7 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
                 <Link href="/about" className="flex h-14 items-center justify-center rounded-2xl border border-white/10 px-5 text-base text-white/55 transition duration-300">
                   About
                 </Link>
-                <Link href="/contact" className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#805948] px-5 text-base font-medium text-white transition duration-300">
-                  <Mail className="h-5 w-5" />
-                  Start a Project
-                </Link>
+                <GlassmorphismCta href="/contact" label="Start a Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="w-full justify-center" />
                 <Link href="/join" className="flex h-14 items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 text-base text-white/55 transition duration-300">
                   <UserPlus className="h-5 w-5" />
                   Join the Team
@@ -327,9 +319,9 @@ function CinematicHero() {
         });
       }}
     >
-      <div className="absolute inset-0 bg-[#0B0B0B]" />
+      <div className="absolute inset-0 bg-[#0B0B0B]/20" />
       <motion.div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.24),transparent_32%),linear-gradient(90deg,#0B0B0B_0%,rgba(11,11,11,0.95)_45%,rgba(11,11,11,0.78)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.2),transparent_36%),linear-gradient(90deg,rgba(11,11,11,.68)_0%,rgba(11,11,11,.5)_45%,rgba(11,11,11,.3)_100%)]"
         animate={{ filter: ["hue-rotate(0deg)", "hue-rotate(8deg)", "hue-rotate(0deg)"] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -354,11 +346,7 @@ function CinematicHero() {
             Websites, apps, AI tools and creative work designed to help businesses grow without unnecessary complexity.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/contact" className="group relative inline-flex h-13 items-center gap-2 overflow-hidden rounded-full bg-white px-6 text-sm font-medium text-[#0B0B0B] transition duration-300 hover:bg-[#805948] hover:text-white">
-              <span className="absolute inset-0 translate-x-[-120%] bg-gradient-to-r from-transparent via-white/25 to-transparent transition duration-700 group-hover:translate-x-[120%]" />
-              <span className="relative">Start a Project</span>
-              <ArrowRight className="relative h-4 w-4" />
-            </Link>
+            <GlassmorphismCta href="/contact" label="Start a Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" />
           </div>
           </motion.div>
         </motion.div>
@@ -649,7 +637,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><Clock3 className="h-3.5 w-3.5 text-[#c19a88]" />Reply within 24 hours</span>
                     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><CheckCircle2 className="h-3.5 w-3.5 text-[#c19a88]" />No-obligation discovery</span>
                   </div>
-                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" compact showIcon={false} className="mt-8" />
+                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-8" />
                 </div>
 
                 <motion.div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-black/25 p-5 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>

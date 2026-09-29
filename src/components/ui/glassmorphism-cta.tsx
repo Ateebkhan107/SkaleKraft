@@ -1,7 +1,6 @@
 "use client";
 
 import type { AnchorHTMLAttributes, CSSProperties } from "react";
-import { WandSparkles } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -12,8 +11,6 @@ export type GlassmorphismCtaProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   spread?: string;
   shimmerColor?: string;
   speed?: string;
-  compact?: boolean;
-  showIcon?: boolean;
 };
 
 export default function GlassmorphismCta({
@@ -23,8 +20,6 @@ export default function GlassmorphismCta({
   spread = "90deg",
   shimmerColor = "rgba(255,255,255,0.6)",
   speed = "4s",
-  compact = false,
-  showIcon = true,
   className,
   href = "#",
   onClick,
@@ -60,10 +55,7 @@ export default function GlassmorphismCta({
       </div>
       <div className="absolute rounded-full [background:var(--bg)] [inset:var(--cut)] backdrop-blur" />
       <div
-        className={cn(
-          "relative z-10 flex w-full items-center overflow-hidden font-medium text-white sm:w-auto",
-          compact ? "gap-2 px-3 py-2 text-sm" : "gap-3 px-4 py-3 text-base",
-        )}
+        className="relative z-10 flex w-full items-center gap-2 overflow-hidden px-3 py-2 text-sm font-medium text-white sm:w-auto"
         style={{ borderRadius: "9999px" }}
       >
         <div
@@ -93,17 +85,9 @@ export default function GlassmorphismCta({
         <img
           src={avatarSrc}
           alt={avatarAlt}
-          className={cn(
-            "relative z-10 rounded-full object-cover ring-2 ring-white/10",
-            compact ? "h-7 w-7" : "h-8 w-8",
-          )}
+          className="relative z-10 h-7 w-7 rounded-full object-cover ring-2 ring-white/10"
         />
         <span className="relative z-10 whitespace-nowrap font-sans">{label}</span>
-        {showIcon && (
-          <span className="relative z-10 ml-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
-            <WandSparkles className="h-4 w-6 text-white" strokeWidth={1.5} />
-          </span>
-        )}
       </div>
     </a>
   );
