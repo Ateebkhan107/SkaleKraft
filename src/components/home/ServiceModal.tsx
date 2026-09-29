@@ -4,13 +4,14 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
+import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 import { services, accent, ease, ServiceKey } from "./data";
 
 function Pill({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-sm text-white/58">
-      <Check className="h-3.5 w-3.5 text-[#c19a88]" />
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-2.5 py-1 text-xs text-white/58">
+      <Check className="h-3 w-3 text-[#c19a88]" />
       {label}
     </span>
   );
@@ -18,9 +19,9 @@ function Pill({ label }: { label: string }) {
 
 function InfoGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-[22px] border border-white/10 bg-[#0B0B0B] p-5">
-      <h3 className="text-sm uppercase tracking-[0.2em] text-white/40">{title}</h3>
-      <div className="mt-4">{children}</div>
+    <section className="rounded-[18px] border border-white/10 bg-[#0B0B0B] p-4">
+      <h3 className="text-xs uppercase tracking-[0.2em] text-white/40">{title}</h3>
+      <div className="mt-3">{children}</div>
     </section>
   );
 }
@@ -62,14 +63,14 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
       onClick={onClose}
     >
       <motion.div
-        className="relative mx-auto flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[#101010] shadow-[0_40px_140px_rgba(0,0,0,.65)]"
+        className="relative mx-auto flex max-h-[82vh] w-full max-w-5xl flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#101010] shadow-[0_40px_140px_rgba(0,0,0,.65)]"
         initial={{ opacity: 0, scale: 0.94, y: 24 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.5, ease }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-3">
           <Link href="/" className="flex min-h-11 items-center gap-3 text-sm font-semibold tracking-[0.24em] text-white">
             <Image
               src="/images/skalekraft-logo.png"
@@ -85,19 +86,22 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
           </button>
         </div>
         <div className="overflow-y-auto overflow-x-hidden">
-          <div className="p-5 md:p-8">
-            <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="p-5 md:p-6">
+            <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
               <div>
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
-                  <Icon className="h-8 w-8" style={{ color: color.hex }} strokeWidth={1.7} />
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
+                  <Icon className="h-7 w-7" style={{ color: color.hex }} strokeWidth={1.7} />
                 </div>
-                <h2 className="mt-6 text-3xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">{service.title}</h2>
-                <p className="mt-5 text-lg leading-8 text-white/58">{service.short}</p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link href="/contact" className="inline-flex h-12 items-center gap-2 rounded-full px-5 text-sm font-medium text-white transition hover:scale-105" style={{ backgroundColor: color.hex }}>
-                    {service.key === "websites" ? "Start Your Website" : "Start Project"}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
+                <h2 className="mt-5 text-3xl font-medium tracking-tight text-white sm:text-4xl lg:text-5xl">{service.title}</h2>
+                <p className="mt-4 text-base leading-7 text-white/58">{service.short}</p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <GlassmorphismCta
+                    href="/contact"
+                    label={service.key === "websites" ? "Start Your Website" : "Start Project"}
+                    avatarSrc="/images/skalekraft-logo.png"
+                    avatarAlt="SkaleKraft logo"
+                    shimmerColor={color.hex}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:gap-4">

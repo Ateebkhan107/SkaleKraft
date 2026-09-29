@@ -12,7 +12,7 @@ const links = [
 
 export default function SimpleFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#0B0B0B] px-5 py-10 text-white md:px-10">
+    <footer className="relative z-10 border-t border-white/10 bg-[#0B0B0B] px-5 py-10 text-white md:px-10">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <Link href="/" className="inline-flex items-center gap-3 text-lg font-semibold tracking-[0.24em] text-white">

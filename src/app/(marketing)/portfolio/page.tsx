@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { showcaseProjects } from "@/lib/showcase-projects";
 import BackHomeLink from "@/components/ui/BackHomeLink";
+import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 import ProjectThumbnail from "@/components/work/ProjectThumbnail";
 
 export default function PortfolioPage() {
@@ -30,13 +30,7 @@ export default function PortfolioPage() {
             </article>
           ))}
         </div>
-        <Link
-          href="/contact"
-          className="relative mt-10 inline-flex h-13 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-[#0B0B0B] transition duration-300 hover:bg-[#805948] hover:text-white"
-        >
-          Start Your Project
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-10" />
       </section>
     </main>
   );

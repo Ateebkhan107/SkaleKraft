@@ -3,17 +3,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import {
   ArrowRight,
   Menu,
   X,
   Mail,
   UserPlus,
+  CheckCircle2,
+  Clock3,
+  Sparkles,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { showcaseProjects } from "@/lib/showcase-projects";
 import ProjectThumbnail from "@/components/work/ProjectThumbnail";
+import { FluidParticlesBackground } from "@/components/ui/fluid-particles-background";
+import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 
 import {
   Stage,
@@ -141,7 +146,15 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
     <>
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#0B0B0B]/72 backdrop-blur-xl">
         <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center justify-between gap-4 px-5 py-4 md:px-10">
-          <Link href="/" className="flex items-center gap-3 text-lg font-semibold tracking-[0.24em] text-white">
+          <Link
+            href="/#home"
+            onClick={(event) => {
+              event.preventDefault();
+              onNavigate("home");
+            }}
+            aria-label="Return to the top of the SkaleKraft homepage"
+            className="flex items-center gap-3 text-lg font-semibold tracking-[0.24em] text-white"
+          >
             <Image
               src="/images/skalekraft-logo.png"
               alt=""
@@ -161,7 +174,7 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
               <UserPlus className="h-4 w-4" />
               Join
             </Link>
-            <Link href="/contact" className="group relative hidden sm:inline-flex h-11 items-center gap-2 overflow-hidden rounded-full border border-[#805948]/70 bg-[#805948] px-5 text-sm font-medium text-white shadow-[0_0_34px_rgba(128,89,72,0.22)] transition duration-300 hover:bg-[#936857]">
+            <Link href="/contact" className="group relative hidden h-11 items-center gap-2 overflow-hidden rounded-full border border-[#805948]/70 bg-[#805948] px-5 text-sm font-medium text-white shadow-[0_0_34px_rgba(128,89,72,0.22)] transition duration-300 hover:bg-[#936857] sm:inline-flex">
               <span className="absolute inset-0 translate-x-[-120%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition duration-700 group-hover:translate-x-[120%]" />
               <Mail className="relative h-4 w-4" />
               <span className="relative">Start</span>
@@ -271,11 +284,39 @@ function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: stri
   );
 }
 
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 28,
+    restDelta: 0.001,
+  });
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-[#805948] via-[#d2a28d] to-[#805948] shadow-[0_0_16px_rgba(193,154,136,.45)] motion-reduce:hidden"
+      style={{ scaleX }}
+    />
+  );
+}
+
 function CinematicHero() {
   const [glow, setGlow] = useState({ x: "68%", y: "42%" });
+  const heroRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -70]);
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 95]);
+  const visualScale = useTransform(scrollYProgress, [0, 1], [1, prefersReducedMotion ? 1 : 0.94]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.86], [1, prefersReducedMotion ? 1 : 0.2]);
 
   return (
     <section
+      ref={heroRef}
       id="home"
       className="relative flex min-h-[100svh] items-center overflow-hidden px-5 py-28 md:px-10 md:pl-56 lg:py-32"
       onMouseMove={(event) => {
@@ -299,7 +340,12 @@ function CinematicHero() {
         style={{ transform: "translate(-50%, -50%)" }}
       />
       <div className="relative z-10 mx-auto grid w-full max-w-[1500px] items-center gap-12 lg:grid-cols-[45fr_55fr] xl:gap-16">
-        <motion.div className="max-w-3xl flex flex-col justify-center" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease }}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, ease }}
+        >
+          <motion.div className="flex max-w-3xl flex-col justify-center" style={{ y: copyY, opacity: heroOpacity }}>
           <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Software Studio</p>
           <h1 className="mt-5 text-4xl sm:text-5xl font-medium tracking-tight text-white sm:leading-[1.1] md:text-6xl xl:text-7xl">
             Build things people actually enjoy using.
@@ -314,12 +360,13 @@ function CinematicHero() {
               <ArrowRight className="relative h-4 w-4" />
             </Link>
           </div>
+          </motion.div>
         </motion.div>
 
-        <div className="relative w-full overflow-hidden sm:overflow-visible">
+        <motion.div className="relative w-full overflow-hidden sm:overflow-visible" style={{ y: visualY, scale: visualScale, opacity: heroOpacity }}>
           <div className="absolute inset-0 rounded-[36px] bg-[radial-gradient(circle_at_50%_50%,rgba(128,89,72,0.22),transparent_54%)] blur-2xl" />
           <HeroSoftwareVisual />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -338,16 +385,33 @@ function SelectedWork() {
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-4">
-        {showcaseProjects.map((project, index) => (
+      <motion.div
+        className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-4"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.075, delayChildren: 0.08 } },
+        }}
+      >
+        {showcaseProjects.map((project) => (
           <motion.article
             key={project.url}
             data-cursor-card
             className="group overflow-hidden rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.045),rgba(16,16,16,.96)_42%)] p-2 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.48)] sm:rounded-[28px] sm:p-3"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-120px" }}
-            transition={{ duration: 0.55, delay: index * 0.08, ease }}
+            variants={{
+              hidden: { opacity: 0, y: 28, scale: 0.975 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                transition: {
+                  default: { type: "spring", stiffness: 115, damping: 20, mass: 0.8 },
+                  opacity: { duration: 0.45, ease: "easeOut" },
+                },
+              },
+            }}
           >
             <a href={project.url} target="_blank" rel="noreferrer" className="block">
               <ProjectThumbnail src={project.image} title={project.title} sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw" />
@@ -362,7 +426,7 @@ function SelectedWork() {
             </a>
           </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -374,40 +438,43 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
   return (
     <motion.section
       id={service.key}
-      className="scroll-mt-24 lg:py-10"
+      className="scroll-mt-24 lg:py-6"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: 0.65, ease }}
+      transition={{
+        default: { type: "spring", stiffness: 105, damping: 22, mass: 0.85 },
+        opacity: { duration: 0.5, ease: "easeOut" },
+      }}
     >
       <div
         data-cursor-card
-        className={`group flex h-[246px] min-w-0 flex-col overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-3 shadow-[0_24px_85px_rgba(0,0,0,.32)] transition duration-500 hover:border-white/18 sm:h-[360px] sm:rounded-[26px] sm:p-4 lg:grid lg:h-auto lg:min-h-[520px] lg:grid-cols-2 lg:gap-6 lg:rounded-[30px] lg:p-8 lg:shadow-[0_30px_110px_rgba(0,0,0,.35)] ${
+        className={`group flex h-[246px] min-w-0 flex-col overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-3 shadow-[0_24px_85px_rgba(0,0,0,.32)] transition duration-500 hover:border-white/18 sm:h-[340px] sm:rounded-[26px] sm:p-4 lg:grid lg:h-auto lg:min-h-[410px] lg:grid-cols-2 lg:gap-5 lg:rounded-[28px] lg:p-5 xl:min-h-[430px] xl:p-6 lg:shadow-[0_30px_110px_rgba(0,0,0,.35)] ${
           align === "right" ? "lg:[&>*:first-child]:order-2" : ""
         }`}
         style={{ boxShadow: `0 30px 110px rgba(0,0,0,.35), 0 0 44px rgba(${color.rgb},.08)` }}
       >
-        <div className="h-24 w-full overflow-hidden rounded-[18px] border border-white/10 sm:h-36 lg:h-full lg:min-h-[360px] lg:border-0 xl:min-h-[360px]">
+        <div className="h-24 w-full overflow-hidden rounded-[18px] border border-white/10 sm:h-36 lg:h-full lg:min-h-[280px] lg:border-0 xl:min-h-[300px]">
           <div className="h-[360px] w-[520px] origin-top-left scale-[0.3] sm:scale-[0.48] lg:h-full lg:w-full lg:scale-100">
             <ServiceVisual serviceKey={service.key} />
           </div>
         </div>
-        <div className="flex min-w-0 flex-1 flex-col lg:justify-center lg:p-6">
+        <div className="flex min-w-0 flex-1 flex-col lg:justify-center lg:p-4 xl:p-5">
           <motion.div
-            className="mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] sm:h-12 sm:w-12 lg:mt-0 lg:h-16 lg:w-16"
+            className="mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] sm:h-12 sm:w-12 lg:mt-0 lg:h-13 lg:w-13"
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8" style={{ color: color.hex }} strokeWidth={1.7} />
+            <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-6 lg:w-6" style={{ color: color.hex }} strokeWidth={1.7} />
           </motion.div>
-          <h2 className="mt-3 text-base font-medium leading-tight tracking-tight text-white sm:mt-4 sm:text-lg lg:mt-8 lg:text-4xl xl:text-6xl">{service.title}</h2>
-          <p className="mt-2 hidden overflow-hidden text-sm leading-6 text-white/58 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box] lg:mt-5 lg:max-w-xl lg:text-lg lg:leading-8">
+          <h2 className="mt-3 text-base font-medium leading-tight tracking-tight text-white sm:mt-4 sm:text-lg lg:mt-6 lg:text-3xl xl:text-4xl">{service.title}</h2>
+          <p className="mt-2 hidden overflow-hidden text-sm leading-6 text-white/58 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box] lg:mt-4 lg:max-w-xl lg:text-base lg:leading-7">
             {service.short}
           </p>
           <button
             type="button"
             onClick={() => onExplore(service.key)}
-            className="mt-auto inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-4 text-sm font-medium text-white transition duration-300 group-hover:scale-[1.02] lg:mt-8 lg:h-12 lg:w-fit lg:px-5"
+            className="mt-auto inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-4 text-sm font-medium text-white transition duration-300 group-hover:scale-[1.02] lg:mt-6 lg:h-11 lg:w-fit lg:px-5"
             style={{ backgroundColor: `rgba(${color.rgb},0.22)`, border: `1px solid rgba(${color.rgb},0.42)` }}
           >
             Explore
@@ -420,19 +487,11 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
 }
 
 export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
-  const [stage, setStage] = useState<Stage>(() => {
-    if (initialDest) return "home";
-    if (typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true") return "home";
-    return "selection";
-  });
+  const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
   const [activeSection, setActiveSection] = useState("home");
   const [activeModal, setActiveModal] = useState<ServiceKey | null>(null);
   const [animateHome, setAnimateHome] = useState(false);
-  const [isIntroMounted, setIsIntroMounted] = useState(() => {
-    if (initialDest) return false;
-    if (typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true") return false;
-    return true;
-  });
+  const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
   const [isIntroLeaving, setIsIntroLeaving] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
@@ -485,15 +544,32 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   useEffect(() => {
     if (stage !== "home") return;
     const sections = sidebarLinks.map((link) => document.getElementById(link.id)).filter((section): section is HTMLElement => Boolean(section));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(visible.target.id);
-      },
-      { rootMargin: "-35% 0px -55% 0px", threshold: [0.12, 0.3, 0.55] },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    let frame = 0;
+
+    const updateActiveSection = () => {
+      const readingLine = window.innerHeight * 0.42;
+      const current = sections.find((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= readingLine && rect.bottom > readingLine;
+      });
+
+      if (current?.id) setActiveSection(current.id);
+    };
+
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
   }, [stage]);
 
   const chooseDestination = (destination: DestinationKey) => {
@@ -523,8 +599,18 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
       {/* Main homepage renders only after a destination is chosen or restored. */}
       {stage === "home" && (
+        <>
+        <ScrollProgress />
+        <FluidParticlesBackground
+          theme="dark"
+          particleCount={760}
+          noiseIntensity={0.0026}
+          particleSize={{ min: 0.5, max: 1.4 }}
+          className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
+        />
         <motion.div
           key="home"
+          className="relative z-10"
           initial={animateHome ? { opacity: 0, scale: 0.985 } : false}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.75, ease }}
@@ -532,7 +618,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           <Header activeSection={activeSection} onNavigate={navigate} />
           <Sidebar active={activeSection} onNavigate={navigate} />
           <CinematicHero />
-          <main className="mx-auto max-w-[1500px] px-5 pb-24 md:px-10 md:pl-56">
+          <main className="mx-auto max-w-[1360px] px-5 pb-24 md:px-10 md:pl-56">
             <div className="py-12">
               <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
                 <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Services</p>
@@ -548,21 +634,47 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
             <SelectedWork />
 
-            <motion.section data-cursor-card id="contact" className="my-20 scroll-mt-24 overflow-hidden rounded-[30px] border border-white/10 bg-[#101010] p-8 shadow-[0_30px_110px_rgba(0,0,0,0.4)] md:p-12" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.6, ease }}>
-              <div className="max-w-3xl">
-                <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Contact</p>
-                <h2 className="mt-3 text-4xl font-medium tracking-tight text-white sm:text-6xl">Ready to build something extraordinary?</h2>
-                <p className="mt-5 text-lg leading-8 text-white/55">Tell us what you want to build. We&apos;ll help shape the path from idea to production.</p>
-              </div>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <Link href="/contact" className="inline-flex h-13 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-[#0B0B0B] transition duration-300 hover:bg-[#805948] hover:text-white">
-                  Start Project
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+            <motion.section data-cursor-card id="contact" className="relative my-16 scroll-mt-24 overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-6 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:p-8 md:p-10" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
+              <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
+              <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
+              <div className="relative grid items-center gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
+                <div className="max-w-3xl">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10"><Sparkles className="h-3.5 w-3.5 text-[#c19a88]" /></span>
+                    <p className="text-xs uppercase tracking-[0.26em] text-[#c19a88]">Start a conversation</p>
+                  </div>
+                  <h2 className="mt-5 max-w-2xl text-3xl font-medium tracking-[-0.035em] text-white sm:text-4xl lg:text-5xl lg:leading-[1.08]">Your next great product starts with a clear idea.</h2>
+                  <p className="mt-5 max-w-xl text-base leading-7 text-white/52">Tell us what you want to build. We&apos;ll turn the ambition into a practical roadmap—and then into a product people enjoy using.</p>
+                  <div className="mt-6 flex flex-wrap gap-2.5 text-xs text-white/52">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><Clock3 className="h-3.5 w-3.5 text-[#c19a88]" />Reply within 24 hours</span>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><CheckCircle2 className="h-3.5 w-3.5 text-[#c19a88]" />No-obligation discovery</span>
+                  </div>
+                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" compact showIcon={false} className="mt-8" />
+                </div>
+
+                <motion.div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-black/25 p-5 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>
+                  <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-white/32">A simple path</p>
+                      <h3 className="mt-1.5 text-lg font-medium text-white">From idea to launch</h3>
+                    </div>
+                    <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.7)]" />
+                  </div>
+                  <div className="mt-5 space-y-3">
+                    {["Understand the problem", "Shape the right solution", "Design, build and launch"].map((item, index) => (
+                      <div key={item} className="flex items-center gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.025] px-3.5 py-3">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10 text-[10px] font-medium text-[#d2a28d]">0{index + 1}</span>
+                        <span className="text-sm text-white/64">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 h-1 overflow-hidden rounded-full bg-white/[0.06]"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#805948] to-[#c19a88]" /></div>
+                </motion.div>
               </div>
             </motion.section>
           </main>
         </motion.div>
+        </>
       )}
 
       <AnimatePresence>{activeModal && <ServiceModal key={`modal-${activeModal}`} serviceKey={activeModal} onClose={() => setActiveModal(null)} />}</AnimatePresence>

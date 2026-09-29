@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Monitor, Smartphone, Bot, TrendingUp, Clapperboard, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 
 const detailedServices = [
   {
@@ -103,11 +102,14 @@ export default function ServicesPage() {
                     </li>
                   ))}
                 </ul>
-                <Button asChild size="lg" className="mt-4 min-h-11 w-full bg-foreground text-background hover:bg-foreground/90 sm:mt-6">
-                  <Link href={`/contact?service=${service.title}`}>
-                    Discuss
-                  </Link>
-                </Button>
+                <GlassmorphismCta
+                  href={`/contact?service=${service.title}`}
+                  label="Discuss"
+                  avatarSrc="/images/skalekraft-logo.png"
+                  avatarAlt="SkaleKraft logo"
+                  shimmerColor="rgba(193,154,136,0.75)"
+                  className="mt-4 w-full justify-center sm:mt-6"
+                />
               </div>
             </motion.div>
           ))}

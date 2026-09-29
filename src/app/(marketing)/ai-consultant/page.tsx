@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { ArrowRight, Bot, Check } from "lucide-react";
+import { Bot, Check } from "lucide-react";
+import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 
 const areas = [
   "AI chatbots",
@@ -34,13 +34,7 @@ export default function AiConsultantPage() {
           ))}
         </div>
 
-        <Link
-          href="/contact"
-          className="mt-10 inline-flex h-12 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-[#0B0B0B] transition duration-300 hover:bg-[#805948] hover:text-white"
-        >
-          Start a Project
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <GlassmorphismCta href="/contact" label="Start a Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-10" />
       </section>
     </main>
   );

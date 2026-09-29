@@ -168,6 +168,24 @@
   to   { opacity: 1; transform: scale(1)    translateY(0);    }
 }
 
+@keyframes rotate-gradient {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes borderBeamRotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 @keyframes splash-logo-pulse {
   0%, 100% { filter: drop-shadow(0 0 28px rgba(128,89,72,0.22)); transform: scale(1);    }
   50%       { filter: drop-shadow(0 0 60px rgba(128,89,72,0.44)); transform: scale(1.03); }
