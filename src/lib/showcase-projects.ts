@@ -45,17 +45,6 @@ export const showcaseProjects = [
   },
   {
     number: "05",
-    title: "AI Grievance Routing System",
-    category: "Workflow AI",
-    short: "An AI system that automatically classifies public grievances and predicts the appropriate civic department with high accuracy.",
-    url: "https://resolveai-grievance.streamlit.app/",
-    image: "/images/ai-grievance-routing-civic-thumbnail.png",
-    tags: ["NLP", "Classification", "Flask"],
-    tone: "from-cyan-500/18",
-    shape: "lg:col-span-5",
-  },
-  {
-    number: "06",
     title: "Customer Support Chatbot",
     category: "Conversational AI",
     short: "An e-commerce support assistant built to respond to customer questions through a simple conversational interface.",
@@ -63,6 +52,6 @@ export const showcaseProjects = [
     image: "/images/customer-support-chatbot-thumbnail.png",
     tags: ["Chatbot", "Customer Support", "E-commerce"],
     tone: "from-violet-500/18",
-    shape: "lg:col-span-12",
+    shape: "lg:col-span-5",
   },
 ] as const;
