@@ -170,9 +170,6 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
             <Link href="/about" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
               About
             </Link>
-            <Link href="/insights" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
-              Insights
-            </Link>
             <Link href="/join" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
               <UserPlus className="h-4 w-4" />
               Join

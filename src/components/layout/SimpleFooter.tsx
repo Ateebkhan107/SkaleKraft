@@ -4,7 +4,6 @@ import { Mail } from "lucide-react";
 import { FaInstagram } from "react-icons/fa6";
 
 const links = [
-  { label: "Insights", href: "/insights" },
   { label: "Terms", href: "/terms" },
   { label: "Privacy", href: "/privacy" },
   { label: "Join the Agency", href: "/join" },
