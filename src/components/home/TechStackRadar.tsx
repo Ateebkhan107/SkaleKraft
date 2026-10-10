@@ -493,7 +493,7 @@ export default function TechStackRadar() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#070707] py-20 text-white sm:py-28 scroll-mt-24" id="tech-stack">
+    <section className="relative overflow-hidden bg-transparent py-20 text-white sm:py-28 scroll-mt-24" id="tech-stack">
       {/* Background radial ambient glow */}
       <div className="pointer-events-none absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.14),transparent_70%)] blur-3xl" />
       <div className="pointer-events-none absolute right-0 bottom-0 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.08),transparent_70%)] blur-3xl" />
