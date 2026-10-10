@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { Rocket, ShieldCheck, Clock3, Activity } from "lucide-react";
+import { Rocket, ShieldCheck, Clock3, Activity, CheckCircle2 } from "lucide-react";
 
 interface Metric {
   id: string;
@@ -13,7 +13,9 @@ interface Metric {
   decimals?: number;
   label: string;
   sublabel: string;
+  badge: string;
   accentColor: string;
+  gradientClass: string;
 }
 
 const metrics: Metric[] = [
@@ -24,7 +26,9 @@ const metrics: Metric[] = [
     suffix: "+",
     label: "Products & Systems Built",
     sublabel: "Websites, Native Apps & AI Agents",
+    badge: "Production Verified",
     accentColor: "#c19a88",
+    gradientClass: "from-white via-[#f2d9ce] to-[#c19a88]",
   },
   {
     id: "uptime",
@@ -34,7 +38,9 @@ const metrics: Metric[] = [
     decimals: 2,
     label: "Production Uptime SLA",
     sublabel: "Multi-region Edge Architecture",
+    badge: "Live Monitoring",
     accentColor: "#10B981",
+    gradientClass: "from-emerald-100 via-emerald-300 to-emerald-500",
   },
   {
     id: "response",
@@ -44,16 +50,20 @@ const metrics: Metric[] = [
     suffix: "h",
     label: "Response & Sprint Time",
     sublabel: "Direct engineering communication",
+    badge: "Agile SLA",
     accentColor: "#38BDF8",
+    gradientClass: "from-sky-100 via-cyan-300 to-sky-500",
   },
   {
     id: "ownership",
     icon: ShieldCheck,
     value: 100,
     suffix: "%",
-    label: "Full Source Code Ownership",
+    label: "Full Code Ownership",
     sublabel: "Zero licensing traps or lock-in",
-    accentColor: "#805948",
+    badge: "Full Guarantee",
+    accentColor: "#d2a28d",
+    gradientClass: "from-white via-[#e8cbbf] to-[#805948]",
   },
 ];
 
@@ -62,12 +72,14 @@ function AnimatedCounter({
   prefix = "",
   suffix = "",
   decimals = 0,
+  gradientClass,
   inView,
 }: {
   value: number;
   prefix?: string;
   suffix?: string;
   decimals?: number;
+  gradientClass: string;
   inView: boolean;
 }) {
   const [count, setCount] = useState(0);
@@ -97,7 +109,9 @@ function AnimatedCounter({
   const formatted = decimals > 0 ? count.toFixed(decimals) : Math.floor(count);
 
   return (
-    <span className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+    <span
+      className={`bg-gradient-to-r ${gradientClass} bg-clip-text font-mono text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl lg:text-5xl`}
+    >
       {prefix}
       {formatted}
       {suffix}
@@ -107,64 +121,79 @@ function AnimatedCounter({
 
 export default function ImpactMetricsBar() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-80px" });
+  const isInView = useInView(containerRef, { once: true, margin: "-60px" });
 
   return (
-    <section ref={containerRef} className="relative py-8 sm:py-12">
-      {/* Background glow behind metrics */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-32 w-3/4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.12),transparent_70%)] blur-2xl" />
+    <section ref={containerRef} className="relative py-6 sm:py-10">
+      {/* Background luxury ambient glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-40 w-3/4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.15),transparent_70%)] blur-3xl" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0E0E0E]/90 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl sm:p-6 lg:p-8"
-      >
-        <div className="grid grid-cols-2 gap-4 divide-y divide-white/10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-          {metrics.map((m, idx) => {
-            const Icon = m.icon;
-            return (
+      {/* Grid of Luxury Bento Metric Cards */}
+      <div className="relative grid gap-3.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+        {metrics.map((m, idx) => {
+          const Icon = m.icon;
+          return (
+            <motion.div
+              key={m.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{
+                duration: 0.55,
+                delay: idx * 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(14,14,14,0.92)_50%,rgba(8,8,8,0.98)_100%)] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.5)] transition duration-500 hover:-translate-y-1.5 hover:border-[#805948]/50 hover:shadow-[0_25px_80px_rgba(128,89,72,0.15)] sm:p-6"
+            >
+              {/* Subtle hover accent illumination */}
               <div
-                key={m.id}
-                className={`flex flex-col justify-between p-2 sm:p-3 ${
-                  idx !== 0 ? "pt-4 lg:pt-2 lg:pl-6" : ""
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-[#c19a88]"
-                    style={{ color: m.accentColor }}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </span>
-                  {m.id === "uptime" && (
-                    <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Live
-                    </span>
-                  )}
-                </div>
+                className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-2xl transition duration-500 group-hover:opacity-25"
+                style={{ backgroundColor: m.accentColor }}
+              />
 
-                <div className="mt-4">
-                  <AnimatedCounter
-                    value={m.value}
-                    prefix={m.prefix}
-                    suffix={m.suffix}
-                    decimals={m.decimals}
-                    inView={isInView}
-                  />
-                  <h3 className="mt-1 text-xs font-semibold text-white/90 sm:text-sm">
-                    {m.label}
-                  </h3>
-                  <p className="mt-0.5 text-[11px] text-white/45 sm:text-xs">
-                    {m.sublabel}
-                  </p>
-                </div>
+              {/* Top Header: Icon & Luxury Status Badge */}
+              <div className="flex items-center justify-between">
+                <span
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-black/50 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition duration-300 group-hover:scale-105"
+                  style={{ color: m.accentColor }}
+                >
+                  <Icon className="h-5 w-5" />
+                </span>
+
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-white/60">
+                  {m.id === "uptime" ? (
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  ) : (
+                    <CheckCircle2 className="h-3 w-3 text-[#c19a88]" />
+                  )}
+                  {m.badge}
+                </span>
               </div>
-            );
-          })}
-        </div>
-      </motion.div>
+
+              {/* Counter Value */}
+              <div className="mt-6">
+                <AnimatedCounter
+                  value={m.value}
+                  prefix={m.prefix}
+                  suffix={m.suffix}
+                  decimals={m.decimals}
+                  gradientClass={m.gradientClass}
+                  inView={isInView}
+                />
+              </div>
+
+              {/* Label & Description */}
+              <div className="mt-3 border-t border-white/[0.08] pt-3">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-white/90 sm:text-sm">
+                  {m.label}
+                </h3>
+                <p className="mt-1 text-[11px] font-light leading-relaxed text-white/50 sm:text-xs">
+                  {m.sublabel}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
     </section>
   );
 }

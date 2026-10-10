@@ -321,9 +321,9 @@ function CinematicHero() {
         });
       }}
     >
-      <div className="absolute inset-0 bg-[#0B0B0B]/20" />
+      <div className="absolute inset-0 bg-[#0B0B0B]/20 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]" />
       <motion.div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.2),transparent_36%),linear-gradient(90deg,rgba(11,11,11,.68)_0%,rgba(11,11,11,.5)_45%,rgba(11,11,11,.3)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.2),transparent_36%),linear-gradient(90deg,rgba(11,11,11,.68)_0%,rgba(11,11,11,.5)_45%,rgba(11,11,11,.3)_100%)] [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]"
         animate={{ filter: ["hue-rotate(0deg)", "hue-rotate(8deg)", "hue-rotate(0deg)"] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />

@@ -193,6 +193,7 @@ export default function ContactPage() {
   const [service, setService] = useState("AI System");
   const [budget, setBudget] = useState("$5k-$10k");
   const [customBudget, setCustomBudget] = useState("");
+  const [isCustomSubmitted, setIsCustomSubmitted] = useState(false);
   const [timeline, setTimeline] = useState("1 Month");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -347,19 +348,26 @@ export default function ContactPage() {
                 <section>
                   <SectionTitle number="02" title="Set your budget" hint="A comfortable investment range" />
                   <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-5">
-                    {budgets.map((item) => (
-                      <ChoiceCard
-                        key={item}
-                        label={item}
-                        selected={budget === item}
-                        onClick={() => {
-                          setBudget(item);
-                          if (item !== "Custom") {
-                            setCustomBudget("");
-                          }
-                        }}
-                      />
-                    ))}
+                    {budgets.map((item) => {
+                      const displayLabel =
+                        item === "Custom" && customBudget.trim()
+                          ? `Custom (${customBudget.trim()})`
+                          : item;
+                      return (
+                        <ChoiceCard
+                          key={item}
+                          label={displayLabel}
+                          selected={budget === item}
+                          onClick={() => {
+                            setBudget(item);
+                            if (item !== "Custom") {
+                              setCustomBudget("");
+                              setIsCustomSubmitted(false);
+                            }
+                          }}
+                        />
+                      );
+                    })}
                   </div>
                   <AnimatePresence>
                     {budget === "Custom" && (
@@ -370,15 +378,45 @@ export default function ContactPage() {
                         transition={{ duration: 0.25 }}
                         className="overflow-hidden"
                       >
-                        <div className="relative">
+                        <div className="relative flex items-center">
                           <input
                             type="text"
                             value={customBudget}
-                            onChange={(event) => setCustomBudget(event.target.value)}
-                            placeholder="Enter your custom budget (e.g. $15,000 or $3,500/mo)"
+                            onChange={(event) => {
+                              setCustomBudget(event.target.value);
+                              setIsCustomSubmitted(false);
+                            }}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter") {
+                                event.preventDefault();
+                                if (customBudget.trim()) {
+                                  setIsCustomSubmitted(true);
+                                }
+                              }
+                            }}
+                            placeholder="Enter custom budget (e.g. $15,000 or $3,500/mo)"
                             autoFocus
-                            className="h-11 w-full rounded-xl border border-[#805948]/70 bg-black/35 px-4 text-sm text-white placeholder:text-white/35 outline-none transition duration-300 focus:border-[#c19a88] focus:shadow-[0_0_30px_rgba(128,89,72,.2)]"
+                            className="h-11 w-full rounded-xl border border-[#805948]/70 bg-black/35 pl-4 pr-32 text-sm text-white placeholder:text-white/35 outline-none transition duration-300 focus:border-[#c19a88] focus:shadow-[0_0_30px_rgba(128,89,72,.2)]"
                           />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (customBudget.trim()) {
+                                setIsCustomSubmitted(true);
+                              }
+                            }}
+                            className="absolute right-1.5 flex h-8 items-center gap-1.5 rounded-lg border border-[#805948]/70 bg-[#805948]/30 px-3 text-xs font-semibold text-white transition duration-300 hover:bg-[#805948] hover:shadow-[0_0_20px_rgba(128,89,72,.4)]"
+                          >
+                            {isCustomSubmitted || (customBudget.trim() && budget === "Custom") ? (
+                              <>
+                                Set Amount <Check className="h-3.5 w-3.5 text-emerald-300" />
+                              </>
+                            ) : (
+                              <>
+                                Confirm <Check className="h-3.5 w-3.5" />
+                              </>
+                            )}
+                          </button>
                         </div>
                       </motion.div>
                     )}
