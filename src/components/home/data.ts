@@ -2,6 +2,7 @@ import {
   BrainCircuit,
   BriefcaseBusiness,
   Clapperboard,
+  Cpu,
   Home,
   Mail,
   MonitorSmartphone,
@@ -137,6 +138,7 @@ export const sidebarLinks: Array<{ id: string; label: string; icon: LucideIcon; 
   { id: "ai", label: "AI", icon: BrainCircuit, color: "ai" },
   { id: "creative", label: "Creative", icon: Clapperboard, color: "creative" },
   { id: "work", label: "Our Work", icon: BriefcaseBusiness },
+  { id: "tech-stack", label: "Tech Stack", icon: Cpu },
   { id: "contact", label: "Contact", icon: Mail },
 ];
 
