@@ -30,6 +30,7 @@ import {
   ease,
 } from "./data";
 import { HeroSoftwareVisual } from "./HeroSoftwareVisual";
+import TechStackRadar from "./TechStackRadar";
 
 const ServiceModal = dynamic(() => import("./ServiceModal"), {
   ssr: false,
@@ -168,6 +169,9 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
             <span className="hidden text-sm text-white/45 lg:inline">Engineering software that scales.</span>
             <Link href="/about" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
               About
+            </Link>
+            <Link href="/insights" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
+              Insights
             </Link>
             <Link href="/join" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
               <UserPlus className="h-4 w-4" />
@@ -621,6 +625,8 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
             </div>
 
             <SelectedWork />
+
+            <TechStackRadar />
 
             <motion.section data-cursor-card id="contact" className="relative my-16 scroll-mt-24 overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-6 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:p-8 md:p-10" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />

@@ -79,7 +79,7 @@ interface Particle {
 
 export function FluidParticlesBackground({
   children,
-  particleCount = 650,
+  particleCount = 500,
   noiseIntensity = 0.003,
   particleSize = { min: 0.45, max: 1.5 },
   theme = "auto",
@@ -97,10 +97,15 @@ export function FluidParticlesBackground({
     if (!ctx) return;
 
     let animationFrame = 0;
+    let lastDrawTime = 0;
     let width = 0;
     let height = 0;
     let particles: Particle[] = [];
+    let isTabVisible = document.visibilityState === "visible";
+
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.innerWidth < 768;
+    const effectiveCount = reducedMotion ? 80 : isMobile ? Math.min(particleCount, 160) : particleCount;
 
     const resolveDarkMode = () =>
       theme === "dark" || (theme === "auto" && (document.documentElement.classList.contains("dark") || window.matchMedia("(prefers-color-scheme: dark)").matches));
@@ -109,11 +114,12 @@ export function FluidParticlesBackground({
       const rect = canvas.getBoundingClientRect();
       width = Math.max(1, rect.width);
       height = Math.max(1, rect.height);
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // Cap DPR at 1.5 for performance
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = Array.from({ length: reducedMotion ? Math.min(particleCount, 180) : particleCount }, () => ({
+
+      particles = Array.from({ length: effectiveCount }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         size: Math.random() * (maxSize - minSize) + minSize,
@@ -122,9 +128,20 @@ export function FluidParticlesBackground({
       }));
     };
 
-    const draw = (time: number) => {
+    const targetInterval = 1000 / 36; // Target ~36 FPS for smooth visuals with low CPU usage
+
+    const draw = (timestamp: number) => {
+      if (!isTabVisible) return;
+
+      const elapsed = timestamp - lastDrawTime;
+      if (elapsed < targetInterval && lastDrawTime !== 0) {
+        animationFrame = window.requestAnimationFrame(draw);
+        return;
+      }
+      lastDrawTime = timestamp - (elapsed % targetInterval);
+
       const isDark = resolveDarkMode();
-      ctx.fillStyle = isDark ? "rgba(9, 9, 9, 0.13)" : "rgba(255, 255, 255, 0.13)";
+      ctx.fillStyle = isDark ? "rgba(9, 9, 9, 0.15)" : "rgba(255, 255, 255, 0.15)";
       ctx.fillRect(0, 0, width, height);
 
       for (const particle of particles) {
@@ -135,10 +152,10 @@ export function FluidParticlesBackground({
           particle.y = Math.random() * height;
         }
         const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * (isDark ? 0.16 : 0.1);
-        const direction = noise(particle.x * noiseIntensity, particle.y * noiseIntensity, time * 0.0001) * Math.PI * 4;
+        const direction = noise(particle.x * noiseIntensity, particle.y * noiseIntensity, timestamp * 0.0001) * Math.PI * 4;
         if (!reducedMotion) {
-          particle.x = (particle.x + Math.cos(direction) * 1.35 + width) % width;
-          particle.y = (particle.y + Math.sin(direction) * 1.35 + height) % height;
+          particle.x = (particle.x + Math.cos(direction) * 1.2 + width) % width;
+          particle.y = (particle.y + Math.sin(direction) * 1.2 + height) % height;
         }
         ctx.fillStyle = isDark ? `rgba(211, 165, 143, ${opacity})` : `rgba(60, 40, 32, ${opacity})`;
         ctx.beginPath();
@@ -149,13 +166,25 @@ export function FluidParticlesBackground({
       if (!reducedMotion) animationFrame = window.requestAnimationFrame(draw);
     };
 
+    const handleVisibilityChange = () => {
+      isTabVisible = document.visibilityState === "visible";
+      if (isTabVisible) {
+        lastDrawTime = performance.now();
+        animationFrame = window.requestAnimationFrame(draw);
+      } else {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
+
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(canvas);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     resizeCanvas();
-    draw(0);
+    animationFrame = window.requestAnimationFrame(draw);
 
     return () => {
       resizeObserver.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.cancelAnimationFrame(animationFrame);
     };
   }, [particleCount, noiseIntensity, minSize, maxSize, noise, theme]);
@@ -167,4 +196,3 @@ export function FluidParticlesBackground({
     </div>
   );
 }
-
