@@ -312,7 +312,7 @@ function CinematicHero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative flex min-h-[100svh] items-center overflow-hidden px-5 py-28 md:px-10 md:pl-56 lg:py-32"
+      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 md:pl-56 lg:pb-12 lg:pt-28"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         setGlow({
@@ -321,16 +321,11 @@ function CinematicHero() {
         });
       }}
     >
-      <div className="absolute inset-0 bg-[#0B0B0B]/20 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.15),transparent_48%),linear-gradient(90deg,rgba(11,11,11,0.55)_0%,rgba(11,11,11,0.35)_50%,rgba(11,11,11,0.15)_100%)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]" />
       <motion.div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.2),transparent_36%),linear-gradient(90deg,rgba(11,11,11,.68)_0%,rgba(11,11,11,.5)_45%,rgba(11,11,11,.3)_100%)] [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]"
-        animate={{ filter: ["hue-rotate(0deg)", "hue-rotate(8deg)", "hue-rotate(0deg)"] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="pointer-events-none absolute h-72 w-72 rounded-full bg-[#805948]/18 blur-3xl hidden md:block"
+        className="pointer-events-none absolute h-[450px] w-[450px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.06)_40%,transparent_70%)] blur-2xl hidden md:block"
         animate={{ left: glow.x, top: glow.y }}
-        transition={{ duration: 0.5, ease }}
+        transition={{ duration: 0.6, ease }}
         style={{ transform: "translate(-50%, -50%)" }}
       />
       <div className="relative z-10 mx-auto grid w-full max-w-[1500px] items-center gap-12 lg:grid-cols-[45fr_55fr] xl:gap-16">
@@ -428,7 +423,7 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
   return (
     <motion.section
       id={service.key}
-      className="scroll-mt-24 lg:py-6"
+      className="scroll-mt-24 py-2 lg:py-6"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
@@ -439,36 +434,57 @@ function ServiceBlock({ service, align = "left", onExplore }: { service: typeof 
     >
       <div
         data-cursor-card
-        className={`group flex h-[246px] min-w-0 flex-col overflow-hidden rounded-[22px] border border-white/10 bg-[#101010] p-3 shadow-[0_24px_85px_rgba(0,0,0,.32)] transition duration-500 hover:border-white/18 sm:h-[340px] sm:rounded-[26px] sm:p-4 lg:grid lg:h-auto lg:min-h-[410px] lg:grid-cols-2 lg:gap-5 lg:rounded-[28px] lg:p-5 xl:min-h-[430px] xl:p-6 lg:shadow-[0_30px_110px_rgba(0,0,0,.35)] ${
+        className={`group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#101010] p-4 shadow-[0_20px_70px_rgba(0,0,0,.32)] transition duration-500 hover:border-white/20 sm:rounded-[24px] sm:p-5 lg:grid lg:h-auto lg:min-h-[410px] lg:grid-cols-2 lg:gap-5 lg:rounded-[28px] lg:p-5 xl:min-h-[430px] xl:p-6 lg:shadow-[0_30px_110px_rgba(0,0,0,.35)] ${
           align === "right" ? "lg:[&>*:first-child]:order-2" : ""
         }`}
-        style={{ boxShadow: `0 30px 110px rgba(0,0,0,.35), 0 0 44px rgba(${color.rgb},.08)` }}
+        style={{ boxShadow: `0 24px 80px rgba(0,0,0,.35), 0 0 44px rgba(${color.rgb},.08)` }}
       >
-        <div className="h-24 w-full overflow-hidden rounded-[18px] border border-white/10 sm:h-36 lg:h-full lg:min-h-[280px] lg:border-0 xl:min-h-[300px]">
-          <div className="h-[360px] w-[520px] origin-top-left scale-[0.3] sm:scale-[0.48] lg:h-full lg:w-full lg:scale-100">
+        {/* Desktop Visual Preview */}
+        <div className="hidden lg:block h-full w-full overflow-hidden rounded-[18px] border border-white/10 lg:min-h-[280px] xl:min-h-[300px]">
+          <div className="h-full w-full">
             <ServiceVisual serviceKey={service.key} />
           </div>
         </div>
-        <div className="flex min-w-0 flex-1 flex-col lg:justify-center lg:p-4 xl:p-5">
-          <motion.div
-            className="mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] sm:h-12 sm:w-12 lg:mt-0 lg:h-13 lg:w-13"
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-6 lg:w-6" style={{ color: color.hex }} strokeWidth={1.7} />
-          </motion.div>
-          <h2 className="mt-3 text-base font-medium leading-tight tracking-tight text-white sm:mt-4 sm:text-lg lg:mt-6 lg:text-3xl xl:text-4xl">{service.title}</h2>
-          <p className="mt-2 hidden overflow-hidden text-sm leading-6 text-white/58 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box] lg:mt-4 lg:max-w-xl lg:text-base lg:leading-7">
-            {service.short}
-          </p>
+
+        {/* Card Body */}
+        <div className="flex min-w-0 flex-1 flex-col justify-between lg:justify-center lg:p-4 xl:p-5">
+          <div>
+            <div className="flex items-center justify-between">
+              <motion.div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] sm:h-12 sm:w-12 lg:h-13 lg:w-13"
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-6 lg:w-6" style={{ color: color.hex }} strokeWidth={1.7} />
+              </motion.div>
+              <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-white/50 lg:hidden">
+                {service.label}
+              </span>
+            </div>
+
+            <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight text-white sm:text-xl lg:mt-6 lg:text-3xl xl:text-4xl">{service.title}</h2>
+            <p className="mt-1.5 text-xs leading-relaxed text-white/60 sm:text-sm lg:mt-4 lg:max-w-xl lg:text-base lg:leading-7">
+              {service.short}
+            </p>
+
+            {/* Mobile Capability Chips */}
+            <div className="mt-3 flex flex-wrap gap-1.5 lg:hidden">
+              {service.capabilities.slice(0, 3).map((cap) => (
+                <span key={cap} className="rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[10px] text-white/50">
+                  {cap}
+                </span>
+              ))}
+            </div>
+          </div>
+
           <button
             type="button"
             onClick={() => onExplore(service.key)}
-            className="mt-auto inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-4 text-sm font-medium text-white transition duration-300 group-hover:scale-[1.02] lg:mt-6 lg:h-11 lg:w-fit lg:px-5"
+            className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full px-4 text-xs font-semibold text-white transition duration-300 group-hover:scale-[1.02] sm:text-sm lg:mt-6 lg:h-11 lg:w-fit lg:px-5"
             style={{ backgroundColor: `rgba(${color.rgb},0.22)`, border: `1px solid rgba(${color.rgb},0.42)` }}
           >
-            Explore
-            <ArrowRight className="h-4 w-4" />
+            Explore Capabilities
+            <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
         </div>
       </div>
