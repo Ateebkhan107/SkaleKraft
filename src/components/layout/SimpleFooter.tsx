@@ -40,7 +40,7 @@ export default function SimpleFooter() {
               <Mail className="h-5 w-5" />
             </a>
             <a
-              href="https://www.instagram.com/skalekraft"
+              href="https://www.instagram.com/skalekraft.in/"
               target="_blank"
               rel="noreferrer"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/55 transition duration-300 hover:border-[#805948]/60 hover:bg-[#805948]/15 hover:text-white"
