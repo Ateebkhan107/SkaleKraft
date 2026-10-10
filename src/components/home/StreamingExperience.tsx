@@ -31,6 +31,7 @@ import {
 } from "./data";
 import { HeroSoftwareVisual } from "./HeroSoftwareVisual";
 import TechStackRadar from "./TechStackRadar";
+import ImpactMetricsBar from "./ImpactMetricsBar";
 
 const ServiceModal = dynamic(() => import("./ServiceModal"), {
   ssr: false,
@@ -608,6 +609,8 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           <Sidebar active={activeSection} onNavigate={navigate} />
           <CinematicHero />
           <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
+            <ImpactMetricsBar />
+
             <div className="py-8 sm:py-12">
               <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
                 <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
