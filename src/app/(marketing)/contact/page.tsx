@@ -192,6 +192,7 @@ function FAQItem({ item, open, onClick }: { item: (typeof faqs)[number]; open: b
 export default function ContactPage() {
   const [service, setService] = useState("AI System");
   const [budget, setBudget] = useState("$5k-$10k");
+  const [customBudget, setCustomBudget] = useState("");
   const [timeline, setTimeline] = useState("1 Month");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -202,6 +203,11 @@ export default function ContactPage() {
   const [startedAt, setStartedAt] = useState("");
   const [error, setError] = useState("");
   const [openFaq, setOpenFaq] = useState(0);
+
+  const effectiveBudget = useMemo(
+    () => (budget === "Custom" ? (customBudget.trim() || "Custom") : budget),
+    [budget, customBudget]
+  );
 
   // Avoid SSR hydration mismatch by setting timestamp only on client
   useEffect(() => {
@@ -225,7 +231,7 @@ export default function ContactPage() {
       const formData = new FormData(event.currentTarget);
       formData.set("source", "Start project page");
       formData.set("service", service);
-      formData.set("budget", budget);
+      formData.set("budget", effectiveBudget);
       formData.set("message", `${message}\n\nTimeline: ${timeline}`);
 
       const response = await fetch("/api/contact", {
@@ -317,7 +323,7 @@ export default function ContactPage() {
 
               <form onSubmit={handleSubmit} className="mt-5 space-y-5">
                 <input type="hidden" name="service" value={service} />
-                <input type="hidden" name="budget" value={budget} />
+                <input type="hidden" name="budget" value={effectiveBudget} />
                 <input type="hidden" name="timeline" value={timeline} />
                 <input type="hidden" name="startedAt" value={startedAt} />
                 <input
@@ -341,8 +347,42 @@ export default function ContactPage() {
                 <section>
                   <SectionTitle number="02" title="Set your budget" hint="A comfortable investment range" />
                   <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-5">
-                    {budgets.map((item) => <ChoiceCard key={item} label={item} selected={budget === item} onClick={() => setBudget(item)} />)}
+                    {budgets.map((item) => (
+                      <ChoiceCard
+                        key={item}
+                        label={item}
+                        selected={budget === item}
+                        onClick={() => {
+                          setBudget(item);
+                          if (item !== "Custom") {
+                            setCustomBudget("");
+                          }
+                        }}
+                      />
+                    ))}
                   </div>
+                  <AnimatePresence>
+                    {budget === "Custom" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 10 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={customBudget}
+                            onChange={(event) => setCustomBudget(event.target.value)}
+                            placeholder="Enter your custom budget (e.g. $15,000 or $3,500/mo)"
+                            autoFocus
+                            className="h-11 w-full rounded-xl border border-[#805948]/70 bg-black/35 px-4 text-sm text-white placeholder:text-white/35 outline-none transition duration-300 focus:border-[#c19a88] focus:shadow-[0_0_30px_rgba(128,89,72,.2)]"
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </section>
 
                 <section>
@@ -419,7 +459,7 @@ export default function ContactPage() {
                 <div className="grid grid-cols-3 gap-2.5">
                 {[
                   ["Project", service],
-                  ["Budget", budget],
+                  ["Budget", effectiveBudget],
                   ["Timeline", timeline],
                 ].map(([label, value]) => (
                   <motion.div key={label} layout className="min-w-0 rounded-2xl border border-white/10 bg-black/20 p-3 text-center">
