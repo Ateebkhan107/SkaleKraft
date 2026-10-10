@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://skalekraft.in"),
   title: {
-    default: "SkaleKraft — Websites, Apps, AI and Creative",
+    default: "SkaleKraft",
     template: "%s | SkaleKraft",
   },
   description: "SkaleKraft builds useful websites, mobile apps, AI tools and creative digital experiences for businesses.",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "SkaleKraft — Websites, Apps, AI and Creative",
+    title: "SkaleKraft",
     description: "SkaleKraft builds useful websites, mobile apps, AI tools and creative digital experiences for businesses.",
     url: "https://skalekraft.in",
     siteName: "SkaleKraft",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SkaleKraft — Websites, Apps, AI and Creative",
+    title: "SkaleKraft",
     description: "SkaleKraft builds useful websites, mobile apps, AI tools and creative digital experiences for businesses.",
     images: ["/opengraph-image"],
   },
