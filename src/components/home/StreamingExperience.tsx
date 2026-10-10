@@ -375,7 +375,7 @@ function SelectedWork() {
         </Link>
       </div>
       <motion.div
-        className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-4"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 xl:grid-cols-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
@@ -607,13 +607,13 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           <Header activeSection={activeSection} onNavigate={navigate} />
           <Sidebar active={activeSection} onNavigate={navigate} />
           <CinematicHero />
-          <main className="mx-auto max-w-[1360px] px-5 pb-24 md:px-10 md:pl-56">
-            <div className="py-12">
+          <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
+            <div className="py-8 sm:py-12">
               <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
-                <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Services</p>
-                <h2 className="mt-3 text-3xl font-medium tracking-tight text-white sm:text-5xl">Choose the system you want to build.</h2>
+                <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
+                <h2 className="mt-2 text-2xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
-              <div className="mt-8 grid grid-cols-2 gap-2 sm:mt-10 sm:grid-cols-3 sm:gap-3 lg:mt-0 lg:block">
+              <div className="mt-6 space-y-4 sm:mt-10 lg:mt-0 lg:space-y-6">
                 <ServiceBlock service={services.websites} onExplore={setActiveModal} />
                 <ServiceBlock service={services.apps} align="right" onExplore={setActiveModal} />
                 <ServiceBlock service={services.ai} onExplore={setActiveModal} />
@@ -625,7 +625,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
             <TechStackRadar />
 
-            <motion.section data-cursor-card id="contact" className="relative my-16 scroll-mt-24 overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-6 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:p-8 md:p-10" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
+            <motion.section data-cursor-card id="contact" className="relative my-12 scroll-mt-24 overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:rounded-[30px] sm:p-8 md:p-10" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
               <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
               <div className="relative grid items-center gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
@@ -634,32 +634,32 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                     <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10"><Sparkles className="h-3.5 w-3.5 text-[#c19a88]" /></span>
                     <p className="text-xs uppercase tracking-[0.26em] text-[#c19a88]">Start a conversation</p>
                   </div>
-                  <h2 className="mt-5 max-w-2xl text-3xl font-medium tracking-[-0.035em] text-white sm:text-4xl lg:text-5xl lg:leading-[1.08]">Your next great product starts with a clear idea.</h2>
-                  <p className="mt-5 max-w-xl text-base leading-7 text-white/52">Tell us what you want to build. We&apos;ll turn the ambition into a practical roadmap—and then into a product people enjoy using.</p>
-                  <div className="mt-6 flex flex-wrap gap-2.5 text-xs text-white/52">
+                  <h2 className="mt-4 max-w-2xl text-2xl font-medium tracking-[-0.035em] text-white sm:mt-5 sm:text-4xl lg:text-5xl lg:leading-[1.08]">Your next great product starts with a clear idea.</h2>
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-white/52 sm:mt-5 sm:text-base sm:leading-7">Tell us what you want to build. We&apos;ll turn the ambition into a practical roadmap—and then into a product people enjoy using.</p>
+                  <div className="mt-5 flex flex-wrap gap-2 text-xs text-white/52 sm:mt-6 sm:gap-2.5">
                     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><Clock3 className="h-3.5 w-3.5 text-[#c19a88]" />Reply within 24 hours</span>
                     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><CheckCircle2 className="h-3.5 w-3.5 text-[#c19a88]" />No-obligation discovery</span>
                   </div>
-                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-8" />
+                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-6 sm:mt-8" />
                 </div>
 
-                <motion.div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-black/25 p-5 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>
-                  <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <motion.div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-black/25 p-4 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:rounded-[24px] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>
+                  <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 sm:pb-4">
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.22em] text-white/32">A simple path</p>
-                      <h3 className="mt-1.5 text-lg font-medium text-white">From idea to launch</h3>
+                      <h3 className="mt-1 text-base font-medium text-white sm:mt-1.5 sm:text-lg">From idea to launch</h3>
                     </div>
                     <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.7)]" />
                   </div>
-                  <div className="mt-5 space-y-3">
+                  <div className="mt-4 space-y-2.5 sm:mt-5 sm:space-y-3">
                     {["Understand the problem", "Shape the right solution", "Design, build and launch"].map((item, index) => (
-                      <div key={item} className="flex items-center gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.025] px-3.5 py-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10 text-[10px] font-medium text-[#d2a28d]">0{index + 1}</span>
-                        <span className="text-sm text-white/64">{item}</span>
+                      <div key={item} className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2.5 sm:rounded-2xl sm:px-3.5 sm:py-3">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10 text-[9px] font-medium text-[#d2a28d] sm:h-7 sm:w-7 sm:text-[10px]">0{index + 1}</span>
+                        <span className="text-xs text-white/64 sm:text-sm">{item}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-5 h-1 overflow-hidden rounded-full bg-white/[0.06]"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#805948] to-[#c19a88]" /></div>
+                  <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/[0.06] sm:mt-5"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#805948] to-[#c19a88]" /></div>
                 </motion.div>
               </div>
             </motion.section>
