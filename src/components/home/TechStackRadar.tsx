@@ -493,46 +493,46 @@ export default function TechStackRadar() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-transparent py-20 text-white sm:py-28 scroll-mt-24" id="tech-stack">
+    <section className="relative overflow-hidden bg-transparent py-12 text-white sm:py-16 scroll-mt-24" id="tech-stack">
       {/* Background radial ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.14),transparent_70%)] blur-3xl" />
-      <div className="pointer-events-none absolute right-0 bottom-0 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.08),transparent_70%)] blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.12),transparent_70%)] blur-3xl" />
+      <div className="pointer-events-none absolute right-0 bottom-0 h-[350px] w-[350px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.06),transparent_70%)] blur-3xl" />
 
-      <div className="relative mx-auto max-w-[1400px] px-5 md:px-10">
+      <div className="relative mx-auto max-w-[1360px] px-5 md:px-8">
         {/* Header */}
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#805948]/30 bg-[#805948]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#c19a88]">
-            <Sparkles className="h-3.5 w-3.5" />
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#805948]/30 bg-[#805948]/10 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#c19a88]">
+            <Sparkles className="h-3 w-3" />
             Engineering & Technology Architecture
           </div>
-          <h2 className="mt-6 text-3xl font-light tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-2xl font-light tracking-tight sm:text-3xl lg:text-4xl">
             Software built with <span className="font-semibold text-white">modern stack architecture</span>.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-white/55 sm:text-lg">
+          <p className="mt-3 text-sm leading-relaxed text-white/55 sm:text-base">
             We don’t use legacy templates or bloated monoliths. Every system is engineered on a battle-tested, high-performance technology stack designed to scale seamlessly.
           </p>
 
           {/* Live Trust Metrics Bar */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 border-y border-white/10 py-3 text-xs text-white/60">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:gap-5 border-y border-white/10 py-2.5 text-[11px] text-white/60">
             <span className="flex items-center gap-1.5 font-mono text-emerald-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
               99.99% Systems Uptime SLA
             </span>
             <span className="hidden sm:inline text-white/20">•</span>
             <span className="flex items-center gap-1.5">
-              <Lock className="h-3.5 w-3.5 text-[#c19a88]" />
+              <Lock className="h-3 w-3 text-[#c19a88]" />
               Enterprise Security Compliant
             </span>
             <span className="hidden sm:inline text-white/20">•</span>
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-[#c19a88]" />
+              <ShieldCheck className="h-3 w-3 text-[#c19a88]" />
               100% Full Code Ownership
             </span>
           </div>
         </div>
 
         {/* Category Filter Pills */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
           {categories.map((cat) => (
             <button
               key={cat.value}
@@ -543,9 +543,9 @@ export default function TechStackRadar() {
                 );
                 if (firstMatch) setActiveTechId(firstMatch.id);
               }}
-              className={`rounded-full px-5 py-2 text-xs font-medium uppercase tracking-[0.14em] transition duration-300 ${
+              className={`rounded-full px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] transition duration-300 ${
                 selectedCategory === cat.value
-                  ? "border border-[#805948] bg-[#805948]/24 text-white shadow-[0_0_20px_rgba(128,89,72,0.2)]"
+                  ? "border border-[#805948] bg-[#805948]/24 text-white shadow-[0_0_16px_rgba(128,89,72,0.2)]"
                   : "border border-white/10 bg-white/[0.025] text-white/55 hover:border-white/20 hover:bg-white/[0.05] hover:text-white"
               }`}
             >
@@ -555,9 +555,9 @@ export default function TechStackRadar() {
         </div>
 
         {/* Tech Grid + Detail View */}
-        <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-start">
+        <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-start">
           {/* Tech List (Scrollable list with badges) */}
-          <div className="grid gap-3 lg:col-span-5 max-h-[660px] overflow-y-auto pr-1 custom-scrollbar">
+          <div className="grid gap-2 lg:col-span-5 max-h-[520px] overflow-y-auto pr-1 custom-scrollbar">
             {filteredTech.map((tech) => {
               const Icon = tech.icon;
               const isSelected = tech.id === activeTech.id;
@@ -566,38 +566,38 @@ export default function TechStackRadar() {
                 <motion.button
                   key={tech.id}
                   onClick={() => setActiveTechId(tech.id)}
-                  className={`group relative flex items-center justify-between overflow-hidden rounded-2xl border p-4 text-left transition duration-300 ${
+                  className={`group relative flex items-center justify-between overflow-hidden rounded-xl border p-3 text-left transition duration-300 ${
                     isSelected
-                      ? "border-[#805948]/80 bg-[#805948]/14 shadow-[0_0_30px_rgba(128,89,72,0.15)]"
+                      ? "border-[#805948]/80 bg-[#805948]/14 shadow-[0_0_24px_rgba(128,89,72,0.15)]"
                       : "border-white/10 bg-white/[0.025] hover:border-white/20 hover:bg-white/[0.045]"
                   }`}
-                  whileHover={{ x: 4 }}
+                  whileHover={{ x: 3 }}
                   whileTap={{ scale: 0.99 }}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <span
-                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black/40 transition duration-300 group-hover:scale-105"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/40 transition duration-300 group-hover:scale-105"
                       style={{ color: tech.accentColor }}
                     >
-                      <Icon className="h-6 w-6" />
+                      <Icon className="h-5 w-5" />
                     </span>
                     <div>
-                      <span className="block text-base font-semibold text-white">
+                      <span className="block text-sm font-semibold text-white">
                         {tech.name}
                       </span>
-                      <span className="text-xs uppercase tracking-wider text-white/45">
+                      <span className="text-[10px] uppercase tracking-wider text-white/45">
                         {tech.badge}
                       </span>
                     </div>
                   </div>
                   <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition duration-300 ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition duration-300 ${
                       isSelected
                         ? "bg-[#805948] text-white"
                         : "border border-white/10 bg-black/30 text-white/40 group-hover:text-white"
                     }`}
                   >
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </motion.button>
               );
@@ -609,42 +609,42 @@ export default function TechStackRadar() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTech.id}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.25 }}
-                className="relative overflow-hidden rounded-3xl border border-[#805948]/40 bg-[#0E0E0E] p-6 shadow-[0_20px_80px_rgba(0,0,0,0.6)] sm:p-8"
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2 }}
+                className="relative overflow-hidden rounded-2xl border border-[#805948]/40 bg-[#0E0E0E] p-5 shadow-[0_16px_60px_rgba(0,0,0,0.6)] sm:p-6"
               >
                 {/* Background accent glow */}
                 <div
-                  className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-20 blur-3xl"
+                  className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-20 blur-3xl"
                   style={{ backgroundColor: activeTech.accentColor }}
                 />
 
                 {/* Card Top Header */}
-                <div className="relative flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
                   <div className="flex items-center gap-3">
                     <span
-                      className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-black/50"
+                      className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/50"
                       style={{ color: activeTech.accentColor }}
                     >
-                      <activeTech.icon className="h-6 w-6" />
+                      <activeTech.icon className="h-5 w-5" />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-white sm:text-2xl">
+                      <h3 className="text-lg font-semibold text-white sm:text-xl">
                         {activeTech.name}
                       </h3>
-                      <span className="text-xs uppercase tracking-widest text-[#c19a88]">
+                      <span className="text-[10px] uppercase tracking-widest text-[#c19a88]">
                         {activeTech.badge}
                       </span>
                     </div>
                   </div>
 
                   {/* Sub-Navigation Tabs inside Card */}
-                  <div className="flex items-center gap-1 rounded-xl border border-white/10 bg-black/40 p-1 text-xs">
+                  <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-black/40 p-1 text-[11px]">
                     <button
                       onClick={() => setActiveDetailTab("overview")}
-                      className={`rounded-lg px-3 py-1.5 font-medium transition ${
+                      className={`rounded-md px-2.5 py-1 font-medium transition ${
                         activeDetailTab === "overview"
                           ? "bg-[#805948] text-white"
                           : "text-white/55 hover:text-white"
@@ -654,7 +654,7 @@ export default function TechStackRadar() {
                     </button>
                     <button
                       onClick={() => setActiveDetailTab("security")}
-                      className={`rounded-lg px-3 py-1.5 font-medium transition ${
+                      className={`rounded-md px-2.5 py-1 font-medium transition ${
                         activeDetailTab === "security"
                           ? "bg-[#805948] text-white"
                           : "text-white/55 hover:text-white"
@@ -664,7 +664,7 @@ export default function TechStackRadar() {
                     </button>
                     <button
                       onClick={() => setActiveDetailTab("code")}
-                      className={`rounded-lg px-3 py-1.5 font-medium transition ${
+                      className={`rounded-md px-2.5 py-1 font-medium transition ${
                         activeDetailTab === "code"
                           ? "bg-[#805948] text-white"
                           : "text-white/55 hover:text-white"
@@ -676,35 +676,35 @@ export default function TechStackRadar() {
                 </div>
 
                 {/* Main Tabbed Content */}
-                <div className="mt-6 space-y-6 min-h-[360px]">
+                <div className="mt-4 space-y-5 min-h-[290px]">
                   {activeDetailTab === "overview" && (
                     <motion.div
                       key="tab-overview"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="space-y-6"
+                      className="space-y-4"
                     >
                       {/* Tagline & Architecture Overview */}
                       <div>
-                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
                           Overview & Architecture
                         </span>
-                        <p className="mt-1 text-base font-medium leading-snug text-white">
+                        <p className="mt-0.5 text-sm font-medium leading-snug text-white">
                           {activeTech.tagline}
                         </p>
-                        <p className="mt-2 text-sm leading-relaxed text-white/65">
+                        <p className="mt-1.5 text-xs leading-relaxed text-white/65">
                           {activeTech.architectureOverview}
                         </p>
                       </div>
 
                       {/* High Impact Performance Metrics Grid */}
-                      <div className="grid grid-cols-3 gap-3 rounded-2xl border border-white/10 bg-black/40 p-4">
+                      <div className="grid grid-cols-3 gap-2.5 rounded-xl border border-white/10 bg-black/40 p-3">
                         {activeTech.metrics.map((m) => (
                           <div key={m.label} className="text-center">
-                            <span className="block text-lg sm:text-xl font-semibold text-[#c19a88]">
+                            <span className="block text-base sm:text-lg font-semibold text-[#c19a88]">
                               {m.value}
                             </span>
-                            <span className="mt-1 block text-[10px] sm:text-xs uppercase tracking-wider text-white/45">
+                            <span className="mt-0.5 block text-[9px] sm:text-[10px] uppercase tracking-wider text-white/45">
                               {m.label}
                             </span>
                           </div>
@@ -712,23 +712,23 @@ export default function TechStackRadar() {
                       </div>
 
                       {/* Why We Use It vs Client Business Impact */}
-                      <div className="grid gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:grid-cols-2">
+                      <div className="grid gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-2">
                         <div>
-                          <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#c19a88]">
-                            <Zap className="h-3.5 w-3.5" />
+                          <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c19a88]">
+                            <Zap className="h-3 w-3" />
                             Why SkaleKraft Uses It
                           </span>
-                          <p className="mt-2 text-sm leading-6 text-white/70">
+                          <p className="mt-1.5 text-xs leading-relaxed text-white/70">
                             {activeTech.whyWeUseIt}
                           </p>
                         </div>
 
                         <div>
-                          <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-400">
-                            <CheckCircle2 className="h-3.5 w-3.5" />
+                          <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-400">
+                            <CheckCircle2 className="h-3 w-3" />
                             Client Business Impact
                           </span>
-                          <p className="mt-2 text-sm leading-6 text-white/70">
+                          <p className="mt-1.5 text-xs leading-relaxed text-white/70">
                             {activeTech.clientRoi}
                           </p>
                         </div>
@@ -736,14 +736,14 @@ export default function TechStackRadar() {
 
                       {/* Key Architectural Highlights List */}
                       <div>
-                        <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
-                          <ShieldCheck className="h-3.5 w-3.5 text-[#c19a88]" />
+                        <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+                          <ShieldCheck className="h-3 w-3 text-[#c19a88]" />
                           Key Architectural Highlights
                         </span>
-                        <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
+                        <ul className="mt-2 grid gap-2 sm:grid-cols-2">
                           {activeTech.highlights.map((item) => (
-                            <li key={item} className="flex items-start gap-2.5 text-xs text-white/75">
-                              <CheckCircle2 className="h-4 w-4 shrink-0 text-[#c19a88] mt-0.5" />
+                            <li key={item} className="flex items-start gap-2 text-xs text-white/75">
+                              <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#c19a88] mt-0.5" />
                               <span>{item}</span>
                             </li>
                           ))}
@@ -757,25 +757,25 @@ export default function TechStackRadar() {
                       key="tab-security"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="space-y-6"
+                      className="space-y-4"
                     >
                       <div>
-                        <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#c19a88]">
-                          <Lock className="h-3.5 w-3.5" />
+                        <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#c19a88]">
+                          <Lock className="h-3 w-3" />
                           Security & Compliance Specifications
                         </span>
-                        <p className="mt-2 text-sm text-white/70">
+                        <p className="mt-1 text-xs text-white/70">
                           Enterprise security features built natively into the deployment pipeline for this stack:
                         </p>
                       </div>
 
-                      <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="grid gap-2.5 sm:grid-cols-2">
                         {activeTech.securitySpecs.map((spec) => (
                           <div
                             key={spec}
-                            className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/30 p-4"
+                            className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-black/30 p-3"
                           >
-                            <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-400 mt-0.5" />
+                            <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
                             <span className="text-xs text-white/80 leading-relaxed font-medium">
                               {spec}
                             </span>
@@ -784,12 +784,12 @@ export default function TechStackRadar() {
                       </div>
 
                       {/* Client Security Guarantee Banner */}
-                      <div className="rounded-2xl border border-[#805948]/50 bg-[#805948]/10 p-5">
-                        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#c19a88]">
-                          <Award className="h-4 w-4" />
+                      <div className="rounded-xl border border-[#805948]/50 bg-[#805948]/10 p-4">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#c19a88]">
+                          <Award className="h-3.5 w-3.5" />
                           SkaleKraft Production Standard Guarantee
                         </div>
-                        <p className="mt-2 text-sm leading-relaxed text-white/85">
+                        <p className="mt-1.5 text-xs leading-relaxed text-white/85">
                           {activeTech.trustGuarantee}
                         </p>
                       </div>
@@ -801,50 +801,50 @@ export default function TechStackRadar() {
                       key="tab-code"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="space-y-4"
+                      className="space-y-3"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/50">
-                          <FileCode className="h-4 w-4 text-[#c19a88]" />
+                        <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/50">
+                          <FileCode className="h-3.5 w-3.5 text-[#c19a88]" />
                           Production Code Pattern ({activeTech.codeLanguage})
                         </span>
                         <button
                           onClick={handleCopyCode}
-                          className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-white/70 hover:bg-white/10 hover:text-white transition"
+                          className="flex items-center gap-1 rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] text-white/70 hover:bg-white/10 hover:text-white transition"
                         >
                           {copiedCode ? (
                             <>
-                              <Check className="h-3.5 w-3.5 text-emerald-400" />
+                              <Check className="h-3 w-3 text-emerald-400" />
                               <span className="text-emerald-400">Copied</span>
                             </>
                           ) : (
                             <>
-                              <Copy className="h-3.5 w-3.5" />
+                              <Copy className="h-3 w-3" />
                               <span>Copy Snippet</span>
                             </>
                           )}
                         </button>
                       </div>
 
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#050505] p-4 font-mono text-xs text-emerald-300 shadow-inner">
+                      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#050505] p-3 font-mono text-[11px] text-emerald-300 shadow-inner">
                         <pre className="overflow-x-auto whitespace-pre leading-relaxed">
                           <code>{activeTech.codeSnippet}</code>
                         </pre>
                       </div>
-                      <p className="text-[11px] text-white/45 italic">
+                      <p className="text-[10px] text-white/45 italic">
                         This pattern is used across SkaleKraft client deployments to ensure type safety, reliability, and security compliance.
                       </p>
                     </motion.div>
                   )}
 
                   {/* Footer Action */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
                     <span className="text-xs text-white/45">
                       Build your software using <strong className="text-white">{activeTech.name}</strong>
                     </span>
                     <Link
                       href="/contact"
-                      className="inline-flex items-center gap-2 rounded-full border border-[#805948] bg-[#805948]/20 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition duration-300 hover:bg-[#805948] hover:shadow-[0_0_25px_rgba(128,89,72,0.4)]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[#805948] bg-[#805948]/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white transition duration-300 hover:bg-[#805948] hover:shadow-[0_0_20px_rgba(128,89,72,0.4)]"
                     >
                       Start Project <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
@@ -856,31 +856,31 @@ export default function TechStackRadar() {
         </div>
 
         {/* Client Trust Pillars Section */}
-        <div className="mt-20 border-t border-white/10 pt-16">
-          <div className="text-center max-w-2xl mx-auto">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#c19a88] font-semibold">
+        <div className="mt-14 border-t border-white/10 pt-10">
+          <div className="text-center max-w-xl mx-auto">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[#c19a88] font-semibold">
               Client Trust & Guarantees
             </span>
-            <h3 className="mt-3 text-2xl sm:text-3xl font-light text-white">
+            <h3 className="mt-2 text-xl sm:text-2xl font-light text-white">
               Why founders & enterprise teams build with <span className="font-semibold">SkaleKraft</span>.
             </h3>
           </div>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {trustPillars.map((pillar) => {
               const Icon = pillar.icon;
               return (
                 <div
                   key={pillar.title}
-                  className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition duration-300 hover:border-white/20 hover:bg-white/[0.04]"
+                  className="rounded-xl border border-white/10 bg-white/[0.02] p-4 transition duration-300 hover:border-white/20 hover:bg-white/[0.04]"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#805948]/15 text-[#c19a88]">
-                    <Icon className="h-5 w-5" />
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-[#805948]/15 text-[#c19a88]">
+                    <Icon className="h-4 w-4" />
                   </span>
-                  <h4 className="mt-4 text-base font-semibold text-white">
+                  <h4 className="mt-3 text-sm font-semibold text-white">
                     {pillar.title}
                   </h4>
-                  <p className="mt-2 text-xs leading-relaxed text-white/60">
+                  <p className="mt-1.5 text-xs leading-relaxed text-white/60">
                     {pillar.description}
                   </p>
                 </div>
