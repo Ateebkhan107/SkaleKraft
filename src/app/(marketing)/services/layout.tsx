@@ -187,7 +187,9 @@ export default function ServicesLayout({ children }: { children: React.ReactNode
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(servicesJsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       {children}
     </>

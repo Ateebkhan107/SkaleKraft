@@ -228,13 +228,13 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${inter.variable} h-full antialiased`}
     >
-      <head>
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
         />
-      </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <PremiumCursor />
         {children}
       </body>
