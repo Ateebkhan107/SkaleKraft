@@ -1,4 +1,5 @@
 import { Bot, Check } from "lucide-react";
+import BackHomeLink from "@/components/ui/BackHomeLink";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 
 const areas = [
@@ -12,9 +13,11 @@ const areas = [
 
 export default function AiConsultantPage() {
   return (
-    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-32 text-white md:px-10">
+    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10">
       <section className="mx-auto max-w-5xl">
-        <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-[#101010] text-[#805948]">
+        <BackHomeLink className="mb-10" />
+
+        <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-[#101010] text-[#c19a88]">
           <Bot className="h-7 w-7" />
         </div>
         <p className="mt-8 text-sm uppercase tracking-[0.26em] text-[#c19a88]">AI Systems</p>

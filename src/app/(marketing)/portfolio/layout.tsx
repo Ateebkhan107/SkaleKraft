@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Work",
   description: "SkaleKraft keeps private work private and does not publish invented case studies.",
   alternates: {
-    canonical: "/portfolio",
+    canonical: "/work",
   },
 };
 

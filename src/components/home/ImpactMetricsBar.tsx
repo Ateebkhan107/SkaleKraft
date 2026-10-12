@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { Rocket, ShieldCheck, Clock3, Activity, CheckCircle2 } from "lucide-react";
+import { Rocket, ShieldCheck, Clock3, Activity, CheckCircle2, type LucideIcon } from "lucide-react";
 
 interface Metric {
   id: string;
-  icon: any;
+  icon: LucideIcon;
   value: number;
   prefix?: string;
   suffix?: string;

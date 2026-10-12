@@ -17,9 +17,9 @@ function Pill({ label }: { label: string }) {
   );
 }
 
-function InfoGroup({ title, children }: { title: string; children: React.ReactNode }) {
+function InfoGroup({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
   return (
-    <section className="rounded-[18px] border border-white/10 bg-[#0B0B0B] p-4">
+    <section className={`rounded-[18px] border border-white/10 bg-[#0B0B0B] p-4 ${className || ""}`}>
       <h3 className="text-xs uppercase tracking-[0.2em] text-white/40">{title}</h3>
       <div className="mt-3">{children}</div>
     </section>
@@ -104,7 +104,7 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                 <InfoGroup title="Overview">
                   <p className="leading-7 text-white/58">{service.subtitle}</p>
                 </InfoGroup>
@@ -117,17 +117,17 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
                 <InfoGroup title="Technology Used">
                   <div className="flex flex-wrap gap-2">{service.technology.map((item) => <Pill key={item} label={item} />)}</div>
                 </InfoGroup>
-                <InfoGroup title="Development Process">
-                  <div className="grid gap-2">{service.process.map((item, index) => <p key={item} className="text-sm text-white/58">{String(index + 1).padStart(2, "0")} / {item}</p>)}</div>
-                </InfoGroup>
                 <InfoGroup title="Typical Timeline">
                   <p className="text-2xl font-medium text-white">{service.timeline}</p>
                 </InfoGroup>
-                <InfoGroup title="Frequently Asked Questions">
-                  <div className="space-y-4">{service.faq.map((item) => <div key={item.q}><p className="font-medium text-white">{item.q}</p><p className="mt-1 text-sm leading-6 text-white/52">{item.a}</p></div>)}</div>
-                </InfoGroup>
                 <InfoGroup title="Pricing starts from">
                   <p className="text-lg font-medium text-white">{service.pricing}</p>
+                </InfoGroup>
+                <InfoGroup title="Development Process" className="sm:col-span-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">{service.process.map((item, index) => <p key={item} className="text-sm text-white/58">{String(index + 1).padStart(2, "0")} / {item}</p>)}</div>
+                </InfoGroup>
+                <InfoGroup title="Frequently Asked Questions" className="sm:col-span-2">
+                  <div className="space-y-4">{service.faq.map((item) => <div key={item.q}><p className="font-medium text-white">{item.q}</p><p className="mt-1 text-sm leading-6 text-white/52">{item.a}</p></div>)}</div>
                 </InfoGroup>
               </div>
             </div>

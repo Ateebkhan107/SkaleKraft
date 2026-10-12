@@ -27,6 +27,12 @@ export function isRateLimited(key: string, limit = 5, windowMs = 10 * 60 * 1000)
   return false;
 }
 
+export function isValidFromAddress(fromValue: string) {
+  const rfcMatch = fromValue.match(/<([^>]+)>/);
+  const emailCandidate = rfcMatch ? rfcMatch[1] : fromValue.trim();
+  return isEmail(emailCandidate);
+}
+
 export function getContactEmailConfig(): EmailConfig {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_EMAIL_TO;
@@ -36,7 +42,7 @@ export function getContactEmailConfig(): EmailConfig {
     throw new Error("Email service is missing required server configuration.");
   }
 
-  if (!isEmail(to) || !from.includes("<hello@skalekraft.in>")) {
+  if (!isEmail(to) || !isValidFromAddress(from)) {
     throw new Error("Email service has invalid server configuration.");
   }
 

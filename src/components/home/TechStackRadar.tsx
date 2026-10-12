@@ -14,15 +14,11 @@ import {
   ArrowRight,
   BrainCircuit,
   Server,
-  Cloud,
   ShieldCheck,
   Lock,
-  FileCode,
-  Award,
-  Check,
   Copy,
   X,
-  ExternalLink,
+  type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -35,7 +31,7 @@ interface TechItem {
   badge: string;
   tagline: string;
   roiMetric: string;
-  icon: any;
+  icon: LucideIcon;
   accentColor: string;
   tags: string[];
   highlights: string[];

@@ -142,7 +142,7 @@ export function HeroSoftwareVisual() {
         ))}
       </motion.div>
 
-      <div className="absolute bottom-8 left-8 w-[60%] sm:w-[42%] rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
+      <div className="absolute bottom-8 left-8 w-[60%] sm:w-[42%] rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl hidden sm:block">
         <div className="mb-3 flex items-center justify-between text-xs text-white/45"><span>Live graph</span><span>12:48</span></div>
         <svg viewBox="0 0 260 110" className="h-16 sm:h-28 w-full overflow-visible">
           <motion.path d="M6 92 C 44 42, 58 82, 92 54 S 150 20, 174 52 S 222 84, 254 22" fill="none" stroke="#805948" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={inView ? { pathLength: 1 } : { pathLength: 0.35 }} transition={{ duration: 4.4, repeat: inView ? Infinity : 0, repeatType: "reverse", ease: "easeInOut" }} />

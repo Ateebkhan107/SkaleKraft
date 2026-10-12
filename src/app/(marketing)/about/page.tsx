@@ -104,10 +104,10 @@ export default function AboutPage() {
           <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-[#805948]/12 blur-[100px]" />
           <div className="relative">
             <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-[#c19a88]">
-              Independent product studio
+              SkaleKraft · Independent product studio
             </div>
             <h1 className="mt-5 max-w-3xl text-[2.7rem] font-medium leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[4.6rem]">
-              We make ambitious ideas <span className="text-[#a97862]">feel inevitable.</span>
+              <span className="sr-only">About SkaleKraft — </span>We make ambitious ideas <span className="text-[#a97862]">feel inevitable.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/56 sm:text-lg">
               SkaleKraft is an engineering and creative studio for teams that value speed, clarity, and products people genuinely enjoy using.

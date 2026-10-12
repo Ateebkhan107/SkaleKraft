@@ -92,7 +92,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
         </Link>
         <div className="relative mx-auto w-full max-w-6xl text-center">
           <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm sm:tracking-[0.26em]">SkaleKraft</p>
-          <h1 className="mt-3 text-3xl font-medium tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">What are we building today?</h1>
+          <h2 className="mt-3 text-3xl font-medium tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">What are we building today?</h2>
           <p className="mt-3 text-base text-white/50 sm:mt-4 sm:text-lg">Choose your destination.</p>
           <div className="mt-8 grid min-w-0 grid-cols-2 gap-2 sm:mt-10 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-4">
             {destinations.map((destination) => {
@@ -335,9 +335,9 @@ function CinematicHero() {
           transition={{ duration: 0.75, ease }}
         >
           <motion.div className="flex max-w-3xl flex-col justify-center" style={{ y: copyY, opacity: heroOpacity }}>
-          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Software Studio</p>
+          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">SkaleKraft · Software Studio</p>
           <h1 className="mt-5 text-4xl sm:text-5xl font-medium tracking-tight text-white sm:leading-[1.1] md:text-6xl xl:text-7xl">
-            Build things people actually enjoy using.
+            <span className="sr-only">SkaleKraft — </span>Build things people actually enjoy using.
           </h1>
           <p className="mt-7 max-w-2xl text-base sm:text-lg leading-8 text-white/62 md:text-xl">
             Websites, apps, AI tools and creative work designed to help businesses grow without unnecessary complexity.
