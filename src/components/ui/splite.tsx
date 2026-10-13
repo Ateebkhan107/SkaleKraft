@@ -45,13 +45,11 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
         try {
           await app.load(scene)
         } catch (initialError) {
-          // If remote scene was blocked (e.g., adblocker/CORS), try local bundled file
-          if (scene.startsWith('http')) {
-            console.warn('Remote Spline scene blocked or failed to fetch, attempting local fallback scene...')
-            await app.load('/spline/robot.splinecode')
-          } else {
-            throw initialError
-          }
+          const fallbackUrl = scene.startsWith('http')
+            ? '/spline/robot.splinecode'
+            : 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
+          console.warn(`Initial Spline scene failed, trying fallback (${fallbackUrl}):`, initialError)
+          await app.load(fallbackUrl)
         }
 
         if (isMounted) {
@@ -85,25 +83,12 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
   if (hasError) {
     return (
       fallback || (
-        <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-[#c19a88]">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.8}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-          <p className="mt-3 text-xs uppercase tracking-[0.2em] text-[#c19a88]">3D Scene Unavailable</p>
-          <p className="mt-1 max-w-xs text-xs text-white/45">
-            WebGL could not initialize or network blocked the 3D asset.
-          </p>
+        <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center bg-transparent">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#c19a88]">3D Scene Unavailable</p>
           <button
             type="button"
             onClick={() => setHasError(false)}
-            className="mt-3.5 rounded-full border border-[#805948]/50 bg-[#805948]/20 px-3.5 py-1 text-xs text-white transition hover:bg-[#805948]"
+            className="mt-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs text-white/70 transition hover:bg-white/[0.08] hover:text-white"
           >
             Retry
           </button>
@@ -113,18 +98,18 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
   }
 
   return (
-    <div className={`relative h-full w-full overflow-hidden ${className ?? ''}`}>
+    <div className={`relative h-full w-full bg-transparent ${className ?? ''}`}>
       {isLoading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#090909]">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-transparent">
           <div className="flex flex-col items-center gap-2.5">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#805948]/30 border-t-[#c19a88]" />
-            <span className="text-[11px] uppercase tracking-widest text-white/40">Loading 3D scene...</span>
+            <span className="text-[11px] uppercase tracking-widest text-white/30">Loading 3D...</span>
           </div>
         </div>
       )}
       <canvas
         ref={canvasRef}
-        className="h-full w-full block outline-none"
+        className="h-full w-full block outline-none bg-transparent"
         style={{ display: isLoading ? 'none' : 'block' }}
       />
     </div>

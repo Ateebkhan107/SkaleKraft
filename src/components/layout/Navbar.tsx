@@ -13,7 +13,6 @@ import {
   Briefcase,
   Layers3,
   Info,
-  Send,
   Globe,
   Smartphone,
   Cpu,
@@ -46,7 +45,14 @@ const serviceSectionShortcuts = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Close mobile drawer when route changes without cascading effect renders
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setIsMobileMenuOpen(false);
+  }
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -63,10 +69,6 @@ export default function Navbar() {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
