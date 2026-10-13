@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUpRight,
   CheckCircle2,
   Clock3,
   Sparkles,
@@ -74,55 +75,182 @@ function IntroSplash({ isLeaving }: { isLeaving: boolean }) {
 }
 
 function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: DestinationKey) => void; onSkip: () => void }) {
+  const [mouseGlow, setMouseGlow] = useState({ x: 50, y: 35 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMouseGlow({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  };
+
   return (
     <section
-      className="fixed inset-0 z-[70] min-h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#0B0B0B] pb-[calc(env(safe-area-inset-bottom)+2rem)] text-white"
+      onMouseMove={handleMouseMove}
+      className="fixed inset-0 z-[70] min-h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#0B0B0B] pb-[calc(env(safe-area-inset-bottom)+2.5rem)] text-white select-none"
       style={{ position: "fixed", inset: 0, zIndex: 70, backgroundColor: "#0B0B0B" }}
     >
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(128,89,72,0.18),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_32%)]" />
-      <div className="relative flex min-h-full w-full flex-col items-center justify-center p-4 py-16 sm:p-5 sm:py-20 lg:py-16">
-        <Link
-          href="/?dest=everything"
-          onClick={(e) => { e.preventDefault(); onSkip(); }}
-          className="absolute right-6 top-6 z-10 rounded-full border border-white/10 px-4 py-2 text-sm text-white/45 transition duration-300 hover:border-white/25 hover:text-white"
-        >
-          Skip
-        </Link>
-        <div className="relative mx-auto w-full max-w-6xl text-center">
-          <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm sm:tracking-[0.26em]">SkaleKraft</p>
-          <h2 className="mt-3 text-3xl font-medium tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">What are we building today?</h2>
-          <p className="mt-3 text-base text-white/50 sm:mt-4 sm:text-lg">Choose your destination.</p>
-          <div className="mt-8 grid min-w-0 grid-cols-2 gap-2 sm:mt-10 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-4">
-            {destinations.map((destination) => {
+      {/* Dynamic Cursor Light Spotlight */}
+      <motion.div
+        animate={{ left: `${mouseGlow.x}%`, top: `${mouseGlow.y}%` }}
+        transition={{ type: "spring", stiffness: 120, damping: 24, mass: 0.5 }}
+        className="pointer-events-none fixed h-[580px] w-[580px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.04)_45%,transparent_70%)] blur-3xl hidden md:block"
+      />
+
+      {/* Layered luxury background atmosphere */}
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_50%_at_50%_-12%,rgba(193,154,136,0.22),transparent_70%),radial-gradient(ellipse_60%_40%_at_50%_115%,rgba(128,89,72,0.12),transparent_70%)]" />
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.025)_1px,transparent_0)] [background-size:32px_32px] opacity-70" />
+
+      {/* Top Left Studio Logo Badge */}
+      <div className="absolute left-6 top-6 z-20 flex items-center gap-2.5">
+        <div className="relative h-7 w-7 overflow-hidden rounded-xl border border-white/12 bg-white/[0.04] p-1 shadow-[0_4px_12px_rgba(0,0,0,0.4)] backdrop-blur-md">
+          <Image src="/images/skalekraft-logo.png" alt="SkaleKraft" fill className="object-contain" priority />
+        </div>
+        <span className="font-mono text-xs tracking-[0.22em] text-white/75 uppercase">
+          SKALE<span className="text-[#c19a88]">KRAFT</span>
+        </span>
+      </div>
+
+      {/* Top Right Executive Skip Pill */}
+      <Link
+        href="/?dest=everything"
+        onClick={(e) => { e.preventDefault(); onSkip(); }}
+        className="group/skip absolute right-6 top-6 z-20 flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 text-xs font-medium tracking-wider text-white/70 uppercase backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_0_20px_rgba(193,154,136,0.25)]"
+      >
+        <span>Skip Intro</span>
+        <ArrowRight className="h-3.5 w-3.5 text-white/45 transition-transform duration-300 group-hover/skip:translate-x-0.5 group-hover/skip:text-white" />
+      </Link>
+
+      <div className="relative flex min-h-full w-full flex-col items-center justify-center px-4 py-20 sm:px-6 sm:py-24 lg:py-20">
+        <div className="relative mx-auto w-full max-w-7xl text-center">
+          {/* Studio Selection Pill */}
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease }}
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3.5 py-1 text-[11px] font-medium tracking-[0.24em] text-[#c19a88] uppercase backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+          >
+            <Sparkles className="h-3 w-3 text-[#c19a88]" />
+            <span>Interactive Studio Gateway</span>
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08, ease }}
+            className="mt-4 text-3xl font-medium tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-b from-white via-white/95 to-white/70 bg-clip-text text-transparent"
+          >
+            What are we building today?
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.16, ease }}
+            className="mx-auto mt-3 max-w-xl text-sm text-white/50 sm:text-base leading-relaxed"
+          >
+            Choose your craft to enter a curated studio experience, or explore the entire engineering collective.
+          </motion.p>
+
+          {/* Luxury 5-Card Grid */}
+          <div className="mt-10 grid min-w-0 grid-cols-1 gap-3.5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4 lg:gap-4 text-left">
+            {destinations.map((destination, idx) => {
               const Icon = destination.icon;
-              const key = destination.key === "everything" ? "websites" : destination.key;
+              const colorInfo = accent[destination.key] || accent.websites;
               const isEverything = destination.key === "everything";
+
               return (
-                <Link
+                <motion.div
                   key={destination.key}
-                  href={`/?dest=${destination.key}`}
-                  onClick={(e) => { e.preventDefault(); onChoose(destination.key); }}
-                  className={`group relative h-32 min-w-0 overflow-hidden rounded-[20px] border border-white/10 bg-[#101010] p-3 text-left shadow-[0_18px_70px_rgba(0,0,0,0.28)] transition duration-500 sm:h-40 sm:p-4 lg:h-[200px] lg:rounded-[24px] lg:p-5 ${
-                    isEverything ? "col-span-2 sm:col-span-1" : ""
-                  }`}
-                  style={{ "--service": accent[key].rgb } as React.CSSProperties}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.18 + idx * 0.07, ease }}
+                  whileHover={{ y: -6 }}
+                  className={`h-full ${isEverything ? "sm:col-span-2 lg:col-span-1" : ""}`}
                 >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(var(--service),0.2),transparent_38%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  <div className="relative flex h-full flex-col justify-between gap-4 sm:gap-6 lg:gap-6">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.035] sm:h-12 sm:w-12 lg:h-14 lg:w-14">
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" style={{ color: accent[key].hex }} strokeWidth={1.7} />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-base font-medium sm:text-lg lg:text-xl">{destination.label}</span>
-                      <span className="mt-3 hidden overflow-hidden text-sm leading-6 text-white/48 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box]">
+                  <Link
+                    href={`/?dest=${destination.key}`}
+                    onClick={(e) => { e.preventDefault(); onChoose(destination.key); }}
+                    className="group relative flex h-full min-h-[280px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-between overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-5 sm:p-6 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)]"
+                    style={{ "--service": colorInfo.rgb } as React.CSSProperties}
+                  >
+                    {/* Top Specular Edge Catch */}
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:via-white/40 transition-colors duration-500" />
+
+                    {/* Ambient Hover Backglow */}
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--service),0.22),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+                    {/* Card Top Row: Medallion + Index / Indicator */}
+                    <div className="relative z-10 flex items-center justify-between">
+                      <div
+                        className="flex h-12 w-12 sm:h-13 sm:w-13 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_rgba(0,0,0,0.35)] transition-all duration-500 group-hover:scale-105 group-hover:border-white/25"
+                        style={{
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 24px rgba(${colorInfo.rgb}, 0.15)`,
+                        }}
+                      >
+                        <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white/50 transition-colors">
+                          {destination.number}
+                        </span>
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-white/8 bg-white/[0.02] text-white/30 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white">
+                          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Body: Tagline, Title, Subtitle */}
+                    <div className="relative z-10 my-auto py-3">
+                      <p className="font-mono text-[10px] tracking-widest uppercase text-[#c19a88]/90 group-hover:text-[#c19a88] transition-colors">
+                        {destination.tagline}
+                      </p>
+                      <h2 className="mt-1 text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors">
+                        {destination.label}
+                      </h2>
+                      <p className="mt-2 text-xs leading-relaxed text-white/52 group-hover:text-white/70 transition-colors line-clamp-3">
                         {destination.subtitle}
-                      </span>
-                    </span>
-                  </div>
-                </Link>
+                      </p>
+                    </div>
+
+                    {/* Card Footer: Capabilities Tags */}
+                    <div className="relative z-10 pt-3 border-t border-white/6 flex flex-wrap gap-1.5">
+                      {destination.badges.map((badge) => (
+                        <span
+                          key={badge}
+                          className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-2 py-0.5 text-[10px] font-medium text-white/45 group-hover:border-white/12 group-hover:text-white/70 transition-colors"
+                        >
+                          {badge}
+                        </span>
+                      ))}
+                    </div>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
+
+          {/* Bottom Hint Indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-10 sm:mt-12 flex items-center justify-center gap-2 text-xs text-white/35 font-mono"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88] animate-pulse" />
+            <span>Select a discipline to dive in · or </span>
+            <button
+              type="button"
+              onClick={onSkip}
+              className="text-[#c19a88] underline underline-offset-4 hover:text-white transition-colors"
+            >
+              skip to full experience
+            </button>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -236,7 +364,7 @@ function CinematicHero() {
         });
       }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(128,89,72,0.15),transparent_48%),linear-gradient(90deg,rgba(11,11,11,0.55)_0%,rgba(11,11,11,0.35)_50%,rgba(11,11,11,0.15)_100%)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_25%,rgba(128,89,72,0.12),transparent_55%)] [mask-image:linear-gradient(to_bottom,black_75%,transparent_100%)]" />
       <motion.div
         className="pointer-events-none absolute h-[450px] w-[450px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.06)_40%,transparent_70%)] blur-2xl hidden md:block"
         animate={{ left: glow.x, top: glow.y }}
@@ -264,7 +392,6 @@ function CinematicHero() {
         </motion.div>
 
         <motion.div className="relative flex w-full items-center justify-center overflow-visible" style={{ y: visualY, scale: visualScale, opacity: heroOpacity }}>
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.05)_50%,transparent_75%)] blur-3xl" />
           <Hero3DRobotVisual />
         </motion.div>
       </div>
@@ -286,7 +413,7 @@ function SelectedWork() {
         </Link>
       </div>
       <motion.div
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 xl:grid-cols-4"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}

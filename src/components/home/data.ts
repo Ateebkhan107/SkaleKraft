@@ -17,11 +17,12 @@ export type DestinationKey = ServiceKey | "everything";
 
 export const ease = [0.16, 1, 0.3, 1] as const;
 
-export const accent = {
+export const accent: Record<string, { name: string; rgb: string; hex: string }> = {
   websites: { name: "Blue", rgb: "59,130,246", hex: "#3B82F6" },
   apps: { name: "Purple", rgb: "168,85,247", hex: "#A855F7" },
   ai: { name: "Cyan", rgb: "34,211,238", hex: "#22D3EE" },
   creative: { name: "Orange", rgb: "249,115,22", hex: "#F97316" },
+  everything: { name: "Copper", rgb: "193,154,136", hex: "#c19a88" },
 };
 
 export const services: Record<ServiceKey, {
@@ -123,12 +124,66 @@ export const services: Record<ServiceKey, {
   },
 };
 
-export const destinations: Array<{ key: DestinationKey; label: string; subtitle: string; icon: LucideIcon; target: string }> = [
-  { key: "websites", label: "Websites", subtitle: services.websites.subtitle, icon: MonitorSmartphone, target: "websites" },
-  { key: "apps", label: "Apps", subtitle: services.apps.subtitle, icon: Smartphone, target: "apps" },
-  { key: "ai", label: "AI", subtitle: services.ai.subtitle, icon: BrainCircuit, target: "ai" },
-  { key: "creative", label: "Creative", subtitle: services.creative.subtitle, icon: Clapperboard, target: "creative" },
-  { key: "everything", label: "Explore Everything", subtitle: "Show me everything SkaleKraft offers.", icon: Sparkles, target: "home" },
+export const destinations: Array<{
+  key: DestinationKey;
+  label: string;
+  subtitle: string;
+  icon: LucideIcon;
+  target: string;
+  tagline: string;
+  badges: string[];
+  number: string;
+}> = [
+  {
+    key: "websites",
+    label: "Websites",
+    subtitle: services.websites.subtitle,
+    icon: MonitorSmartphone,
+    target: "websites",
+    tagline: "Web Architecture",
+    badges: ["Next.js", "SaaS", "Fullstack"],
+    number: "01",
+  },
+  {
+    key: "apps",
+    label: "Apps",
+    subtitle: services.apps.subtitle,
+    icon: Smartphone,
+    target: "apps",
+    tagline: "Mobile Systems",
+    badges: ["iOS", "Android", "React Native"],
+    number: "02",
+  },
+  {
+    key: "ai",
+    label: "AI",
+    subtitle: services.ai.subtitle,
+    icon: BrainCircuit,
+    target: "ai",
+    tagline: "Autonomous AI",
+    badges: ["AI Agents", "LLMs", "RAG"],
+    number: "03",
+  },
+  {
+    key: "creative",
+    label: "Creative",
+    subtitle: services.creative.subtitle,
+    icon: Clapperboard,
+    target: "creative",
+    tagline: "Motion & Video",
+    badges: ["4K Motion", "Shorts", "Color"],
+    number: "04",
+  },
+  {
+    key: "everything",
+    label: "Explore Everything",
+    subtitle: "Experience all services, systems and studio showcases.",
+    icon: Sparkles,
+    target: "home",
+    tagline: "Studio Tour",
+    badges: ["All Services", "Live Showcase"],
+    number: "05",
+  },
 ];
 
 export const sidebarLinks: Array<{ id: string; label: string; icon: LucideIcon; color?: ServiceKey }> = [

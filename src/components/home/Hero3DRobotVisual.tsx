@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Spotlight } from "@/components/ui/spotlight";
 
 // Dynamically import SplineScene with ssr: false so it never blocks SSR or causes hydration mismatch
 const SplineScene = dynamic(
@@ -19,23 +18,17 @@ const SplineScene = dynamic(
 export function Hero3DRobotVisual() {
   return (
     <div className="relative flex h-[480px] w-full min-h-[420px] items-center justify-center overflow-visible sm:h-[540px] lg:h-[600px] xl:h-[660px]">
-      {/* Seamless atmospheric lighting that blends naturally into the hero background */}
-      <div className="pointer-events-none absolute -inset-6 sm:-inset-12 bg-[radial-gradient(ellipse_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.06)_45%,transparent_75%)] blur-3xl" />
+      {/* Soft atmospheric ambient glow without harsh boundaries */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(193,154,136,0.12)_0%,rgba(128,89,72,0.04)_45%,transparent_70%)] blur-3xl" />
 
-      {/* Dynamic ambient cursor spotlight matching brand copper tones */}
-      <Spotlight
-        className="-top-32 left-0 md:left-20"
-        fill="rgba(193, 154, 136, 0.35)"
-      />
-
-      {/* 3D Spline Canvas - Floating with smooth bottom fade mask */}
+      {/* 3D Spline Canvas - Multi-directional radial vignette mask to eliminate all edges & seams */}
       <div
         className="relative z-10 h-full w-full"
         style={{
           maskImage:
-            "linear-gradient(to bottom, black 0%, black 50%, rgba(0, 0, 0, 0.75) 68%, rgba(0, 0, 0, 0.25) 84%, transparent 96%)",
+            "radial-gradient(ellipse 75% 72% at 50% 42%, black 32%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 0.3) 70%, transparent 92%)",
           WebkitMaskImage:
-            "linear-gradient(to bottom, black 0%, black 50%, rgba(0, 0, 0, 0.75) 68%, rgba(0, 0, 0, 0.25) 84%, transparent 96%)",
+            "radial-gradient(ellipse 75% 72% at 50% 42%, black 32%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 0.3) 70%, transparent 92%)",
         }}
       >
         <SplineScene
@@ -44,9 +37,21 @@ export function Hero3DRobotVisual() {
         />
       </div>
 
-      {/* Atmospheric dark gradient feathering at the bottom to eliminate hard crop line */}
+      {/* Left edge feathered gradient to dissolve any tone difference into the text side */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-44 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/80 to-transparent"
+        className="pointer-events-none absolute inset-y-0 -left-6 z-20 w-36 bg-gradient-to-r from-[#0B0B0B] via-[#0B0B0B]/75 to-transparent"
+        aria-hidden="true"
+      />
+
+      {/* Right edge feathered gradient */}
+      <div
+        className="pointer-events-none absolute inset-y-0 -right-6 z-20 w-32 bg-gradient-to-l from-[#0B0B0B] via-[#0B0B0B]/75 to-transparent"
+        aria-hidden="true"
+      />
+
+      {/* Bottom feathering gradient to dissolve legs seamlessly into page darkness */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-44 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/85 to-transparent"
         aria-hidden="true"
       />
     </div>

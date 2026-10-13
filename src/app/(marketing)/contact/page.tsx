@@ -11,14 +11,11 @@ import {
   CheckCircle,
   ChevronDown,
   Clapperboard,
-  Globe2,
   MonitorSmartphone,
   Palette,
   Send,
-  ShieldCheck,
   Sparkles,
   Smartphone,
-  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -85,21 +82,21 @@ function OptionCard({
     <motion.button
       type="button"
       onClick={onClick}
-      className={`group relative min-h-20 w-full overflow-hidden rounded-[16px] border p-3 text-center transition duration-300 ${
-        selected ? "border-[#805948]/70 bg-[#805948]/14 shadow-[0_0_34px_rgba(128,89,72,.14)]" : "border-white/10 bg-white/[0.025] hover:border-white/22 hover:bg-white/[0.045]"
+      className={`group relative h-13 sm:h-14 w-full overflow-hidden rounded-[14px] border p-1.5 text-center transition duration-300 ${
+        selected ? "border-[#805948]/70 bg-[#805948]/16 shadow-[0_0_24px_rgba(128,89,72,.16)]" : "border-white/10 bg-white/[0.025] hover:border-white/20 hover:bg-white/[0.045]"
       }`}
-      whileHover={{ y: -3, scale: 1.015 }}
+      whileHover={{ y: -2, scale: 1.01 }}
       whileTap={{ scale: 0.985 }}
     >
       <span className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(128,89,72,.18),transparent_34%)] opacity-0 transition duration-300 group-hover:opacity-100" />
-      <span className="relative flex h-full flex-col items-center justify-center gap-2">
+      <span className="relative flex h-full flex-col items-center justify-center gap-1">
         {Icon && (
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/24">
-            <Icon className={selected ? "h-4 w-4 text-[#c19a88]" : "h-4 w-4 text-white/52"} strokeWidth={1.7} />
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/10 bg-black/24">
+            <Icon className={selected ? "h-3.5 w-3.5 text-[#c19a88]" : "h-3.5 w-3.5 text-white/50"} strokeWidth={1.7} />
           </span>
         )}
-        <span className="font-medium leading-tight text-white">{option.label}</span>
-        {selected && <Check className="absolute right-0 top-0 h-4 w-4 text-[#c19a88]" />}
+        <span className="text-[11px] font-medium leading-tight text-white truncate max-w-full">{option.label}</span>
+        {selected && <Check className="absolute right-1 top-1 h-3.5 w-3.5 text-[#c19a88]" />}
       </span>
     </motion.button>
   );
@@ -110,15 +107,15 @@ function ChoiceCard({ label, selected, onClick }: { label: string; selected: boo
     <motion.button
       type="button"
       onClick={onClick}
-      className={`flex min-h-11 w-full items-center rounded-xl border px-3 py-2 text-left text-sm font-medium transition duration-300 ${
-        selected ? "border-[#805948]/70 bg-[#805948]/14 text-white shadow-[0_0_28px_rgba(128,89,72,.12)]" : "border-white/10 bg-white/[0.025] text-white/62 hover:border-white/22 hover:text-white"
+      className={`flex h-8 w-full items-center rounded-lg border px-2.5 py-1 text-left text-xs font-medium transition duration-300 ${
+        selected ? "border-[#805948]/70 bg-[#805948]/16 text-white shadow-[0_0_20px_rgba(128,89,72,.14)]" : "border-white/10 bg-white/[0.025] text-white/60 hover:border-white/20 hover:text-white"
       }`}
-      whileHover={{ y: -2, scale: 1.01 }}
+      whileHover={{ y: -1, scale: 1.01 }}
       whileTap={{ scale: 0.985 }}
     >
-      <span className="flex w-full items-center justify-between gap-2">
-        {label}
-        <span className={`h-1.5 w-1.5 rounded-full transition ${selected ? "bg-[#d3a58f] shadow-[0_0_10px_rgba(211,165,143,.8)]" : "bg-white/15"}`} />
+      <span className="flex w-full items-center justify-between gap-1.5">
+        <span className="truncate">{label}</span>
+        <span className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${selected ? "bg-[#d3a58f] shadow-[0_0_8px_rgba(211,165,143,.8)]" : "bg-white/15"}`} />
       </span>
     </motion.button>
   );
@@ -126,12 +123,12 @@ function ChoiceCard({ label, selected, onClick }: { label: string; selected: boo
 
 function SectionTitle({ number, title, hint }: { number: string; title: string; hint: string }) {
   return (
-    <div className="flex items-end justify-between gap-4 border-b border-white/[0.07] pb-2">
-      <div className="flex items-center gap-2.5">
-        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#c19a88]/25 bg-[#805948]/10 text-[9px] font-semibold text-[#d4a894]">{number}</span>
-        <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-white/64">{title}</h2>
+    <div className="flex items-end justify-between gap-3 border-b border-white/[0.07] pb-1 mb-1.5">
+      <div className="flex items-center gap-2">
+        <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#c19a88]/25 bg-[#805948]/10 text-[8px] font-semibold text-[#d4a894]">{number}</span>
+        <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/70">{title}</h2>
       </div>
-      <span className="hidden text-[11px] text-white/28 sm:block">{hint}</span>
+      <span className="hidden text-[10px] text-white/30 sm:block">{hint}</span>
     </div>
   );
 }
@@ -160,9 +157,9 @@ function FloatingField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder=" "
-        className="peer h-11 w-full rounded-xl border border-white/10 bg-black/24 px-4 pt-4 text-sm text-white outline-none transition duration-300 focus:border-[#805948]/70 focus:shadow-[0_0_30px_rgba(128,89,72,.12)]"
+        className="peer h-8 w-full rounded-lg border border-white/10 bg-black/24 px-3 pt-3 text-xs text-white outline-none transition duration-300 focus:border-[#805948]/70 focus:shadow-[0_0_20px_rgba(128,89,72,.12)]"
       />
-      <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-white/42 transition duration-300 peer-focus:top-3 peer-focus:text-xs peer-focus:text-[#c19a88] peer-[:not(:placeholder-shown)]:top-3 peer-[:not(:placeholder-shown)]:text-xs">
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-white/40 transition duration-300 peer-focus:top-1.5 peer-focus:text-[9px] peer-focus:text-[#c19a88] peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[9px]">
         {label}
       </span>
     </label>
@@ -171,17 +168,17 @@ function FloatingField({
 
 function FAQItem({ item, open, onClick }: { item: (typeof faqs)[number]; open: boolean; onClick: () => void }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.025]">
-      <button type="button" onClick={onClick} className="flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left text-white">
-        <span className="font-medium">{item.q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }}>
-          <ChevronDown className="h-4 w-4 text-white/45" />
+    <div className="rounded-xl border border-white/10 bg-white/[0.02]">
+      <button type="button" onClick={onClick} className="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-xs font-medium text-white">
+        <span>{item.q}</span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown className="h-3.5 w-3.5 text-white/40" />
         </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28 }}>
-            <p className="px-4 pb-4 text-sm leading-6 text-white/52">{item.a}</p>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
+            <p className="px-3 pb-2 text-[11px] leading-relaxed text-white/50">{item.a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -204,6 +201,7 @@ export default function ContactPage() {
   const [startedAt, setStartedAt] = useState("");
   const [error, setError] = useState("");
   const [openFaq, setOpenFaq] = useState(-1);
+  const [rightTab, setRightTab] = useState<"preview" | "faq">("preview");
 
   const effectiveBudget = useMemo(
     () => (budget === "Custom" ? (customBudget.trim() || "Custom") : budget),
@@ -258,7 +256,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#090909] px-4 pb-12 pt-28 text-white sm:pt-32 md:px-6">
+    <main className="relative min-h-screen lg:h-screen lg:overflow-hidden bg-[#090909] px-3 pb-3 pt-18 sm:pt-20 md:px-6 flex flex-col justify-center text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_8%,rgba(166,111,87,.17),transparent_31%),radial-gradient(circle_at_8%_70%,rgba(255,255,255,.045),transparent_27%),linear-gradient(135deg,#080808_0%,#0b0908_52%,#090909_100%)]" />
       <FluidParticlesBackground
         theme="dark"
@@ -285,285 +283,290 @@ export default function ContactPage() {
         />
       ))}
 
-      <div className="relative mx-auto max-w-[1280px]">
-        <Link href="/?dest=everything" className="group mb-6 inline-flex min-h-10 items-center gap-2.5 rounded-full border border-white/14 bg-black/35 px-4 text-sm font-medium text-white/75 shadow-[0_10px_30px_rgba(0,0,0,.22)] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#c19a88]/40 hover:bg-[#805948]/12 hover:text-white">
-          <ArrowLeft className="h-4 w-4 text-[#c19a88] transition-transform duration-300 group-hover:-translate-x-0.5" />
+      <div className="relative mx-auto w-full max-w-[1360px] my-auto">
+        <Link href="/?dest=everything" className="group mb-2 inline-flex h-7.5 items-center gap-2 rounded-full border border-white/14 bg-black/35 px-3.5 text-xs font-medium text-white/75 shadow-[0_8px_24px_rgba(0,0,0,.2)] backdrop-blur-md transition duration-300 hover:border-[#c19a88]/40 hover:bg-[#805948]/12 hover:text-white">
+          <ArrowLeft className="h-3.5 w-3.5 text-[#c19a88] transition-transform duration-300 group-hover:-translate-x-0.5" />
           Back to home
         </Link>
 
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,.92fr)]">
-          <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.022)_38%,rgba(128,89,72,.035))] p-5 shadow-[0_30px_120px_rgba(0,0,0,.42),inset_0_1px_0_rgba(255,255,255,.035)] backdrop-blur-xl md:p-7">
-              <div className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-[#805948]/12 blur-3xl" />
+        <div className="grid items-stretch gap-3 lg:grid-cols-[minmax(0,1.15fr)_minmax(330px,0.85fr)]">
+          <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="relative h-full overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.022)_38%,rgba(128,89,72,.035))] p-3.5 shadow-[0_20px_80px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.035)] backdrop-blur-xl sm:p-4.5 flex flex-col justify-between">
+              <div className="pointer-events-none absolute -right-28 -top-28 h-64 w-64 rounded-full bg-[#805948]/12 blur-3xl" />
               <div className="relative">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-xs uppercase tracking-[0.26em] text-[#c19a88]">Start Project</p>
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/10 bg-emerald-300/[0.045] px-3 py-1 text-[11px] text-emerald-100/55">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,.75)]" />
-                  Accepting new projects
-                </span>
-              </div>
-              <h1 className="mt-2 max-w-2xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-[2.25rem] sm:leading-[1.08]">Let&apos;s build something <span className="bg-gradient-to-r from-white via-[#e8c5b4] to-[#b87c62] bg-clip-text text-transparent">remarkable.</span></h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">Tell us about your idea. We&apos;ll review it and get back to you within 24 hours.</p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {[
-                  { label: "Reply within 24 hours", icon: Zap },
-                  { label: "Working worldwide", icon: Globe2 },
-                  { label: "NDA available on request", icon: ShieldCheck },
-                ].map((badge) => {
-                  const Icon = badge.icon;
-                  return (
-                    <span key={badge.label} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs text-white/60">
-                      <Icon className="h-3.5 w-3.5 text-[#c19a88]" />
-                      {badge.label}
-                    </span>
-                  );
-                })}
-              </div>
-
-              <form onSubmit={handleSubmit} className="mt-5 space-y-5">
-                <input type="hidden" name="service" value={service} />
-                <input type="hidden" name="budget" value={effectiveBudget} />
-                <input type="hidden" name="timeline" value={timeline} />
-                <input type="hidden" name="startedAt" value={startedAt} />
-                <input
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  className="hidden"
-                  aria-hidden="true"
-                />
-
-                <section>
-                  <SectionTitle number="01" title="Choose a service" hint="What can we create for you?" />
-                  <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-5">
-                    {services.map((item) => (
-                      <OptionCard key={item.value} option={item} selected={service === item.value} onClick={() => setService(item.value)} />
-                    ))}
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-[#c19a88] font-mono">Start Project</p>
+                    <span className="text-white/20">/</span>
+                    <span className="text-[10px] text-white/60">Reply within 24h</span>
                   </div>
-                </section>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-[10px] text-white/60">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88]" />
+                    Accepting new projects
+                  </span>
+                </div>
+                
+                <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2">
+                  <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
+                    Let&apos;s build something <span className="bg-gradient-to-r from-white via-[#e8c5b4] to-[#b87c62] bg-clip-text text-transparent">remarkable.</span>
+                  </h1>
+                  <span className="hidden text-[11px] text-white/40 xl:inline font-mono">NDA available on request</span>
+                </div>
 
-                <section>
-                  <SectionTitle number="02" title="Set your budget" hint="A comfortable investment range" />
-                  <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-5">
-                    {budgets.map((item) => {
-                      const displayLabel =
-                        item === "Custom" && customBudget.trim()
-                          ? `Custom (${customBudget.trim()})`
-                          : item;
-                      return (
-                        <ChoiceCard
-                          key={item}
-                          label={displayLabel}
-                          selected={budget === item}
-                          onClick={() => {
-                            setBudget(item);
-                            if (item !== "Custom") {
-                              setCustomBudget("");
-                              setIsCustomSubmitted(false);
-                            }
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
-                  <AnimatePresence>
-                    {budget === "Custom" && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                        animate={{ opacity: 1, height: "auto", marginTop: 10 }}
-                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="relative flex items-center">
-                          <input
-                            type="text"
-                            value={customBudget}
-                            onChange={(event) => {
-                              setCustomBudget(event.target.value);
-                              setIsCustomSubmitted(false);
-                            }}
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter") {
-                                event.preventDefault();
-                                if (customBudget.trim()) {
-                                  setIsCustomSubmitted(true);
-                                }
-                              }
-                            }}
-                            placeholder="Enter custom budget (e.g. $15,000 or $3,500/mo)"
-                            autoFocus
-                            className="h-11 w-full rounded-xl border border-[#805948]/70 bg-black/35 pl-4 pr-32 text-sm text-white placeholder:text-white/35 outline-none transition duration-300 focus:border-[#c19a88] focus:shadow-[0_0_30px_rgba(128,89,72,.2)]"
-                          />
-                          <button
-                            type="button"
+                <form onSubmit={handleSubmit} className="mt-2.5 space-y-2">
+                  <input type="hidden" name="service" value={service} />
+                  <input type="hidden" name="budget" value={effectiveBudget} />
+                  <input type="hidden" name="timeline" value={timeline} />
+                  <input type="hidden" name="startedAt" value={startedAt} />
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+
+                  <section>
+                    <SectionTitle number="01" title="Choose a service" hint="What can we create for you?" />
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-5">
+                      {services.map((item) => (
+                        <OptionCard key={item.value} option={item} selected={service === item.value} onClick={() => setService(item.value)} />
+                      ))}
+                    </div>
+                  </section>
+
+                  <section>
+                    <SectionTitle number="02" title="Set your budget" hint="A comfortable investment range" />
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-5">
+                      {budgets.map((item) => {
+                        const displayLabel = item === "Custom" && customBudget.trim() ? `Custom (${customBudget.trim()})` : item;
+                        return (
+                          <ChoiceCard
+                            key={item}
+                            label={displayLabel}
+                            selected={budget === item}
                             onClick={() => {
-                              if (customBudget.trim()) {
-                                setIsCustomSubmitted(true);
+                              setBudget(item);
+                              if (item !== "Custom") {
+                                setCustomBudget("");
+                                setIsCustomSubmitted(false);
                               }
                             }}
-                            className="absolute right-1.5 flex h-8 items-center gap-1.5 rounded-lg border border-[#805948]/70 bg-[#805948]/30 px-3 text-xs font-semibold text-white transition duration-300 hover:bg-[#805948] hover:shadow-[0_0_20px_rgba(128,89,72,.4)]"
-                          >
-                            {isCustomSubmitted || (customBudget.trim() && budget === "Custom") ? (
-                              <>
-                                Set Amount <Check className="h-3.5 w-3.5 text-emerald-300" />
-                              </>
-                            ) : (
-                              <>
-                                Confirm <Check className="h-3.5 w-3.5" />
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </motion.div>
+                          />
+                        );
+                      })}
+                    </div>
+                    <AnimatePresence>
+                      {budget === "Custom" && (
+                        <motion.div initial={{ opacity: 0, height: 0, marginTop: 0 }} animate={{ opacity: 1, height: "auto", marginTop: 6 }} exit={{ opacity: 0, height: 0, marginTop: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden">
+                          <div className="relative flex items-center">
+                            <input
+                              type="text"
+                              value={customBudget}
+                              onChange={(event) => { setCustomBudget(event.target.value); setIsCustomSubmitted(false); }}
+                              onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); if (customBudget.trim()) setIsCustomSubmitted(true); } }}
+                              placeholder="Enter custom budget (e.g. $15,000)"
+                              autoFocus
+                              className="h-8 w-full rounded-lg border border-[#805948]/70 bg-black/35 pl-3 pr-28 text-xs text-white placeholder:text-white/35 outline-none focus:border-[#c19a88]"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => { if (customBudget.trim()) setIsCustomSubmitted(true); }}
+                              className="absolute right-1 flex h-6 items-center gap-1 rounded border border-[#805948]/70 bg-[#805948]/30 px-2 text-[10px] font-semibold text-white hover:bg-[#805948]"
+                            >
+                              {isCustomSubmitted || (customBudget.trim() && budget === "Custom") ? <>Set Amount <Check className="h-3 w-3 text-emerald-300" /></> : <>Confirm <Check className="h-3 w-3" /></>}
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </section>
+
+                  <section>
+                    <SectionTitle number="03" title="Pick a timeline" hint="When would you like to launch?" />
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-5">
+                      {timelines.map((item) => (
+                        <ChoiceCard key={item} label={item} selected={timeline === item} onClick={() => setTimeline(item)} />
+                      ))}
+                    </div>
+                  </section>
+
+                  <section>
+                    <SectionTitle number="04" title="Tell us about you" hint="We only use this to reply" />
+                    <div className="grid gap-1.5 sm:grid-cols-3">
+                      <FloatingField label="Name" name="name" required value={name} onChange={setName} />
+                      <FloatingField label="Email" name="email" type="email" required value={email} onChange={setEmail} />
+                      <FloatingField label="Company" name="company" value={company} onChange={setCompany} />
+                      <label className="group relative block sm:col-span-3">
+                        <textarea
+                          name="message"
+                          required
+                          rows={2}
+                          value={message}
+                          onChange={(event) => setMessage(event.target.value)}
+                          placeholder=" "
+                          className="peer h-12.5 w-full resize-none rounded-lg border border-white/10 bg-black/24 px-3 pt-3.5 text-xs text-white outline-none transition duration-300 focus:border-[#805948]/70 focus:shadow-[0_0_20px_rgba(128,89,72,.12)]"
+                        />
+                        <span className="pointer-events-none absolute left-3 top-3 text-xs text-white/40 transition duration-300 peer-focus:top-1 peer-focus:text-[9px] peer-focus:text-[#c19a88] peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-[9px]">
+                          Briefly describe your idea or requirements...
+                        </span>
+                      </label>
+                    </div>
+                  </section>
+
+                  {error && <p className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs text-red-200">{error}</p>}
+
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group flex h-9 w-full items-center justify-center gap-2 rounded-lg bg-[#805948] px-5 text-xs font-semibold text-white shadow-[0_12px_40px_rgba(128,89,72,.18)] transition duration-300 hover:bg-[#936857] disabled:cursor-wait disabled:opacity-80"
+                    whileHover={{ scale: 1.008 }}
+                    whileTap={{ scale: 0.985 }}
+                  >
+                    {isSubmitted ? (
+                      <>Project request received <CheckCircle className="h-4 w-4" /></>
+                    ) : isSubmitting ? (
+                      "Sending..."
+                    ) : (
+                      <>Send Project Request <Send className="h-3.5 w-3.5 transition duration-300 group-hover:translate-x-1" /></>
                     )}
-                  </AnimatePresence>
-                </section>
-
-                <section>
-                  <SectionTitle number="03" title="Pick a timeline" hint="When would you like to launch?" />
-                  <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-5">
-                    {timelines.map((item) => <ChoiceCard key={item} label={item} selected={timeline === item} onClick={() => setTimeline(item)} />)}
-                  </div>
-                </section>
-
-                <section>
-                  <SectionTitle number="04" title="Tell us about you" hint="We only use this to reply" />
-                  <div className="mt-2.5 grid gap-2.5 md:grid-cols-2">
-                  <FloatingField label="Name" name="name" required value={name} onChange={setName} />
-                  <FloatingField label="Email" name="email" type="email" required value={email} onChange={setEmail} />
-                  <div className="md:col-span-2">
-                    <FloatingField label="Company" name="company" value={company} onChange={setCompany} />
-                  </div>
-                  <label className="group relative block md:col-span-2">
-                    <textarea
-                      name="message"
-                      required
-                      rows={4}
-                      value={message}
-                      onChange={(event) => setMessage(event.target.value)}
-                      placeholder=" "
-                      className="peer w-full resize-none rounded-xl border border-white/10 bg-black/24 px-4 pt-7 text-sm text-white outline-none transition duration-300 focus:border-[#805948]/70 focus:shadow-[0_0_30px_rgba(128,89,72,.12)]"
-                    />
-                    <span className="pointer-events-none absolute left-4 top-6 text-sm text-white/42 transition duration-300 peer-focus:top-3 peer-focus:text-xs peer-focus:text-[#c19a88] peer-[:not(:placeholder-shown)]:top-3 peer-[:not(:placeholder-shown)]:text-xs">
-                      Description
-                    </span>
-                  </label>
-                  </div>
-                </section>
-
-                {error && <p className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">{error}</p>}
-
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="group flex h-12 w-full items-center justify-center gap-3 rounded-xl bg-[#805948] px-6 text-sm font-medium text-white shadow-[0_22px_70px_rgba(128,89,72,.18)] transition duration-300 hover:bg-[#936857] disabled:cursor-wait disabled:opacity-80"
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.985 }}
-                >
-                  {isSubmitted ? (
-                    <>
-                      Project request received
-                      <CheckCircle className="h-5 w-5" />
-                    </>
-                  ) : isSubmitting ? (
-                    "Sending..."
-                  ) : (
-                    <>
-                      Send Project Request
-                      <Send className="h-5 w-5 transition duration-300 group-hover:translate-x-1" />
-                    </>
-                  )}
-                </motion.button>
-
-                {isSubmitted && <p className="text-center text-sm text-white/50">We&apos;ll contact you soon.</p>}
-              </form>
+                  </motion.button>
+                  {isSubmitted && <p className="text-center text-xs text-white/50">We&apos;ll contact you within 24 hours.</p>}
+                </form>
               </div>
             </div>
-
           </motion.section>
 
-          <motion.aside initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08 }} className="space-y-6 lg:sticky lg:top-14 lg:self-start">
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(155deg,rgba(128,89,72,.10),rgba(255,255,255,.035)_35%,rgba(255,255,255,.018))] p-5 shadow-[0_30px_120px_rgba(0,0,0,.42),inset_0_1px_0_rgba(255,255,255,.04)] backdrop-blur-xl md:p-6">
+          <motion.aside initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.06 }} className="h-full">
+            <div className="relative h-full overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(155deg,rgba(128,89,72,.10),rgba(255,255,255,.035)_35%,rgba(255,255,255,.018))] p-3.5 shadow-[0_20px_80px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.04)] backdrop-blur-xl sm:p-4.5 flex flex-col justify-between">
               <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[#805948]/15 blur-3xl" />
-              <div className="relative flex items-center justify-between gap-3">
-                <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88]">Project Preview</p>
-                <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/28"><Sparkles className="h-3 w-3 text-[#c19a88]" /> Live</span>
-              </div>
-              <div className="mt-5 space-y-4">
-                <div className="grid grid-cols-3 gap-2.5">
-                {[
-                  ["Project", service],
-                  ["Budget", effectiveBudget],
-                  ["Timeline", timeline],
-                ].map(([label, value]) => (
-                  <motion.div key={label} layout className="min-w-0 rounded-2xl border border-white/10 bg-black/20 p-3 text-center">
-                    <span className="text-[10px] uppercase tracking-[0.16em] text-white/35">{label}</span>
-                    <span className="mt-1.5 block truncate text-sm font-medium text-white" title={value}>{value}</span>
-                  </motion.div>
-                ))}
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/[0.08] bg-black/15 p-4">
-                    <p className="text-xs uppercase tracking-[0.14em] text-white/35">Recommended Stack</p>
-                    <motion.div layout className="mt-3 flex flex-wrap gap-1.5">
-                      {summary.stack.map((item) => <span key={item} className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] text-white/62">{item}</span>)}
-                    </motion.div>
+              
+              <div>
+                {/* Header Switcher Tabs */}
+                <div className="relative flex items-center justify-between gap-2 border-b border-white/10 pb-2">
+                  <div className="flex items-center gap-1 rounded-lg bg-black/40 border border-white/10 p-0.5">
+                    <button
+                      type="button"
+                      onClick={() => setRightTab("preview")}
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                        rightTab === "preview"
+                          ? "bg-[#805948]/50 text-white border border-[#c19a88]/30 font-semibold shadow"
+                          : "text-white/50 hover:text-white"
+                      }`}
+                    >
+                      <Sparkles className="h-3 w-3 text-[#c19a88]" />
+                      <span>Project Preview</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRightTab("faq")}
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                        rightTab === "faq"
+                          ? "bg-[#805948]/50 text-white border border-[#c19a88]/30 font-semibold shadow"
+                          : "text-white/50 hover:text-white"
+                      }`}
+                    >
+                      <span>FAQs</span>
+                      <span className="px-1.5 py-0.2 rounded-full bg-white/10 text-[9px] font-mono text-[#c19a88]">4</span>
+                    </button>
                   </div>
+                  <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-[#c19a88] font-mono">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88]" /> Live
+                  </span>
+                </div>
 
-                  <div className="rounded-2xl border border-white/[0.08] bg-black/15 p-4">
-                    <p className="text-xs uppercase tracking-[0.14em] text-white/35">Estimated Team</p>
-                    <motion.div layout className="mt-3 flex flex-wrap gap-1.5">
-                      {summary.team.map((item) => <span key={item} className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] text-white/62">{item}</span>)}
-                    </motion.div>
+                {rightTab === "preview" ? (
+                  <div className="mt-2.5 space-y-2">
+                    {/* 3 Metric Pills */}
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {[
+                        ["Project", service],
+                        ["Budget", effectiveBudget],
+                        ["Timeline", timeline],
+                      ].map(([label, value]) => (
+                        <motion.div key={label} layout className="min-w-0 rounded-xl border border-white/10 bg-black/24 p-2 text-center">
+                          <span className="text-[9px] uppercase tracking-[0.16em] text-white/35 block">{label}</span>
+                          <span className="mt-0.5 block truncate text-xs font-semibold text-white" title={value}>{value}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* Stack & Team */}
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <div className="rounded-xl border border-white/[0.08] bg-black/18 p-2.5">
+                        <p className="text-[10px] uppercase tracking-[0.14em] text-white/35">Recommended Stack</p>
+                        <motion.div layout className="mt-1.5 flex flex-wrap gap-1">
+                          {summary.stack.map((item) => (
+                            <span key={item} className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-white/70">{item}</span>
+                          ))}
+                        </motion.div>
+                      </div>
+
+                      <div className="rounded-xl border border-white/[0.08] bg-black/18 p-2.5">
+                        <p className="text-[10px] uppercase tracking-[0.14em] text-white/35">Estimated Team</p>
+                        <motion.div layout className="mt-1.5 flex flex-wrap gap-1">
+                          {summary.team.map((item) => (
+                            <span key={item} className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[10px] text-white/70">{item}</span>
+                          ))}
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Estimated Duration */}
+                    <div className="relative overflow-hidden rounded-xl border border-[#c19a88]/20 bg-[linear-gradient(135deg,rgba(128,89,72,.2),rgba(128,89,72,.07))] p-2.5">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] uppercase tracking-wider text-white/45 font-mono">Estimated Duration</p>
+                          <AnimatePresence mode="wait">
+                            <motion.p key={summary.duration} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="text-base font-semibold text-white">
+                              {summary.duration}
+                            </motion.p>
+                          </AnimatePresence>
+                        </div>
+                        <span className="text-[10px] font-mono text-[#c19a88] bg-[#805948]/20 px-2 py-0.5 rounded border border-[#805948]/30">Production Ready</span>
+                      </div>
+                    </div>
+
+                    {/* What happens next */}
+                    <div className="border-t border-white/10 pt-2">
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <h3 className="text-xs font-semibold text-white">What happens next</h3>
+                        <span className="text-[10px] text-white/30">A clear path to launch</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1">
+                        {["We review your idea", "Discovery call", "Proposal", "Design", "Development", "Launch"].map((item, index) => (
+                          <div key={item} className="flex h-7 items-center gap-1.5 rounded-lg border border-white/10 bg-black/18 px-2 py-1">
+                            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/24 text-[9px] text-[#c19a88] font-mono">{index + 1}</span>
+                            <span className="text-[10px] truncate text-white/65">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                <div className="relative overflow-hidden rounded-2xl border border-[#c19a88]/20 bg-[linear-gradient(135deg,rgba(128,89,72,.2),rgba(128,89,72,.07))] p-3.5">
-                  <div className="absolute inset-y-0 right-0 w-24 bg-[radial-gradient(circle_at_100%_50%,rgba(193,154,136,.18),transparent_68%)]" />
-                  <p className="text-sm text-white/42">Estimated Duration</p>
-                  <AnimatePresence mode="wait">
-                    <motion.p key={summary.duration} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="mt-1 text-xl font-semibold text-white">
-                      {summary.duration}
-                    </motion.p>
-                  </AnimatePresence>
-                </div>
+                ) : (
+                  /* FAQ Tab */
+                  <div className="mt-2.5 space-y-1.5">
+                    <div className="flex items-center justify-between pb-1 text-white/40 text-[10px] font-mono uppercase tracking-wider">
+                      <span>Frequently Asked Questions</span>
+                      <span>04 Answers</span>
+                    </div>
+                    {faqs.map((item, index) => (
+                      <FAQItem key={item.q} item={item} open={openFaq === index} onClick={() => setOpenFaq(openFaq === index ? -1 : index)} />
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div className="mt-4 border-t border-white/10 pt-4">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-base font-medium text-white">What happens next</h3>
-                  <span className="text-[11px] text-white/28">A clear path to launch</span>
-                </div>
-                <div className="mt-3 grid grid-cols-2 gap-1.5">
-                  {["We review your idea", "Discovery call", "Proposal", "Design", "Development", "Launch"].map((item, index) => (
-                    <motion.div key={item} className="flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-black/18 px-2 py-1.5" initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.04 }}>
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/24 text-[10px] text-[#c19a88]">{index + 1}</span>
-                      <span className="text-[11px] leading-4 text-white/62">{item}</span>
-                    </motion.div>
-                  ))}
-                </div>
+              {/* Bottom Quick Switch Link */}
+              <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[11px]">
+                {rightTab === "preview" ? (
+                  <button type="button" onClick={() => setRightTab("faq")} className="text-white/45 hover:text-[#c19a88] transition flex items-center gap-1">
+                    <span>Have questions about the process? View FAQs</span>
+                    <span>→</span>
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => setRightTab("preview")} className="text-white/45 hover:text-[#c19a88] transition flex items-center gap-1">
+                    <span>← Back to Live Project Preview</span>
+                  </button>
+                )}
+                <span className="text-[10px] font-mono text-white/30">skalekraft.in</span>
               </div>
+
             </div>
-
-            <section className="rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.018))] p-5 shadow-[0_24px_90px_rgba(0,0,0,.3)] backdrop-blur-xl md:p-6">
-              <div className="flex items-end justify-between gap-4 border-b border-white/[0.08] pb-4">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#c19a88]">Need to know</p>
-                  <h2 className="mt-1.5 text-xl font-medium text-white">Frequently Asked Questions</h2>
-                </div>
-                <span className="text-xs text-white/25">04 answers</span>
-              </div>
-              <div className="mt-4 space-y-2.5">
-                {faqs.map((item, index) => (
-                  <FAQItem key={item.q} item={item} open={openFaq === index} onClick={() => setOpenFaq(openFaq === index ? -1 : index)} />
-                ))}
-              </div>
-            </section>
           </motion.aside>
         </div>
       </div>
