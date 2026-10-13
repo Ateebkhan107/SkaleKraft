@@ -203,7 +203,7 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [startedAt, setStartedAt] = useState("");
   const [error, setError] = useState("");
-  const [openFaq, setOpenFaq] = useState(0);
+  const [openFaq, setOpenFaq] = useState(-1);
 
   const effectiveBudget = useMemo(
     () => (budget === "Custom" ? (customBudget.trim() || "Custom") : budget),
