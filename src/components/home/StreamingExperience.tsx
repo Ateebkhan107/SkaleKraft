@@ -364,7 +364,6 @@ function CinematicHero() {
         });
       }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_25%,rgba(128,89,72,0.12),transparent_55%)] [mask-image:linear-gradient(to_bottom,black_75%,transparent_100%)]" />
       <motion.div
         className="pointer-events-none absolute h-[450px] w-[450px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.06)_40%,transparent_70%)] blur-2xl hidden md:block"
         animate={{ left: glow.x, top: glow.y }}
@@ -378,16 +377,33 @@ function CinematicHero() {
           transition={{ duration: 0.75, ease }}
         >
           <motion.div className="flex max-w-3xl flex-col justify-center" style={{ y: copyY, opacity: heroOpacity }}>
-          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">SkaleKraft · Software Studio</p>
-          <h1 className="mt-5 text-4xl sm:text-5xl font-medium tracking-tight text-white sm:leading-[1.1] md:text-6xl xl:text-7xl">
-            <span className="sr-only">SkaleKraft — </span>Build things people actually enjoy using.
-          </h1>
-          <p className="mt-7 max-w-2xl text-base sm:text-lg leading-8 text-white/62 md:text-xl">
-            Websites, apps, AI tools and creative work designed to help businesses grow without unnecessary complexity.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <GlassmorphismCta href="/contact" label="Start a Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" />
-          </div>
+            <div className="inline-flex items-center gap-2.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88] shadow-[0_0_10px_rgba(193,154,136,0.9)] animate-pulse" />
+              <p className="text-xs sm:text-sm uppercase tracking-[0.28em] font-medium text-[#c19a88]">
+                SkaleKraft <span className="text-white/25">·</span> Software Studio
+              </p>
+            </div>
+            <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl xl:text-[68px] 2xl:text-[74px] font-medium tracking-tight text-white leading-[1.14] sm:leading-[1.15] xl:leading-[1.12]">
+              <span className="sr-only">SkaleKraft — Build things people actually enjoy using.</span>
+              <span className="block">Build things</span>
+              <span className="block mt-1 sm:mt-1.5">
+                people{" "}
+                <span className="font-serif italic font-normal text-[#dfb8a5] text-[1.12em] tracking-wide inline-block py-1">
+                  actually
+                </span>
+              </span>
+              <span className="block mt-1 sm:mt-1.5 overflow-visible">
+                <span className="font-serif italic font-normal text-[1.14em] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#edd0c2] to-[#c19a88] inline-block pt-1 pb-4 pr-3 -mb-4 overflow-visible">
+                  enjoy using.
+                </span>
+              </span>
+            </h1>
+            <p className="mt-7 max-w-2xl text-base sm:text-lg leading-8 text-white/60 md:text-xl font-normal">
+              Websites, apps, AI tools and creative work designed to help businesses grow without unnecessary complexity.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <GlassmorphismCta href="/contact" label="Start a Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" />
+            </div>
           </motion.div>
         </motion.div>
 

@@ -7,28 +7,27 @@ const SplineScene = dynamic(
   () => import("@/components/ui/splite").then((mod) => mod.SplineScene),
   {
     ssr: false,
-    loading: () => (
-      <div className="relative flex h-full w-full items-center justify-center pointer-events-none">
-        <div className="h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.15)_0%,transparent_70%)] blur-3xl animate-pulse" />
-      </div>
-    ),
+    loading: () => null,
   }
 );
 
 export function Hero3DRobotVisual() {
   return (
     <div className="relative flex h-[480px] w-full min-h-[420px] items-center justify-center overflow-visible sm:h-[540px] lg:h-[600px] xl:h-[660px]">
-      {/* Soft atmospheric ambient glow without harsh boundaries */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(193,154,136,0.12)_0%,rgba(128,89,72,0.04)_45%,transparent_70%)] blur-3xl" />
+      {/* Ambient warm backlight behind robot for seamless depth and integration */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[380px] w-[380px] sm:h-[460px] sm:w-[460px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.12)_0%,rgba(128,89,72,0.05)_45%,transparent_70%)] blur-3xl -z-10"
+        aria-hidden="true"
+      />
 
-      {/* 3D Spline Canvas - Multi-directional radial vignette mask to eliminate all edges & seams */}
+      {/* 3D Spline Canvas with 360-degree seamless feathered vignette */}
       <div
         className="relative z-10 h-full w-full"
         style={{
           maskImage:
-            "radial-gradient(ellipse 75% 72% at 50% 42%, black 32%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 0.3) 70%, transparent 92%)",
+            "radial-gradient(ellipse 82% 80% at 50% 48%, black 44%, rgba(0, 0, 0, 0.7) 68%, transparent 95%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 75% 72% at 50% 42%, black 32%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 0.3) 70%, transparent 92%)",
+            "radial-gradient(ellipse 82% 80% at 50% 48%, black 44%, rgba(0, 0, 0, 0.7) 68%, transparent 95%)",
         }}
       >
         <SplineScene
@@ -36,24 +35,6 @@ export function Hero3DRobotVisual() {
           className="h-full w-full"
         />
       </div>
-
-      {/* Left edge feathered gradient to dissolve any tone difference into the text side */}
-      <div
-        className="pointer-events-none absolute inset-y-0 -left-6 z-20 w-36 bg-gradient-to-r from-[#0B0B0B] via-[#0B0B0B]/75 to-transparent"
-        aria-hidden="true"
-      />
-
-      {/* Right edge feathered gradient */}
-      <div
-        className="pointer-events-none absolute inset-y-0 -right-6 z-20 w-32 bg-gradient-to-l from-[#0B0B0B] via-[#0B0B0B]/75 to-transparent"
-        aria-hidden="true"
-      />
-
-      {/* Bottom feathering gradient to dissolve legs seamlessly into page darkness */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-44 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/85 to-transparent"
-        aria-hidden="true"
-      />
     </div>
   );
 }

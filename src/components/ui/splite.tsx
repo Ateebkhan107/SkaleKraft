@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import type { Application } from '@splinetool/runtime'
 
 interface SplineSceneProps {
@@ -43,6 +43,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
         const app = new Application(canvasRef.current, {
           renderOnDemand: true,
           wasmPath: '/spline',
+          htmlContentMode: 'none',
         })
         appRef.current = app
 
@@ -55,6 +56,51 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
             : 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
           console.warn(`Initial Spline scene failed, trying fallback (${fallbackUrl}):`, initialError)
           await app.load(fallbackUrl)
+        }
+
+        // Blend robot seamlessly into transparent background
+        try {
+          app.setBackgroundColor('transparent')
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const anyApp = app as any
+
+          if (anyApp._scene?.activePage) {
+            if (anyApp._scene.activePage.bgColor) {
+              anyApp._scene.activePage.bgColor.r = 0
+              anyApp._scene.activePage.bgColor.g = 0
+              anyApp._scene.activePage.bgColor.b = 0
+              anyApp._scene.activePage.bgColor.a = 0
+              if (typeof anyApp._scene.activePage.bgColor.setRGBA === 'function') {
+                anyApp._scene.activePage.bgColor.setRGBA(0, 0, 0, 0)
+              }
+            }
+            anyApp._scene.activePage.fog = null
+            if (anyApp._scene.activePage.backupFog) {
+              anyApp._scene.activePage.backupFog = null
+            }
+          }
+
+          if (anyApp._renderer) {
+            try {
+              if (typeof anyApp._renderer.setClearColor === 'function') {
+                const origSetClearColor = anyApp._renderer.setClearColor.bind(anyApp._renderer)
+                anyApp._renderer.setClearColor = (color: unknown) => {
+                  origSetClearColor(color, 0)
+                }
+              }
+              anyApp._renderer.setClearAlpha?.(0)
+              anyApp._renderer.setClearColor?.(0x000000, 0)
+              if (anyApp._renderer.domElement) {
+                anyApp._renderer.domElement.style.background = 'transparent'
+              }
+            } catch {}
+          }
+
+          if (typeof anyApp._requestRenderAutoMode === 'function') {
+            anyApp._requestRenderAutoMode()
+          }
+        } catch (bgError) {
+          console.warn('Could not set Spline background transparency:', bgError)
         }
 
         if (isMounted) {
@@ -113,21 +159,6 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
   return (
     <div className={`relative h-full w-full bg-transparent overflow-visible ${className ?? ''}`}>
-      {/* Ambient placeholder aura while initializing - zero intrusive spinners or text */}
-      <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            key="spline-placeholder-glow"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.15 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
-          >
-            <div className="h-60 w-60 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.18)_0%,rgba(128,89,72,0.06)_50%,transparent_75%)] blur-3xl animate-pulse" />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Cinematic emergence of the 3D robot canvas */}
       <motion.div
