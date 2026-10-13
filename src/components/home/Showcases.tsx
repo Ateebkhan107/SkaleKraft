@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ServiceKey, accent } from "./data";
 
+import { HeroSoftwareVisual } from "./HeroSoftwareVisual";
+
 export function ServiceVisual({ serviceKey }: { serviceKey: ServiceKey }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.28, margin: "-120px" });
@@ -42,73 +44,7 @@ export function ServiceVisual({ serviceKey }: { serviceKey: ServiceKey }) {
 }
 
 function WebsiteShowcase({ active }: { active: boolean }) {
-  const widgets = ["Leads", "Bookings", "Revenue"];
-  const pricing = ["Starter", "Growth", "Scale"];
-
-  return (
-    <motion.div
-      className="absolute inset-3 overflow-hidden rounded-[22px] border border-white/12 bg-[#08090a]/92 shadow-[0_28px_90px_rgba(0,0,0,.42)]"
-      animate={active ? { y: [0, -8, 0] } : { y: 0 }}
-      transition={{ duration: 7, repeat: active ? Infinity : 0, ease: "easeInOut" }}
-    >
-      <div className="flex h-9 items-center gap-2 border-b border-white/10 bg-white/[0.035] px-4">
-        <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-yellow-300/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-emerald-300/70" />
-        <div className="ml-3 h-5 flex-1 rounded-full border border-white/8 bg-black/25" />
-      </div>
-      <div className="h-[calc(100%-2.25rem)] overflow-hidden p-4">
-        <motion.div animate={active ? { y: [0, -76, -76, 0] } : { y: 0 }} transition={{ duration: 9, repeat: active ? Infinity : 0, ease: "easeInOut" }}>
-          <div className="flex items-center justify-between text-[11px] text-white/42">
-            <span className="font-semibold tracking-[0.2em] text-[#D8A25A]">NOVA</span>
-            <div className="flex gap-4"><span>Work</span><span>Pricing</span><span>Contact</span></div>
-          </div>
-          <div className="mt-8 grid gap-5 md:grid-cols-[1.1fr_.9fr]">
-            <div>
-              <motion.p className="text-[11px] uppercase tracking-[0.22em] text-white/36" initial={false} animate={active ? { opacity: [0.3, 0.8, 0.5] } : { opacity: 0.45 }} transition={{ duration: 4, repeat: active ? Infinity : 0 }}>Launch dashboard</motion.p>
-              <h3 className="mt-3 max-w-xs text-3xl font-medium leading-tight text-white">Build sharper web experiences.</h3>
-              <p className="mt-3 max-w-xs text-sm leading-6 text-white/45">Clean pages, fast funnels, real product flows.</p>
-              <div className="mt-5 flex gap-2">
-                <span className="rounded-full bg-white px-4 py-2 text-xs font-medium text-black">Start</span>
-                <span className="rounded-full border border-white/12 px-4 py-2 text-xs text-white/55">Demo</span>
-              </div>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-3">
-              <div className="flex items-end gap-2">
-                {[38, 54, 46, 72, 64, 88, 78].map((height, index) => (
-                  <motion.span
-                    key={index}
-                    className="w-full rounded-t bg-[#D8A25A]/70"
-                    animate={active ? { height: [`${height * 0.55}px`, `${height}px`, `${height * 0.75}px`] } : { height: `${height}px` }}
-                    transition={{ duration: 3.2, delay: index * 0.1, repeat: active ? Infinity : 0, ease: "easeInOut" }}
-                  />
-                ))}
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {widgets.map((item, index) => (
-                  <motion.div key={item} className="rounded-xl border border-white/8 bg-black/24 p-2" initial={false} animate={active ? { opacity: [0.55, 1, 0.75] } : { opacity: 0.7 }} transition={{ duration: 3, delay: index * 0.3, repeat: active ? Infinity : 0 }}>
-                    <p className="text-[10px] text-white/34">{item}</p>
-                    <p className="mt-1 text-sm font-medium text-white">{[42, 81, 64][index]}%</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {pricing.map((item, index) => (
-              <motion.div key={item} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4" initial={{ opacity: 0, y: 18 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0.45, y: 18 }} transition={{ delay: index * 0.12, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}>
-                <p className="text-sm font-medium text-white">{item}</p>
-                <p className="mt-4 text-2xl font-semibold text-white">${[1.5, 3, 6][index]}k</p>
-                <div className="mt-4 h-1.5 rounded-full bg-white/10"><motion.div className="h-full rounded-full bg-[#D8A25A]" animate={active ? { width: ["18%", "74%", "42%"] } : { width: "38%" }} transition={{ duration: 4, repeat: active ? Infinity : 0 }} /></div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-      <motion.div className="absolute left-[32%] top-[38%] h-4 w-4 rounded-full border border-white bg-white shadow-[0_0_16px_rgba(216,162,90,.55)]" animate={active ? { x: [0, 150, 190, 84], y: [0, -16, 92, 148] } : { x: 0, y: 0 }} transition={{ duration: 6, repeat: active ? Infinity : 0, ease: "easeInOut" }} />
-      <motion.div className="absolute right-5 top-14 rounded-full border border-[#D8A25A]/30 bg-[#D8A25A]/12 px-3 py-2 text-xs text-white/72" initial={false} animate={active ? { x: [80, 0, 0], opacity: [0, 1, 1] } : { x: 80, opacity: 0 }} transition={{ duration: 5, repeat: active ? Infinity : 0, repeatDelay: 1.5 }}>New lead captured</motion.div>
-    </motion.div>
-  );
+  return <HeroSoftwareVisual embedded={true} active={active} />;
 }
 
 const phoneScreens = [

@@ -4,9 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { heroCodeLines, heroNotices } from "./data";
 
-export function HeroSoftwareVisual() {
+interface HeroSoftwareVisualProps {
+  embedded?: boolean;
+  active?: boolean;
+}
+
+export function HeroSoftwareVisual({ embedded = false, active }: HeroSoftwareVisualProps = {}) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.35, margin: "-120px" });
+  const internalInView = useInView(ref, { amount: 0.35, margin: "-120px" });
+  const inView = active !== undefined ? active : internalInView;
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [notice, setNotice] = useState(0);
   const [step, setStep] = useState(0);
@@ -22,6 +28,7 @@ export function HeroSoftwareVisual() {
   }, [inView]);
 
   const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (embedded) return;
     const rect = event.currentTarget.getBoundingClientRect();
     setTilt({
       x: ((event.clientY - rect.top) / rect.height - 0.5) * -5,
@@ -29,17 +36,8 @@ export function HeroSoftwareVisual() {
     });
   };
 
-  return (
-    <motion.div
-      ref={ref}
-      data-cursor-card
-      onMouseMove={onMove}
-      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-      className="relative min-h-[360px] overflow-hidden rounded-[34px] border border-white/10 bg-[#090909] p-4 shadow-[0_38px_110px_rgba(0,0,0,0.55)] sm:min-h-[460px] lg:min-h-[560px]"
-      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-      transition={{ type: "spring", stiffness: 110, damping: 22, mass: 0.45 }}
-      style={{ boxShadow: "inset 0 0 76px rgba(128,89,72,.08), 0 38px 110px rgba(0,0,0,.55)" }}
-    >
+  const containerContent = (
+    <>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(128,89,72,.2),transparent_34%),radial-gradient(circle_at_20%_76%,rgba(255,255,255,.055),transparent_28%)]" />
       {[18, 34, 62, 78].map((left, index) => (
         <motion.span
@@ -53,7 +51,7 @@ export function HeroSoftwareVisual() {
       ))}
 
       <motion.div
-        className="absolute left-5 top-5 h-[72%] w-[72%] overflow-hidden rounded-[24px] border border-white/10 bg-[#0d0d0d]/88 shadow-[0_24px_80px_rgba(0,0,0,.42)] backdrop-blur"
+        className="absolute left-3 top-3 sm:left-5 sm:top-5 h-[80%] w-[82%] sm:h-[72%] sm:w-[72%] overflow-hidden rounded-[20px] sm:rounded-[24px] border border-white/10 bg-[#0d0d0d]/88 shadow-[0_24px_80px_rgba(0,0,0,.42)] backdrop-blur"
         animate={inView ? { y: [0, -7, 0] } : { y: 0 }}
         transition={{ duration: 7, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
       >
@@ -104,7 +102,7 @@ export function HeroSoftwareVisual() {
       </motion.div>
 
       <motion.div
-        className="absolute right-5 top-14 w-44 rounded-2xl border border-white/10 bg-white/[0.055] p-4 shadow-[0_22px_70px_rgba(0,0,0,.38)] backdrop-blur-xl hidden sm:block"
+        className="absolute right-3 top-10 sm:right-5 sm:top-14 w-40 sm:w-44 rounded-2xl border border-white/10 bg-white/[0.055] p-3 sm:p-4 shadow-[0_22px_70px_rgba(0,0,0,.38)] backdrop-blur-xl hidden sm:block"
         animate={inView ? { y: [0, 10, 0], x: [0, -4, 0] } : { y: 0, x: 0 }}
         transition={{ duration: 6, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
       >
@@ -153,6 +151,33 @@ export function HeroSoftwareVisual() {
           </motion.g>
         </svg>
       </div>
+    </>
+  );
+
+  if (embedded) {
+    return (
+      <div
+        ref={ref}
+        className="relative h-full w-full min-h-[360px] overflow-hidden md:min-h-[420px]"
+      >
+        {containerContent}
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      data-cursor-card
+      onMouseMove={onMove}
+      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+      className="relative min-h-[360px] overflow-hidden rounded-[34px] border border-white/10 bg-[#090909] p-4 shadow-[0_38px_110px_rgba(0,0,0,0.55)] sm:min-h-[460px] lg:min-h-[560px]"
+      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+      transition={{ type: "spring", stiffness: 110, damping: 22, mass: 0.45 }}
+      style={{ boxShadow: "inset 0 0 76px rgba(128,89,72,.08), 0 38px 110px rgba(0,0,0,.55)" }}
+    >
+      {containerContent}
     </motion.div>
   );
 }
+

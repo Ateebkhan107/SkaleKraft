@@ -29,9 +29,10 @@ import {
   accent,
   ease,
 } from "./data";
-import { HeroSoftwareVisual } from "./HeroSoftwareVisual";
+import { Hero3DRobotVisual } from "./Hero3DRobotVisual";
 import TechStackRadar from "./TechStackRadar";
 import ImpactMetricsBar from "./ImpactMetricsBar";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const ServiceModal = dynamic(() => import("./ServiceModal"), {
   ssr: false,
@@ -166,16 +167,43 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
             />
             <span>SKALE<span className="text-[#805948]">KRAFT</span></span>
           </Link>
-          <div className="flex flex-wrap items-center justify-end gap-3">
-            <span className="hidden text-sm text-white/45 lg:inline">Engineering software that scales.</span>
-            <Link href="/about" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
-              About
-            </Link>
-            <Link href="/join" className="hidden h-10 items-center gap-2 rounded-full border border-white/10 px-4 text-sm text-white/55 transition duration-300 hover:border-white/25 hover:text-white sm:inline-flex">
-              <UserPlus className="h-4 w-4" />
-              Join
-            </Link>
-            <GlassmorphismCta href="/contact" label="Start" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="hidden sm:inline-flex" />
+          <div className="flex flex-wrap items-center justify-end gap-2.5 sm:gap-3">
+            {/* Live studio status pill */}
+            <div className="hidden items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:inline-flex">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+              </span>
+              <span className="text-xs font-normal tracking-wide text-white/60">Engineering software that scales</span>
+            </div>
+
+            {/* Nav Pill Capsule: About & Join */}
+            <div className="hidden items-center rounded-full border border-white/10 bg-white/[0.03] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl sm:inline-flex">
+              <Link
+                href="/about"
+                className="flex h-8 items-center rounded-full px-3.5 text-xs font-medium tracking-wide text-white/65 transition-all duration-200 hover:bg-white/[0.07] hover:text-white"
+              >
+                About
+              </Link>
+              <span className="h-3.5 w-px bg-white/10" />
+              <Link
+                href="/join"
+                className="flex h-8 items-center gap-1.5 rounded-full px-3.5 text-xs font-medium tracking-wide text-white/65 transition-all duration-200 hover:bg-white/[0.07] hover:text-white"
+              >
+                <UserPlus className="h-3.5 w-3.5 text-[#c19a88]" />
+                <span>Join</span>
+              </Link>
+            </div>
+
+            {/* Action CTA */}
+            <GlassmorphismCta
+              href="/contact"
+              label="Start Project"
+              avatarSrc="/images/skalekraft-logo.png"
+              avatarAlt="SkaleKraft logo"
+              shimmerColor="rgba(193,154,136,0.85)"
+              className="hidden sm:inline-flex"
+            />
             <button
               type="button"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 md:hidden"
@@ -251,26 +279,78 @@ function Header({ activeSection, onNavigate }: { activeSection: string; onNaviga
 
 function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: string) => void }) {
   return (
-    <aside className="fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 rounded-[24px] border border-white/10 bg-[#0B0B0B]/70 p-2 text-white shadow-[0_18px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500 md:block">
-      <nav className="flex flex-col gap-2">
+    <aside
+      className="group/sidebar fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 rounded-[24px] border border-white/10 bg-[#0B0B0B]/80 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_2px_rgba(0,0,0,0.5)] backdrop-blur-2xl transition-all duration-300 md:block overflow-hidden"
+      style={{ position: "fixed" }}
+    >
+      {/* Interactive mouse spotlight following cursor */}
+      <Spotlight
+        size={200}
+        className="from-[#c19a88]/30 via-[#805948]/15 to-transparent blur-2xl"
+      />
+
+      {/* Top specular 3D light reflection */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] rounded-t-[24px]"
+        style={{
+          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 75%, transparent 100%)",
+        }}
+      />
+
+      <nav className="relative z-10 flex flex-col gap-1">
         {sidebarLinks.map((link) => {
           const Icon = link.icon;
           const isActive = active === link.id;
-          const glow = link.color ? accent[link.color].rgb : "128,89,72";
+          const glow = link.color ? accent[link.color].rgb : "193,154,136";
+
           return (
-            <button
+            <motion.button
               key={link.id}
               type="button"
               onClick={() => onNavigate(link.id)}
-              className={`group/item flex h-12 items-center gap-3 overflow-hidden rounded-2xl px-3 text-left transition duration-300 ${
-                isActive ? "text-white" : "text-white/45 hover:bg-white/[0.04] hover:text-white"
+              whileHover={{ x: 3 }}
+              whileTap={{ scale: 0.97 }}
+              className={`group/item relative flex h-10 items-center gap-3 overflow-hidden rounded-xl px-3 text-left transition-colors duration-200 ${
+                isActive ? "text-white font-medium" : "text-white/45 hover:text-white"
               }`}
-              style={isActive ? { backgroundColor: `rgba(${glow},0.16)`, boxShadow: `0 0 24px rgba(${glow},0.24)` } : undefined}
               aria-label={link.label}
             >
-              <Icon className="h-5 w-5 shrink-0" />
-              <span className="whitespace-nowrap text-sm opacity-90 transition duration-300 group-hover/item:opacity-100">{link.label}</span>
-            </button>
+              {/* Animated active pill with fluid spring physics */}
+              {isActive && (
+                <motion.div
+                  layoutId="active-sidebar-pill"
+                  className="absolute inset-0 rounded-xl border border-white/15 bg-white/[0.08] shadow-[0_0_20px_rgba(193,154,136,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] -z-10"
+                  style={{
+                    backgroundColor: `rgba(${glow}, 0.16)`,
+                    borderColor: `rgba(${glow}, 0.35)`,
+                  }}
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+
+              {/* Active left indicator light notch */}
+              {isActive && (
+                <motion.span
+                  layoutId="active-sidebar-notch"
+                  className="absolute left-1 h-3.5 w-1 rounded-full"
+                  style={{
+                    backgroundColor: link.color ? accent[link.color].hex : "#c19a88",
+                    boxShadow: `0 0 10px rgba(${glow}, 0.8)`,
+                  }}
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+
+              <Icon
+                className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover/item:scale-110 ml-0.5"
+                style={{
+                  color: isActive ? (link.color ? accent[link.color].hex : "#c19a88") : undefined,
+                }}
+              />
+              <span className="whitespace-nowrap text-sm tracking-wide transition duration-200">
+                {link.label}
+              </span>
+            </motion.button>
           );
         })}
       </nav>
@@ -350,7 +430,7 @@ function CinematicHero() {
 
         <motion.div className="relative w-full overflow-hidden sm:overflow-visible" style={{ y: visualY, scale: visualScale, opacity: heroOpacity }}>
           <div className="absolute inset-0 rounded-[36px] bg-[radial-gradient(circle_at_50%_50%,rgba(128,89,72,0.22),transparent_54%)] blur-2xl" />
-          <HeroSoftwareVisual />
+          <Hero3DRobotVisual />
         </motion.div>
       </div>
     </section>

@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://skalekraft.in"),
   title: {
-    default: "SkaleKraft — Software Studio | Web, Mobile Apps & AI Systems",
+    default: "SkaleKraft",
     template: "%s | SkaleKraft",
   },
   description:
