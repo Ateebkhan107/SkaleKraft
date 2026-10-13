@@ -136,11 +136,7 @@ export default function Navbar() {
           {/* Right Action / Navigation Cluster */}
           <div className="flex items-center justify-end gap-2.5 sm:gap-3">
             {/* Live studio status indicator (hidden on small/medium screens) */}
-            <div className="hidden items-center gap-2.5 px-2 text-white/60 lg:inline-flex">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-              </span>
+            <div className="hidden items-center px-2 text-white/60 lg:inline-flex">
               <span className="text-xs font-normal tracking-wide">
                 Engineering software that scales
               </span>

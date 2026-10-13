@@ -9,11 +9,8 @@ const SplineScene = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="flex flex-col items-center gap-2.5">
-          <div className="h-9 w-9 animate-spin rounded-full border-2 border-[#805948]/30 border-t-[#c19a88]" />
-          <p className="text-[11px] uppercase tracking-[0.22em] text-white/35">Loading 3D...</p>
-        </div>
+      <div className="relative flex h-full w-full items-center justify-center pointer-events-none">
+        <div className="h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.15)_0%,transparent_70%)] blur-3xl animate-pulse" />
       </div>
     ),
   }
@@ -31,13 +28,27 @@ export function Hero3DRobotVisual() {
         fill="rgba(193, 154, 136, 0.35)"
       />
 
-      {/* 3D Spline Canvas - Floating directly in hero space without bounding box */}
-      <div className="relative z-10 h-full w-full">
+      {/* 3D Spline Canvas - Floating with smooth bottom fade mask */}
+      <div
+        className="relative z-10 h-full w-full"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, black 0%, black 50%, rgba(0, 0, 0, 0.75) 68%, rgba(0, 0, 0, 0.25) 84%, transparent 96%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 0%, black 50%, rgba(0, 0, 0, 0.75) 68%, rgba(0, 0, 0, 0.25) 84%, transparent 96%)",
+        }}
+      >
         <SplineScene
           scene="/spline/robot.splinecode"
           className="h-full w-full"
         />
       </div>
+
+      {/* Atmospheric dark gradient feathering at the bottom to eliminate hard crop line */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-44 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/80 to-transparent"
+        aria-hidden="true"
+      />
     </div>
   );
 }

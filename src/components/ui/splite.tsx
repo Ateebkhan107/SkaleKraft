@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { Application } from '@splinetool/runtime'
 
 interface SplineSceneProps {
@@ -111,21 +112,42 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
   }
 
   return (
-    <div className={`relative h-full w-full bg-transparent ${className ?? ''}`}>
-      {isLoading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-transparent pointer-events-none">
-          <div className="flex flex-col items-center gap-2.5">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#805948]/30 border-t-[#c19a88]" />
-            <span className="text-[11px] uppercase tracking-widest text-white/30">Loading 3D...</span>
-          </div>
-        </div>
-      )}
-      <canvas
-        ref={canvasRef}
-        className={`h-full w-full block outline-none bg-transparent transition-opacity duration-700 ${
-          isLoading ? 'opacity-0' : 'opacity-100'
-        }`}
-      />
+    <div className={`relative h-full w-full bg-transparent overflow-visible ${className ?? ''}`}>
+      {/* Ambient placeholder aura while initializing - zero intrusive spinners or text */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="spline-placeholder-glow"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.15 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          >
+            <div className="h-60 w-60 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.18)_0%,rgba(128,89,72,0.06)_50%,transparent_75%)] blur-3xl animate-pulse" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Cinematic emergence of the 3D robot canvas */}
+      <motion.div
+        className="relative h-full w-full"
+        initial={{ opacity: 0, scale: 0.92, filter: 'blur(10px)' }}
+        animate={
+          !isLoading
+            ? { opacity: 1, scale: 1, filter: 'blur(0px)' }
+            : { opacity: 0, scale: 0.92, filter: 'blur(10px)' }
+        }
+        transition={{
+          duration: 1.25,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+      >
+        <canvas
+          ref={canvasRef}
+          className="h-full w-full block outline-none bg-transparent"
+        />
+      </motion.div>
     </div>
   )
 }
