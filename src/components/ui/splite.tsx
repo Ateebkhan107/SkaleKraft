@@ -17,6 +17,8 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
   const [hasError, setHasError] = useState(false)
   const [errorDetail, setErrorDetail] = useState<string>('')
   const appRef = useRef<Application | null>(null)
+  const onLoadRef = useRef(onLoad)
+  onLoadRef.current = onLoad
 
   useEffect(() => {
     let isMounted = true
@@ -117,7 +119,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
         if (isMounted) {
           setIsLoading(false)
-          onLoad?.(app)
+          onLoadRef.current?.(app)
         }
       } catch (error) {
         const msg = error instanceof Error ? `${error.name}: ${error.message}` : String(error)
@@ -143,7 +145,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
         appRef.current = null
       }
     }
-  }, [scene, onLoad])
+  }, [scene])
 
   if (hasError) {
     return (
