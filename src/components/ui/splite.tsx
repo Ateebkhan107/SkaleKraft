@@ -79,6 +79,18 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
               anyApp._scene.activePage.backupFog = null
             }
           }
+          // Post-processing (vignette, noise, bloom...) composites into an opaque
+          // buffer, which paints a visible box behind the robot. Turn it all off.
+          const pp = anyApp._scene?.activePage?.data?.postprocessing
+          if (pp && typeof pp === 'object') {
+            if ('enabled' in pp) pp.enabled = false
+            for (const key of Object.keys(pp)) {
+              const effect = pp[key]
+              if (effect && typeof effect === 'object' && 'enabled' in effect) {
+                effect.enabled = false
+              }
+            }
+          }
 
           if (anyApp._renderer) {
             try {
