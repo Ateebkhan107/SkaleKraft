@@ -91,7 +91,7 @@ export default function AboutPage() {
         className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-65 dark:bg-transparent"
       />
 
-      <div className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-20 md:px-10 md:pt-24">
+      <div className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-28 md:px-10 md:pt-32">
         <BackHomeLink className="mb-8" />
 
         {/* Hero Section */}

@@ -3,12 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
-  Menu,
-  X,
-  UserPlus,
   CheckCircle2,
   Clock3,
   Sparkles,
@@ -132,151 +129,6 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
   );
 }
 
-function Header({ activeSection, onNavigate }: { activeSection: string; onNavigate: (id: string) => void }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [isMobileMenuOpen]);
-
-  return (
-    <>
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#0B0B0B]/72 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center justify-between gap-4 px-5 py-4 md:px-10">
-          <Link
-            href="/#home"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("home");
-            }}
-            aria-label="Return to the top of the SkaleKraft homepage"
-            className="flex items-center gap-3 text-lg font-semibold tracking-[0.24em] text-white"
-          >
-            <Image
-              src="/images/skalekraft-logo.png"
-              alt=""
-              width={42}
-              height={42}
-              className="h-10 w-10 rounded-xl object-cover shadow-[0_0_22px_rgba(128,89,72,0.18)]"
-              priority
-            />
-            <span>SKALE<span className="text-[#805948]">KRAFT</span></span>
-          </Link>
-          <div className="flex flex-wrap items-center justify-end gap-2.5 sm:gap-3">
-            {/* Live studio status pill */}
-            <div className="hidden items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:inline-flex">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-              </span>
-              <span className="text-xs font-normal tracking-wide text-white/60">Engineering software that scales</span>
-            </div>
-
-            {/* Nav Pill Capsule: About & Join */}
-            <div className="hidden items-center rounded-full border border-white/10 bg-white/[0.03] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl sm:inline-flex">
-              <Link
-                href="/about"
-                className="flex h-8 items-center rounded-full px-3.5 text-xs font-medium tracking-wide text-white/65 transition-all duration-200 hover:bg-white/[0.07] hover:text-white"
-              >
-                About
-              </Link>
-              <span className="h-3.5 w-px bg-white/10" />
-              <Link
-                href="/join"
-                className="flex h-8 items-center gap-1.5 rounded-full px-3.5 text-xs font-medium tracking-wide text-white/65 transition-all duration-200 hover:bg-white/[0.07] hover:text-white"
-              >
-                <UserPlus className="h-3.5 w-3.5 text-[#c19a88]" />
-                <span>Join</span>
-              </Link>
-            </div>
-
-            {/* Action CTA */}
-            <GlassmorphismCta
-              href="/contact"
-              label="Start Project"
-              avatarSrc="/images/skalekraft-logo.png"
-              avatarAlt="SkaleKraft logo"
-              shimmerColor="rgba(193,154,136,0.85)"
-              className="hidden sm:inline-flex"
-            />
-            <button
-              type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 md:hidden"
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open menu"
-            >
-              <Menu className="h-5 w-5 text-white/70" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            key="mobile-menu"
-            className="fixed inset-0 z-[60] overflow-y-auto bg-[#0B0B0B]/95 p-5 backdrop-blur-xl md:hidden"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="flex justify-end pt-4">
-              <button
-                type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10"
-                onClick={() => setIsMobileMenuOpen(false)}
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5 text-white/70" />
-              </button>
-            </div>
-            <nav className="mt-8 flex flex-col gap-4">
-              {sidebarLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = activeSection === link.id;
-                const glow = link.color ? accent[link.color].rgb : "128,89,72";
-                return (
-                  <button
-                    key={link.id}
-                    type="button"
-                    onClick={() => {
-                      onNavigate(link.id);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className={`flex h-14 items-center gap-4 rounded-2xl px-4 text-left transition duration-300 ${
-                      isActive ? "text-white" : "text-white/45"
-                    }`}
-                    style={isActive ? { backgroundColor: `rgba(${glow},0.16)`, boxShadow: `0 0 24px rgba(${glow},0.24)` } : undefined}
-                  >
-                    <Icon className="h-6 w-6 shrink-0" />
-                    <span className="text-lg font-medium">{link.label}</span>
-                  </button>
-                );
-              })}
-              <div className="mt-8 flex flex-col gap-3 pb-8">
-                <Link href="/about" className="flex h-14 items-center justify-center rounded-2xl border border-white/10 px-5 text-base text-white/55 transition duration-300">
-                  About
-                </Link>
-                <GlassmorphismCta href="/contact" label="Start a Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="w-full justify-center" />
-                <Link href="/join" className="flex h-14 items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 text-base text-white/55 transition duration-300">
-                  <UserPlus className="h-5 w-5" />
-                  Join the Team
-                </Link>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
-
 function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: string) => void }) {
   return (
     <aside
@@ -358,23 +210,6 @@ function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: stri
   );
 }
 
-function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 110,
-    damping: 28,
-    restDelta: 0.001,
-  });
-
-  return (
-    <motion.div
-      aria-hidden="true"
-      className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-[#805948] via-[#d2a28d] to-[#805948] shadow-[0_0_16px_rgba(193,154,136,.45)] motion-reduce:hidden"
-      style={{ scaleX }}
-    />
-  );
-}
-
 function CinematicHero() {
   const [glow, setGlow] = useState({ x: "68%", y: "42%" });
   const heroRef = useRef<HTMLElement>(null);
@@ -428,8 +263,8 @@ function CinematicHero() {
           </motion.div>
         </motion.div>
 
-        <motion.div className="relative w-full overflow-hidden sm:overflow-visible" style={{ y: visualY, scale: visualScale, opacity: heroOpacity }}>
-          <div className="absolute inset-0 rounded-[36px] bg-[radial-gradient(circle_at_50%_50%,rgba(128,89,72,0.22),transparent_54%)] blur-2xl" />
+        <motion.div className="relative flex w-full items-center justify-center overflow-visible" style={{ y: visualY, scale: visualScale, opacity: heroOpacity }}>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.05)_50%,transparent_75%)] blur-3xl" />
           <Hero3DRobotVisual />
         </motion.div>
       </div>
@@ -686,7 +521,6 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
       {/* Main homepage renders only after a destination is chosen or restored. */}
       {stage === "home" && (
         <>
-        <ScrollProgress />
         <FluidParticlesBackground
           theme="dark"
           particleCount={760}
@@ -694,15 +528,14 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           particleSize={{ min: 0.5, max: 1.4 }}
           className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
         />
+        <Sidebar active={activeSection} onNavigate={navigate} />
         <motion.div
           key="home"
           className="relative z-10"
-          initial={animateHome ? { opacity: 0, scale: 0.985 } : false}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={animateHome ? { opacity: 0 } : false}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.75, ease }}
         >
-          <Header activeSection={activeSection} onNavigate={navigate} />
-          <Sidebar active={activeSection} onNavigate={navigate} />
           <CinematicHero />
           <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
             <ImpactMetricsBar />

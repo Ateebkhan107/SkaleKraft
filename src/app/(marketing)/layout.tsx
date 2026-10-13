@@ -1,3 +1,4 @@
+import Navbar from "@/components/layout/Navbar";
 import SimpleFooter from "@/components/layout/SimpleFooter";
 
 export default function MarketingLayout({
@@ -7,6 +8,7 @@ export default function MarketingLayout({
 }) {
   return (
     <>
+      <Navbar />
       {children}
       <SimpleFooter />
     </>

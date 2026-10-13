@@ -258,7 +258,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#090909] px-4 pb-12 pt-14 text-white sm:pt-16 md:px-6">
+    <main className="relative min-h-screen overflow-hidden bg-[#090909] px-4 pb-12 pt-28 text-white sm:pt-32 md:px-6">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_8%,rgba(166,111,87,.17),transparent_31%),radial-gradient(circle_at_8%_70%,rgba(255,255,255,.045),transparent_27%),linear-gradient(135deg,#080808_0%,#0b0908_52%,#090909_100%)]" />
       <FluidParticlesBackground
         theme="dark"

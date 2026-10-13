@@ -50,7 +50,7 @@ export default function JoinPage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0B0B0B] px-5 pb-20 pt-20 text-white md:px-10 md:pt-24">
+    <main className="relative min-h-screen overflow-hidden bg-[#0B0B0B] px-5 pb-20 pt-28 text-white md:px-10 md:pt-32">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(128,89,72,.16),transparent_30%),radial-gradient(circle_at_88%_82%,rgba(193,154,136,.06),transparent_28%)]" />
       <FluidParticlesBackground
         theme="dark"
