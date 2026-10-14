@@ -32,8 +32,8 @@ export default function LegalPage({ title, updated, intro, sections }: LegalPage
         <div className="mt-14 rounded-[22px] border border-white/10 bg-[#101010] p-6">
           <p className="text-sm leading-6 text-white/55">
             Questions? Email us at{" "}
-            <a href="mailto:hello@skalekraft.in" className="text-white transition hover:text-[#c19a88]">
-              hello@skalekraft.in
+            <a href="mailto:skalekraft@gmail.com" className="text-white transition hover:text-[#c19a88]">
+              skalekraft@gmail.com
             </a>
             .
           </p>

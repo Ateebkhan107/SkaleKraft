@@ -130,7 +130,7 @@ const jsonLd = {
       image: "https://skalekraft.in/opengraph-image",
       description:
         "SkaleKraft is an independent software and AI product studio engineering websites, mobile applications, AI agents, and scalable digital systems.",
-      email: "hello@skalekraft.in",
+      email: "skalekraft@gmail.com",
       sameAs: [
         "https://www.instagram.com/skalekraft.in/",
       ],
@@ -149,7 +149,7 @@ const jsonLd = {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: "hello@skalekraft.in",
+        email: "skalekraft@gmail.com",
         availableLanguage: ["English"],
       },
     },
