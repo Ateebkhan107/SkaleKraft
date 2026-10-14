@@ -13,7 +13,7 @@ const areas = [
 
 export default function AiConsultantPage() {
   return (
-    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10">
+    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10 md:pt-32">
       <section className="mx-auto max-w-5xl">
         <BackHomeLink className="mb-10" />
 
@@ -21,8 +21,8 @@ export default function AiConsultantPage() {
           <Bot className="h-7 w-7" />
         </div>
         <p className="mt-8 text-sm uppercase tracking-[0.26em] text-[#c19a88]">AI Systems</p>
-        <h1 className="mt-4 max-w-4xl text-4xl font-medium tracking-tight sm:text-6xl">
-          Let&apos;s find where AI can actually help.
+        <h1 className="mt-4 max-w-4xl text-4xl font-medium tracking-tight sm:text-6xl text-white">
+          Let&apos;s find where AI can <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">actually help.</span>
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">
           Tell us about your business, tools, and workflow. We&apos;ll review it and suggest a practical direction before anything gets built.

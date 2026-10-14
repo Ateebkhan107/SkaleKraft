@@ -237,8 +237,8 @@ export default function TechStackRadar() {
             <Sparkles className="h-3 w-3" />
             Engineering & Technology Architecture
           </div>
-          <h2 className="mt-3.5 text-2xl font-light tracking-tight sm:text-3xl lg:text-4xl">
-            Software built with <span className="font-semibold text-white">modern stack architecture</span>.
+          <h2 className="mt-3.5 text-2xl font-light tracking-tight sm:text-3xl lg:text-4xl text-white">
+            Software built with <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">modern architecture.</span>
           </h2>
           <p className="mt-2 text-xs leading-relaxed text-white/55 sm:text-sm">
             Battle-tested, high-performance technologies engineered to scale without legacy bloat.

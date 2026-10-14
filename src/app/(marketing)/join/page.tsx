@@ -50,7 +50,7 @@ export default function JoinPage() {
   };
 
   return (
-    <main className="relative min-h-[calc(100dvh-5rem)] flex flex-col justify-center overflow-x-hidden bg-[#0B0B0B] px-4 pt-20 pb-6 text-white sm:px-6 md:px-10 lg:pt-20 lg:pb-6">
+    <main className="relative min-h-[calc(100dvh-5rem)] flex flex-col justify-center overflow-x-hidden bg-[#0B0B0B] px-4 pt-24 pb-8 text-white sm:px-6 md:px-10 md:pt-28 lg:pt-28 lg:pb-8">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(128,89,72,.16),transparent_30%),radial-gradient(circle_at_88%_82%,rgba(193,154,136,.06),transparent_28%)]" />
       <FluidParticlesBackground
         theme="dark"
@@ -76,7 +76,7 @@ export default function JoinPage() {
             </div>
 
             <h1 className="max-w-lg text-2xl font-medium leading-[1.12] tracking-tight sm:text-3xl lg:text-[2.4rem]">
-              Do work you&apos;ll be <span className="text-[#a97862]">proud to show.</span>
+              Do work you&apos;ll be <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">proud to show.</span>
             </h1>
             <p className="mt-2.5 max-w-sm text-xs leading-relaxed text-white/55 sm:text-sm">
               We&apos;re looking for thoughtful makers who move with intent, care about craft, and leave every project better than they found it.

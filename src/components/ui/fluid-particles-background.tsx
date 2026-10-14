@@ -105,7 +105,7 @@ export function FluidParticlesBackground({
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.innerWidth < 768;
-    const effectiveCount = reducedMotion ? 80 : isMobile ? Math.min(particleCount, 160) : particleCount;
+    const effectiveCount = reducedMotion ? 20 : isMobile ? 32 : Math.min(particleCount, 450);
 
     const resolveDarkMode = () =>
       theme === "dark" || (theme === "auto" && (document.documentElement.classList.contains("dark") || window.matchMedia("(prefers-color-scheme: dark)").matches));
@@ -114,7 +114,7 @@ export function FluidParticlesBackground({
       const rect = canvas.getBoundingClientRect();
       width = Math.max(1, rect.width);
       height = Math.max(1, rect.height);
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // Cap DPR at 1.5 for performance
+      const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5); // 1x DPR on mobile saves over 55% GPU fill rate
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -128,10 +128,26 @@ export function FluidParticlesBackground({
       }));
     };
 
-    const targetInterval = 1000 / 36; // Target ~36 FPS for smooth visuals with low CPU usage
+    const targetInterval = isMobile ? 1000 / 28 : 1000 / 36;
+
+    // Pause particle drawing during mobile touch scrolling for buttery smooth 60/120fps scrolling
+    let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout | number = 0;
+    const handleScroll = () => {
+      if (!isMobile) return;
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(() => {
+        isScrolling = false;
+      }, 100);
+    };
 
     const draw = (timestamp: number) => {
       if (!isTabVisible) return;
+      if (isScrolling) {
+        animationFrame = window.requestAnimationFrame(draw);
+        return;
+      }
 
       const elapsed = timestamp - lastDrawTime;
       if (elapsed < targetInterval && lastDrawTime !== 0) {
@@ -152,10 +168,14 @@ export function FluidParticlesBackground({
           particle.y = Math.random() * height;
         }
         const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * (isDark ? 0.16 : 0.1);
-        const direction = noise(particle.x * noiseIntensity, particle.y * noiseIntensity, timestamp * 0.0001) * Math.PI * 4;
+        // On mobile, use fast trigonometric drift instead of heavy 3D Perlin noise
+        const direction = isMobile
+          ? (Math.sin(particle.x * 0.006 + timestamp * 0.0006) + Math.cos(particle.y * 0.006)) * Math.PI
+          : noise(particle.x * noiseIntensity, particle.y * noiseIntensity, timestamp * 0.0001) * Math.PI * 4;
+
         if (!reducedMotion) {
-          particle.x = (particle.x + Math.cos(direction) * 1.2 + width) % width;
-          particle.y = (particle.y + Math.sin(direction) * 1.2 + height) % height;
+          particle.x = (particle.x + Math.cos(direction) * 1.1 + width) % width;
+          particle.y = (particle.y + Math.sin(direction) * 1.1 + height) % height;
         }
         ctx.fillStyle = isDark ? `rgba(211, 165, 143, ${opacity})` : `rgba(60, 40, 32, ${opacity})`;
         ctx.beginPath();
@@ -179,12 +199,15 @@ export function FluidParticlesBackground({
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(canvas);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     resizeCanvas();
     animationFrame = window.requestAnimationFrame(draw);
 
     return () => {
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
       window.cancelAnimationFrame(animationFrame);
     };
   }, [particleCount, noiseIntensity, minSize, maxSize, noise, theme]);

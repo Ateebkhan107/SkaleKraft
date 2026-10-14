@@ -11,6 +11,12 @@ interface SplineSceneProps {
   onLoad?: (app: Application) => void
 }
 
+// Pre-warm @splinetool/runtime chunk as soon as this component module is evaluated
+let runtimePromise: Promise<typeof import('@splinetool/runtime')> | null = null
+if (typeof window !== 'undefined') {
+  runtimePromise = import('@splinetool/runtime')
+}
+
 export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -18,7 +24,9 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
   const [errorDetail, setErrorDetail] = useState<string>('')
   const appRef = useRef<Application | null>(null)
   const onLoadRef = useRef(onLoad)
-  onLoadRef.current = onLoad
+  useEffect(() => {
+    onLoadRef.current = onLoad
+  }, [onLoad])
 
   useEffect(() => {
     let isMounted = true
@@ -29,7 +37,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
       setHasError(false)
 
       try {
-        const { Application } = await import('@splinetool/runtime')
+        const { Application } = runtimePromise ? await runtimePromise : await import('@splinetool/runtime')
         if (!isMounted || !canvasRef.current) return
 
         // Dispose any existing instance before initializing a new one
@@ -96,6 +104,10 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
           if (anyApp._renderer) {
             try {
+              const isMobile = window.innerWidth < 768
+              const targetDpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5)
+              anyApp._renderer.setPixelRatio?.(targetDpr)
+
               if (typeof anyApp._renderer.setClearColor === 'function') {
                 const origSetClearColor = anyApp._renderer.setClearColor.bind(anyApp._renderer)
                 anyApp._renderer.setClearColor = (color: unknown) => {
@@ -134,8 +146,28 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
     loadSpline()
 
+    // Auto-pause 3D animation loop when not visible in viewport to save mobile CPU/GPU
+    let observer: IntersectionObserver | null = null
+    if (typeof IntersectionObserver !== 'undefined' && canvasRef.current) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!appRef.current) return
+          try {
+            if (entry.isIntersecting) {
+              appRef.current.play?.()
+            } else {
+              appRef.current.stop?.()
+            }
+          } catch {}
+        },
+        { threshold: 0.05 }
+      )
+      observer.observe(canvasRef.current)
+    }
+
     return () => {
       isMounted = false
+      observer?.disconnect()
       if (appRef.current) {
         try {
           appRef.current.dispose()
@@ -173,19 +205,14 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
   return (
     <div className={`relative h-full w-full bg-transparent overflow-visible ${className ?? ''}`}>
-
-      {/* Cinematic emergence of the 3D robot canvas */}
+      {/* Fast, crisp reveal of the 3D robot canvas */}
       <motion.div
         className="relative h-full w-full"
-        initial={{ opacity: 0, scale: 0.92, filter: 'blur(10px)' }}
-        animate={
-          !isLoading
-            ? { opacity: 1, scale: 1, filter: 'blur(0px)' }
-            : { opacity: 0, scale: 0.92, filter: 'blur(10px)' }
-        }
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{
-          duration: 1.25,
-          ease: [0.16, 1, 0.3, 1],
+          duration: 0.35,
+          ease: 'easeOut',
         }}
       >
         <canvas

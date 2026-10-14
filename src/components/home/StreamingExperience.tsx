@@ -340,16 +340,27 @@ function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: stri
 
 function CinematicHero() {
   const [glow, setGlow] = useState({ x: "68%", y: "42%" });
+  const [isMobile, setIsMobile] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const copyY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -70]);
-  const visualY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 95]);
-  const visualScale = useTransform(scrollYProgress, [0, 1], [1, prefersReducedMotion ? 1 : 0.94]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.86], [1, prefersReducedMotion ? 1 : 0.2]);
+
+  const disableParallax = prefersReducedMotion || isMobile;
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, disableParallax ? 0 : -70]);
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, disableParallax ? 0 : 95]);
+  const visualScale = useTransform(scrollYProgress, [0, 1], [1, disableParallax ? 1 : 0.94]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.86], [1, disableParallax ? 1 : 0.2]);
 
   return (
     <section
@@ -357,6 +368,7 @@ function CinematicHero() {
       id="home"
       className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 md:pl-56 lg:pb-12 lg:pt-28"
       onMouseMove={(event) => {
+        if (isMobile) return;
         const rect = event.currentTarget.getBoundingClientRect();
         setGlow({
           x: `${((event.clientX - rect.left) / rect.width) * 100}%`,
@@ -607,6 +619,9 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
   useEffect(() => {
     if (stage !== "home") return;
+    // Sidebar is hidden on mobile screens (hidden md:block). Skip running getBoundingClientRect on scroll.
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+
     const sections = sidebarLinks.map((link) => document.getElementById(link.id)).filter((section): section is HTMLElement => Boolean(section));
     let frame = 0;
 
@@ -666,7 +681,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
         <>
         <FluidParticlesBackground
           theme="dark"
-          particleCount={760}
+          particleCount={380}
           noiseIntensity={0.0026}
           particleSize={{ min: 0.5, max: 1.4 }}
           className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"

@@ -6,13 +6,15 @@ import ProjectThumbnail from "@/components/work/ProjectThumbnail";
 
 export default function PortfolioPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0B0B0B] px-5 pb-24 pt-32 text-white md:px-10">
+    <main className="min-h-screen overflow-hidden bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10 md:pt-32">
       <section className="relative mx-auto max-w-6xl">
         <div className="pointer-events-none absolute -right-32 -top-28 hidden h-96 w-96 rounded-full bg-[#805948]/15 blur-3xl md:block" />
         <div className="relative max-w-4xl">
           <BackHomeLink className="mb-12" />
           <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
-          <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">The work behind the craft.</h1>
+          <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl text-white">
+            The work behind the <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">craft.</span>
+          </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">Explore how SkaleKraft transforms ambitious ideas into scalable digital products—combining thoughtful design, intelligent systems, and dependable engineering to create experiences people enjoy using.</p>
         </div>
         <div className="relative mt-10 grid grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3">

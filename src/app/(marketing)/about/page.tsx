@@ -107,7 +107,7 @@ export default function AboutPage() {
               SkaleKraft · Independent product studio
             </div>
             <h1 className="mt-5 max-w-3xl text-[2.7rem] font-medium leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[4.6rem]">
-              <span className="sr-only">About SkaleKraft — </span>We make ambitious ideas <span className="text-[#a97862]">feel inevitable.</span>
+              <span className="sr-only">About SkaleKraft — </span>We make ambitious ideas <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">feel inevitable.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/56 sm:text-lg">
               SkaleKraft is an engineering and creative studio for teams that value speed, clarity, and products people genuinely enjoy using.
@@ -283,7 +283,7 @@ export default function AboutPage() {
           transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}
           className="mt-20 rounded-[28px] border border-white/10 bg-white/[0.025] px-6 py-12 text-center sm:px-10"
         >
-          <h2 className="text-3xl font-medium sm:text-5xl">Ready to build?</h2>
+          <h2 className="text-3xl font-medium sm:text-5xl">Ready to <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">build?</span></h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/56">
             Stop worrying about tech debt and start focusing on your business. Let&apos;s talk about your next big project.
           </p>

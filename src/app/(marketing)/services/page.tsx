@@ -197,7 +197,7 @@ export default function ServicesPage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#090909] px-4 pb-16 pt-20 text-white sm:px-6 md:px-10 lg:pt-24">
+    <main className="relative min-h-screen overflow-hidden bg-[#0B0B0B] px-4 pb-16 pt-28 text-white sm:px-6 md:px-10 md:pt-32">
       {/* Background ambient lighting */}
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_15%_12%,rgba(128,89,72,.18),transparent_35%),radial-gradient(circle_at_85%_75%,rgba(193,154,136,.08),transparent_30%),radial-gradient(circle_at_50%_45%,rgba(255,255,255,.015),transparent_40%)]" />
       <FluidParticlesBackground
@@ -224,10 +224,10 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-2xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-[2.65rem] leading-[1.12]"
           >
-            <span className="bg-gradient-to-r from-white via-white/95 to-white/80 bg-clip-text text-transparent">
+            <span className="text-white">
               Website Development, Mobile Apps,{" "}
             </span>
-            <span className="bg-gradient-to-r from-[#eecaba] via-[#d4a38f] to-[#b3745a] bg-clip-text text-transparent">
+            <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">
               AI & Creative Studio
             </span>
           </motion.h1>
@@ -369,7 +369,7 @@ export default function ServicesPage() {
               Let&apos;s Build Together
             </span>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Have a project in mind?
+              Have a project <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">in mind?</span>
             </h2>
             <p className="mx-auto mt-2 max-w-lg text-xs leading-relaxed text-white/55 sm:text-sm">
               Tell us about your website, mobile app, video editing, or AI automation goals. We&apos;ll prepare a practical roadmap within 24 hours.

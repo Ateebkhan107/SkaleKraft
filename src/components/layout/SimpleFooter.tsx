@@ -4,10 +4,13 @@ import { Mail } from "lucide-react";
 import { FaInstagram } from "react-icons/fa6";
 
 const links = [
-  { label: "Terms", href: "/terms" },
-  { label: "Privacy", href: "/privacy" },
+  { label: "Services", href: "/services" },
+  { label: "Work", href: "/work" },
+  { label: "AI Systems", href: "/ai-consultant" },
   { label: "Join the Agency", href: "/join" },
   { label: "Contact", href: "/contact" },
+  { label: "Terms", href: "/terms" },
+  { label: "Privacy", href: "/privacy" },
 ];
 
 export default function SimpleFooter() {
@@ -23,7 +26,7 @@ export default function SimpleFooter() {
               height={42}
               className="h-10 w-10 rounded-xl object-cover shadow-[0_0_20px_rgba(128,89,72,0.16)]"
             />
-            <span>SKALE<span className="text-[#805948]">KRAFT</span></span>
+            <span>SKALE<span className="text-[#c19a88]">KRAFT</span></span>
           </Link>
           <p className="mt-3 max-w-md text-sm leading-6 text-white/50">
             We build cool stuff. Websites, apps, AI, and edits with a clean hand.
@@ -33,8 +36,8 @@ export default function SimpleFooter() {
         <div className="flex flex-col items-start gap-5 md:items-end">
           <div className="flex items-center gap-3">
             <a
-              href="mailto:skalekraft@gmail.com"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/55 transition duration-300 hover:border-[#805948]/60 hover:bg-[#805948]/15 hover:text-white"
+              href="mailto:hello@skalekraft.in"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/55 transition duration-300 hover:border-[#c19a88]/60 hover:bg-[#c19a88]/15 hover:text-white"
               aria-label="Email SkaleKraft"
             >
               <Mail className="h-5 w-5" />
@@ -43,7 +46,7 @@ export default function SimpleFooter() {
               href="https://www.instagram.com/skalekraft.in/"
               target="_blank"
               rel="noreferrer"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/55 transition duration-300 hover:border-[#805948]/60 hover:bg-[#805948]/15 hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/55 transition duration-300 hover:border-[#c19a88]/60 hover:bg-[#c19a88]/15 hover:text-white"
               aria-label="Open SkaleKraft on Instagram"
             >
               <FaInstagram className="h-5 w-5" />

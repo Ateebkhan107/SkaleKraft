@@ -108,8 +108,8 @@ export default function Navbar() {
       <header
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "border-b border-white/15 bg-[#0B0B0B]/88 shadow-[0_14px_45px_rgba(0,0,0,0.6)] backdrop-blur-2xl"
-            : "border-b border-white/10 bg-[#0B0B0B]/72 backdrop-blur-xl"
+            ? "border-b border-white/15 bg-[#0B0B0B]/95 shadow-[0_14px_45px_rgba(0,0,0,0.6)] md:bg-[#0B0B0B]/88 md:backdrop-blur-2xl"
+            : "border-b border-white/10 bg-[#0B0B0B]/90 md:bg-[#0B0B0B]/72 md:backdrop-blur-xl"
         }`}
       >
         <div className="mx-auto flex min-h-20 max-w-[1500px] items-center justify-between gap-4 px-5 py-4 md:px-10">
@@ -129,7 +129,7 @@ export default function Navbar() {
               priority
             />
             <span>
-              SKALE<span className="text-[#805948]">KRAFT</span>
+              SKALE<span className="text-[#c19a88]">KRAFT</span>
             </span>
           </Link>
 
@@ -218,7 +218,7 @@ export default function Navbar() {
                   className="h-8 w-8 rounded-lg object-cover"
                 />
                 <span>
-                  SKALE<span className="text-[#805948]">KRAFT</span>
+                  SKALE<span className="text-[#c19a88]">KRAFT</span>
                 </span>
               </Link>
               <button

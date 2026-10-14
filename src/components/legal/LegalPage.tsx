@@ -12,7 +12,7 @@ type LegalPageProps = {
 
 export default function LegalPage({ title, updated, intro, sections }: LegalPageProps) {
   return (
-    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-32 text-white md:px-10">
+    <main className="min-h-screen bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10 md:pt-32">
       <section className="mx-auto max-w-3xl">
         <BackHomeLink />
         <p className="mt-10 text-sm uppercase tracking-[0.26em] text-[#c19a88]">SkaleKraft</p>
@@ -32,8 +32,8 @@ export default function LegalPage({ title, updated, intro, sections }: LegalPage
         <div className="mt-14 rounded-[22px] border border-white/10 bg-[#101010] p-6">
           <p className="text-sm leading-6 text-white/55">
             Questions? Email us at{" "}
-            <a href="mailto:skalekraft@gmail.com" className="text-white transition hover:text-[#c19a88]">
-              skalekraft@gmail.com
+            <a href="mailto:hello@skalekraft.in" className="text-white transition hover:text-[#c19a88]">
+              hello@skalekraft.in
             </a>
             .
           </p>

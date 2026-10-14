@@ -79,7 +79,7 @@ export default function ServiceModal({ serviceKey, onClose }: { serviceKey: Serv
               height={36}
               className="h-9 w-9 rounded-lg object-cover shadow-[0_0_18px_rgba(128,89,72,0.16)]"
             />
-            <span>SKALE<span className="text-[#805948]">KRAFT</span></span>
+            <span>SKALE<span className="text-[#c19a88]">KRAFT</span></span>
           </Link>
           <button ref={closeButtonRef} type="button" onClick={onClose} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/55 transition hover:border-white/25 hover:text-white" aria-label="Close service details">
             <X className="h-5 w-5" />

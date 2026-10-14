@@ -13,7 +13,7 @@ export default function OpenGraphImage() {
       <div
         style={{
           alignItems: "center",
-          background: "#090909",
+          background: "#0B0B0B",
           color: "white",
           display: "flex",
           height: "100%",
@@ -37,7 +37,7 @@ export default function OpenGraphImage() {
         >
           <div style={{ display: "flex", fontSize: 30, fontWeight: 700, gap: 12, letterSpacing: "0.28em" }}>
             <span>SKALE</span>
-            <span style={{ color: "#805948" }}>KRAFT</span>
+            <span style={{ color: "#c19a88" }}>KRAFT</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ color: "#c19a88", fontSize: 24, letterSpacing: "0.22em", marginBottom: 24 }}>

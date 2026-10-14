@@ -249,15 +249,15 @@ export default function ContactPage() {
       setCompany("");
       setMessage("");
     } catch (submissionError) {
-      setError(submissionError instanceof Error ? submissionError.message : "Could not send right now. Please email us directly at skalekraft@gmail.com.");
+      setError(submissionError instanceof Error ? submissionError.message : "Could not send right now. Please email us directly at hello@skalekraft.in.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="relative min-h-screen lg:h-screen lg:overflow-hidden bg-[#090909] px-3 pb-3 pt-18 sm:pt-20 md:px-6 flex flex-col justify-center text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_8%,rgba(166,111,87,.17),transparent_31%),radial-gradient(circle_at_8%_70%,rgba(255,255,255,.045),transparent_27%),linear-gradient(135deg,#080808_0%,#0b0908_52%,#090909_100%)]" />
+    <main className="relative min-h-screen lg:h-screen lg:overflow-hidden bg-[#0B0B0B] px-3 pb-3 pt-18 sm:pt-20 md:px-6 flex flex-col justify-center text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_8%,rgba(166,111,87,.17),transparent_31%),radial-gradient(circle_at_8%_70%,rgba(255,255,255,.045),transparent_27%),linear-gradient(135deg,#080808_0%,#0b0908_52%,#0B0B0B_100%)]" />
       <FluidParticlesBackground
         theme="dark"
         particleCount={520}
@@ -308,7 +308,7 @@ export default function ContactPage() {
                 
                 <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2">
                   <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
-                    Let&apos;s build something <span className="bg-gradient-to-r from-white via-[#e8c5b4] to-[#b87c62] bg-clip-text text-transparent">remarkable.</span>
+                    Let&apos;s build something <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">remarkable.</span>
                   </h1>
                   <span className="hidden text-[11px] text-white/40 xl:inline font-mono">NDA available on request</span>
                 </div>
