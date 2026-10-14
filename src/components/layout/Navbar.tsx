@@ -90,6 +90,39 @@ export default function Navbar() {
     }
   };
 
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    if (isHome) {
+      if (href === "/services") {
+        const el = document.getElementById("services");
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+      }
+      if (href === "/work") {
+        const el = document.getElementById("work");
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+      }
+    }
+  };
+
+  const handleShortcutClick = (e: React.MouseEvent, href: string) => {
+    setIsMobileMenuOpen(false);
+    if (isHome && href.startsWith("/#")) {
+      const id = href.replace("/#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   const isItemActive = (href: string) => {
     if (href === "/work") {
       return pathname === "/work" || pathname === "/portfolio";
@@ -155,6 +188,7 @@ export default function Navbar() {
                     {index > 0 && <span className="h-3.5 w-px bg-white/10" />}
                     <Link
                       href={item.href}
+                      onClick={(e) => handleNavClick(e, item.href)}
                       className={`flex h-8 items-center gap-1.5 rounded-full px-3.5 text-xs font-medium tracking-wide transition-all duration-200 ${
                         active
                           ? "bg-white/[0.12] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.16)]"
@@ -243,7 +277,10 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false);
+                      handleNavClick(e, link.href);
+                    }}
                     className={`flex h-12 items-center gap-3.5 rounded-xl px-3.5 text-base font-medium transition duration-200 ${
                       active
                         ? "bg-white/[0.08] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
@@ -268,7 +305,7 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => handleShortcutClick(e, item.href)}
                     className="flex h-11 items-center gap-3 rounded-xl px-3.5 text-sm text-white/55 transition duration-200 hover:bg-white/[0.04] hover:text-white"
                   >
                     <Icon className="h-4 w-4 shrink-0" style={{ color: item.color }} />

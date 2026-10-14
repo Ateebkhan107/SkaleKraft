@@ -29,6 +29,11 @@ function Hero3DRobotVisualInner() {
 
   return (
     <div className="relative flex h-[350px] sm:h-[480px] md:h-[540px] lg:h-[600px] xl:h-[660px] w-full min-h-[300px] sm:min-h-[420px] items-center justify-center overflow-visible">
+      {/* Ambient placeholder glow for instant paint before 3D loads */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="h-44 w-44 sm:h-64 sm:w-64 rounded-full bg-gradient-to-tr from-[#805948]/20 via-[#c19a88]/15 to-transparent blur-3xl opacity-60" />
+      </div>
+
       <div
         className="relative h-full w-full"
         style={{ maskImage: LEG_FADE_MASK, WebkitMaskImage: LEG_FADE_MASK }}

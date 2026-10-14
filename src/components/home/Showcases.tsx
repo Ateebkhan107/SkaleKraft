@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ServiceKey, accent } from "./data";
-
 import { HeroSoftwareVisual } from "./HeroSoftwareVisual";
 
-export function ServiceVisual({ serviceKey }: { serviceKey: ServiceKey }) {
+export function ServiceVisual({ serviceKey, compact = false }: { serviceKey: ServiceKey; compact?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.28, margin: "-120px" });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const color = accent[serviceKey];
 
   const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (compact) return;
     const rect = event.currentTarget.getBoundingClientRect();
     setTilt({
       x: ((event.clientY - rect.top) / rect.height - 0.5) * -7,
@@ -26,25 +26,29 @@ export function ServiceVisual({ serviceKey }: { serviceKey: ServiceKey }) {
       data-cursor-card
       onMouseMove={onMove}
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-      className="relative h-full min-h-[360px] overflow-hidden rounded-[26px] border border-white/10 bg-[#0B0B0B] p-4 md:min-h-[430px]"
-      style={{ boxShadow: `inset 0 0 0 1px rgba(${color.rgb},.08), 0 0 58px rgba(${color.rgb},.12)` }}
-      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+      className={`relative h-full w-full overflow-hidden ${
+        compact
+          ? "rounded-[18px] bg-[#070707]"
+          : "min-h-[360px] rounded-[26px] border border-white/10 bg-[#0B0B0B] p-4 md:min-h-[430px]"
+      }`}
+      style={compact ? undefined : { boxShadow: `inset 0 0 0 1px rgba(${color.rgb},.08), 0 0 58px rgba(${color.rgb},.12)` }}
+      animate={compact ? undefined : { rotateX: tilt.x, rotateY: tilt.y }}
       transition={{ type: "spring", stiffness: 120, damping: 22, mass: 0.4 }}
     >
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.045),transparent_34%,rgba(255,255,255,0.025))]" />
       <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 68% 20%, rgba(${color.rgb}, .18), transparent 38%)` }} />
-      <div className="relative h-full">
-        {serviceKey === "websites" && <WebsiteShowcase active={inView} />}
-        {serviceKey === "apps" && <AppShowcase active={inView} />}
-        {serviceKey === "ai" && <AIShowcase active={inView} />}
-        {serviceKey === "creative" && <CreativeShowcase active={inView} />}
+      <div className="relative h-full w-full">
+        {serviceKey === "websites" && <WebsiteShowcase active={inView} compact={compact} />}
+        {serviceKey === "apps" && <AppShowcase active={inView} compact={compact} />}
+        {serviceKey === "ai" && <AIShowcase active={inView} compact={compact} />}
+        {serviceKey === "creative" && <CreativeShowcase active={inView} compact={compact} />}
       </div>
     </motion.div>
   );
 }
 
-function WebsiteShowcase({ active }: { active: boolean }) {
-  return <HeroSoftwareVisual embedded={true} active={active} />;
+function WebsiteShowcase({ active, compact }: { active: boolean; compact?: boolean }) {
+  return <HeroSoftwareVisual embedded={true} active={active} compact={compact} />;
 }
 
 const phoneScreens = [
@@ -95,7 +99,7 @@ function PhoneMock({ index, side, active }: { index: number; side: "left" | "cen
   );
 }
 
-function AppShowcase({ active }: { active: boolean }) {
+function AppShowcase({ active, compact }: { active: boolean; compact?: boolean }) {
   const [screen, setScreen] = useState(0);
 
   useEffect(() => {
@@ -107,7 +111,7 @@ function AppShowcase({ active }: { active: boolean }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_65%,rgba(139,92,246,.22),transparent_38%)]" />
-      <div className="relative flex items-center gap-3 md:gap-6">
+      <div className={`relative flex items-center gap-2 sm:gap-4 ${compact ? "scale-[0.58] sm:scale-[0.62] origin-center" : ""}`}>
         <PhoneMock index={screen + 2} side="left" active={active} />
         <PhoneMock index={screen} side="center" active={active} />
         <PhoneMock index={screen + 1} side="right" active={active} />
@@ -116,12 +120,12 @@ function AppShowcase({ active }: { active: boolean }) {
   );
 }
 
-function AIShowcase({ active }: { active: boolean }) {
+function AIShowcase({ active, compact }: { active: boolean; compact?: boolean }) {
   const nodes = ["Website", "Lead Agent", "CRM", "Database", "Email", "Analytics"];
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center p-5">
-      <div className="relative h-[360px] w-[640px] max-w-none scale-[0.34] sm:scale-[0.58] lg:scale-100">
+    <div className="absolute inset-0 flex items-center justify-center p-2">
+      <div className={`relative h-[360px] w-[640px] max-w-none ${compact ? "scale-[0.44] sm:scale-[0.48] lg:scale-[0.52] origin-center" : "scale-[0.34] sm:scale-[0.58] lg:scale-100"}`}>
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 640 360" aria-hidden="true">
           <defs>
             <linearGradient id="ai-line" x1="0" x2="1">
@@ -164,7 +168,7 @@ function AIShowcase({ active }: { active: boolean }) {
   );
 }
 
-function CreativeShowcase({ active }: { active: boolean }) {
+function CreativeShowcase({ active, compact }: { active: boolean; compact?: boolean }) {
   const clips = [
     { label: "Intro", width: "22%", color: "#F97316" },
     { label: "Scene", width: "34%", color: "#8B5CF6" },
@@ -172,33 +176,33 @@ function CreativeShowcase({ active }: { active: boolean }) {
   ];
 
   return (
-    <div className="absolute inset-3 overflow-hidden rounded-[22px] border border-white/10 bg-[#080808]">
+    <div className={`absolute inset-2 sm:inset-3 overflow-hidden rounded-[18px] border border-white/10 bg-[#080808] ${compact ? "scale-[0.88] sm:scale-[0.92] origin-center" : ""}`}>
       <div className="flex h-full">
-        <div className="hidden w-16 border-r border-white/8 bg-white/[0.025] p-2 sm:block">
-          {[0, 1, 2, 3].map((item) => <div key={item} className="mb-2 h-10 rounded-lg border border-white/8 bg-white/[0.04]" />)}
+        <div className="hidden w-14 border-r border-white/8 bg-white/[0.025] p-2 sm:block">
+          {[0, 1, 2, 3].map((item) => <div key={item} className="mb-2 h-9 rounded-lg border border-white/8 bg-white/[0.04]" />)}
         </div>
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="flex items-center justify-between border-b border-white/8 px-4 py-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#F97316]">Studio timeline</p>
+          <div className="flex items-center justify-between border-b border-white/8 px-3.5 py-2.5">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[#F97316]">Studio timeline</p>
             <div className="flex gap-2 text-[10px] text-white/42"><span>Video</span><span>Audio</span><span>Color</span></div>
           </div>
-          <div className="grid flex-1 gap-3 p-4 lg:grid-cols-[1fr_180px]">
-            <div className="flex flex-col gap-3">
-              <div className="relative flex-1 overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(135deg,#151515,#050505)]">
-                <motion.div className="absolute inset-8 rounded-[28px] border border-orange-300/14 bg-orange-500/10" initial={{ opacity: 0.45 }} animate={active ? { scale: [1, 1.04, 1], opacity: [0.45, 0.75, 0.45] } : { scale: 1, opacity: 0.45 }} transition={{ duration: 4.5, repeat: active ? Infinity : 0 }} />
+          <div className="grid flex-1 gap-2.5 p-3 lg:grid-cols-[1fr_150px]">
+            <div className="flex flex-col gap-2.5">
+              <div className="relative flex-1 overflow-hidden rounded-xl border border-white/10 bg-[linear-gradient(135deg,#151515,#050505)] min-h-[90px]">
+                <motion.div className="absolute inset-4 rounded-[20px] border border-orange-300/14 bg-orange-500/10" initial={{ opacity: 0.45 }} animate={active ? { scale: [1, 1.04, 1], opacity: [0.45, 0.75, 0.45] } : { scale: 1, opacity: 0.45 }} transition={{ duration: 4.5, repeat: active ? Infinity : 0 }} />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="rounded-full border border-white/15 bg-white/8 px-5 py-3 text-sm text-white/78 backdrop-blur">Preview</div>
+                  <div className="rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs text-white/78 backdrop-blur">Preview 4K</div>
                 </div>
               </div>
-              <div className="relative h-36 rounded-2xl border border-white/10 bg-white/[0.035] p-3">
-                <div className="absolute left-3 right-3 top-3 flex justify-between text-[10px] text-white/28">{["00:00", "00:05", "00:10", "00:15", "00:20"].map((tick) => <span key={tick}>{tick}</span>)}</div>
-                <div className="mt-7 space-y-2">
+              <div className="relative h-28 rounded-xl border border-white/10 bg-white/[0.035] p-2.5">
+                <div className="absolute left-2.5 right-2.5 top-2 flex justify-between text-[9px] text-white/28">{["00:00", "00:05", "00:10", "00:15", "00:20"].map((tick) => <span key={tick}>{tick}</span>)}</div>
+                <div className="mt-5 space-y-1.5">
                   {["Video", "Text", "Audio"].map((track, trackIndex) => (
                     <div key={track} className="flex items-center gap-2">
-                      <span className="w-10 text-[10px] text-white/34">{track}</span>
-                      <div className="flex h-7 flex-1 gap-2 overflow-hidden rounded-lg bg-black/20 p-1">
+                      <span className="w-8 text-[9px] text-white/34">{track}</span>
+                      <div className="flex h-5 flex-1 gap-1.5 overflow-hidden rounded-md bg-black/20 p-0.5">
                         {clips.map((clip, index) => (
-                          <motion.span key={`${clip.label}-${track}`} className="flex items-center rounded-md px-2 text-[10px] text-white/80" style={{ width: clip.width, backgroundColor: `${clip.color}${trackIndex === 2 ? "55" : "77"}` }} initial={{ opacity: 0.82 }} animate={active && index === 1 ? { opacity: [0.65, 1, 0.65] } : { opacity: 0.82 }} transition={{ duration: 2.2, repeat: active ? Infinity : 0 }}>
+                          <motion.span key={`${clip.label}-${track}`} className="flex items-center rounded px-1.5 text-[9px] text-white/80" style={{ width: clip.width, backgroundColor: `${clip.color}${trackIndex === 2 ? "55" : "77"}` }} initial={{ opacity: 0.82 }} animate={active && index === 1 ? { opacity: [0.65, 1, 0.65] } : { opacity: 0.82 }} transition={{ duration: 2.2, repeat: active ? Infinity : 0 }}>
                             {clip.label}
                           </motion.span>
                         ))}
@@ -206,14 +210,14 @@ function CreativeShowcase({ active }: { active: boolean }) {
                     </div>
                   ))}
                 </div>
-                <motion.div className="absolute bottom-3 top-5 w-px bg-[#F97316] shadow-[0_0_18px_rgba(249,115,22,.6)]" animate={active ? { left: ["14%", "86%", "14%"] } : { left: "14%" }} transition={{ duration: 5.5, repeat: active ? Infinity : 0, ease: "easeInOut" }} />
+                <motion.div className="absolute bottom-2 top-4 w-px bg-[#F97316] shadow-[0_0_14px_rgba(249,115,22,.6)]" animate={active ? { left: ["14%", "86%", "14%"] } : { left: "14%" }} transition={{ duration: 5.5, repeat: active ? Infinity : 0, ease: "easeInOut" }} />
               </div>
             </div>
-            <div className="hidden rounded-2xl border border-white/10 bg-white/[0.035] p-3 lg:block">
+            <div className="hidden rounded-xl border border-white/10 bg-white/[0.035] p-2.5 lg:block">
               {["Scale", "Opacity", "Contrast", "Warmth"].map((item, index) => (
-                <div key={item} className="mb-5">
-                  <div className="mb-2 flex justify-between text-[10px] text-white/42"><span>{item}</span><span>{[92, 78, 64, 48][index]}%</span></div>
-                  <div className="h-1.5 rounded-full bg-white/10"><motion.div className="h-full rounded-full bg-[#F97316]" animate={active ? { width: [`${[42, 58, 36, 72][index]}%`, `${[86, 72, 64, 52][index]}%`] } : { width: "50%" }} transition={{ duration: 3, delay: index * 0.25, repeat: active ? Infinity : 0, repeatType: "reverse" }} /></div>
+                <div key={item} className="mb-3.5">
+                  <div className="mb-1 flex justify-between text-[9px] text-white/42"><span>{item}</span><span>{[92, 78, 64, 48][index]}%</span></div>
+                  <div className="h-1 rounded-full bg-white/10"><motion.div className="h-full rounded-full bg-[#F97316]" animate={active ? { width: [`${[42, 58, 36, 72][index]}%`, `${[86, 72, 64, 52][index]}%`] } : { width: "50%" }} transition={{ duration: 3, delay: index * 0.25, repeat: active ? Infinity : 0, repeatType: "reverse" }} /></div>
                 </div>
               ))}
             </div>

@@ -4,6 +4,7 @@ import {
   Clapperboard,
   Cpu,
   Home,
+  Layers3,
   Mail,
   MonitorSmartphone,
   Smartphone,
@@ -188,12 +189,8 @@ export const destinations: Array<{
 
 export const sidebarLinks: Array<{ id: string; label: string; icon: LucideIcon; color?: ServiceKey }> = [
   { id: "home", label: "Home", icon: Home },
-  { id: "websites", label: "Websites", icon: MonitorSmartphone, color: "websites" },
-  { id: "apps", label: "Apps", icon: Smartphone, color: "apps" },
-  { id: "ai", label: "AI", icon: BrainCircuit, color: "ai" },
-  { id: "creative", label: "Creative", icon: Clapperboard, color: "creative" },
-  { id: "work", label: "Our Work", icon: BriefcaseBusiness },
-  { id: "tech-stack", label: "Tech Stack", icon: Cpu },
+  { id: "services", label: "Services", icon: Layers3 },
+  { id: "work", label: "Work", icon: BriefcaseBusiness },
   { id: "contact", label: "Contact", icon: Mail },
 ];
 

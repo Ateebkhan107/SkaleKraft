@@ -28,12 +28,16 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.1.36"],
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
     ],
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
   },
   async redirects() {
     return [

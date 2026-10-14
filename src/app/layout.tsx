@@ -235,14 +235,6 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <head>
-        <link
-          rel="preload"
-          href="/spline/robot.splinecode"
-          as="fetch"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <script
           type="application/ld+json"

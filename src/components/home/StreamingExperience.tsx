@@ -23,7 +23,6 @@ import {
   DestinationKey,
   destinations,
   services,
-  sidebarLinks,
   accent,
   ease,
 } from "./data";
@@ -43,7 +42,7 @@ const ServiceVisual = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-full min-h-[360px] w-full rounded-[26px] border border-white/10 bg-[#0B0B0B] md:min-h-[430px]" />
+      <div className="h-full w-full rounded-[18px] bg-[#070707] border border-white/6" />
     ),
   },
 );
@@ -257,87 +256,6 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
   );
 }
 
-function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: string) => void }) {
-  return (
-    <aside
-      className="group/sidebar fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 rounded-[24px] border border-white/10 bg-[#0B0B0B]/80 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_2px_rgba(0,0,0,0.5)] backdrop-blur-2xl transition-all duration-300 md:block overflow-hidden"
-      style={{ position: "fixed" }}
-    >
-      {/* Interactive mouse spotlight following cursor */}
-      <Spotlight
-        size={200}
-        className="from-[#c19a88]/30 via-[#805948]/15 to-transparent blur-2xl"
-      />
-
-      {/* Top specular 3D light reflection */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] rounded-t-[24px]"
-        style={{
-          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 75%, transparent 100%)",
-        }}
-      />
-
-      <nav className="relative z-10 flex flex-col gap-1">
-        {sidebarLinks.map((link) => {
-          const Icon = link.icon;
-          const isActive = active === link.id;
-          const glow = link.color ? accent[link.color].rgb : "193,154,136";
-
-          return (
-            <motion.button
-              key={link.id}
-              type="button"
-              onClick={() => onNavigate(link.id)}
-              whileHover={{ x: 3 }}
-              whileTap={{ scale: 0.97 }}
-              className={`group/item relative flex h-10 items-center gap-3 overflow-hidden rounded-xl px-3 text-left transition-colors duration-200 ${
-                isActive ? "text-white font-medium" : "text-white/45 hover:text-white"
-              }`}
-              aria-label={link.label}
-            >
-              {/* Animated active pill with fluid spring physics */}
-              {isActive && (
-                <motion.div
-                  layoutId="active-sidebar-pill"
-                  className="absolute inset-0 rounded-xl border border-white/15 bg-white/[0.08] shadow-[0_0_20px_rgba(193,154,136,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] -z-10"
-                  style={{
-                    backgroundColor: `rgba(${glow}, 0.16)`,
-                    borderColor: `rgba(${glow}, 0.35)`,
-                  }}
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                />
-              )}
-
-              {/* Active left indicator light notch */}
-              {isActive && (
-                <motion.span
-                  layoutId="active-sidebar-notch"
-                  className="absolute left-1 h-3.5 w-1 rounded-full"
-                  style={{
-                    backgroundColor: link.color ? accent[link.color].hex : "#c19a88",
-                    boxShadow: `0 0 10px rgba(${glow}, 0.8)`,
-                  }}
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                />
-              )}
-
-              <Icon
-                className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover/item:scale-110 ml-0.5"
-                style={{
-                  color: isActive ? (link.color ? accent[link.color].hex : "#c19a88") : undefined,
-                }}
-              />
-              <span className="whitespace-nowrap text-sm tracking-wide transition duration-200">
-                {link.label}
-              </span>
-            </motion.button>
-          );
-        })}
-      </nav>
-    </aside>
-  );
-}
-
 function CinematicHero() {
   const [glow, setGlow] = useState({ x: "68%", y: "42%" });
   const [isMobile, setIsMobile] = useState(false);
@@ -366,7 +284,7 @@ function CinematicHero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 md:pl-56 lg:pb-12 lg:pt-28"
+      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 lg:pb-12 lg:pt-28"
       onMouseMove={(event) => {
         if (isMobile) return;
         const rect = event.currentTarget.getBoundingClientRect();
@@ -429,7 +347,7 @@ function CinematicHero() {
 
 function SelectedWork() {
   return (
-    <section id="work" className="scroll-mt-24 py-20 sm:py-28">
+    <section id="work" className="scroll-mt-24 py-20 sm:py-28 [content-visibility:auto] [contain-intrinsic-size:1px_850px]">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
@@ -486,236 +404,187 @@ function SelectedWork() {
   );
 }
 
-function ServiceBlock({ service, align = "left", onExplore }: { service: typeof services[ServiceKey]; align?: "left" | "right"; onExplore: (key: ServiceKey) => void }) {
+function ServiceCard({
+  service,
+  index,
+  onExplore,
+}: {
+  service: typeof services[ServiceKey];
+  index: number;
+  onExplore: (key: ServiceKey) => void;
+}) {
   const Icon = service.icon;
   const color = accent[service.key];
 
   return (
-    <motion.section
+    <motion.article
       id={service.key}
-      className="scroll-mt-24 py-2 lg:py-6"
-      initial={{ opacity: 0, y: 20 }}
+      data-cursor-card
+      onClick={() => onExplore(service.key)}
+      className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(14,14,14,0.96)_48%)] p-5 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)] transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.65)] cursor-pointer scroll-mt-28"
+      style={{
+        boxShadow: `0 20px 60px rgba(0,0,0,0.45), 0 0 45px rgba(${color.rgb}, 0.06), inset 0 1px 0 rgba(255,255,255,0.08)`,
+      }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-120px" }}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{
-        default: { type: "spring", stiffness: 105, damping: 22, mass: 0.85 },
-        opacity: { duration: 0.5, ease: "easeOut" },
+        duration: 0.55,
+        delay: index * 0.08,
+        ease: [0.16, 1, 0.3, 1],
       }}
     >
+      {/* Ambient background glow matching service accent */}
       <div
-        data-cursor-card
-        className={`group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#101010] p-4 shadow-[0_20px_70px_rgba(0,0,0,.32)] transition duration-500 hover:border-white/20 sm:rounded-[24px] sm:p-5 lg:grid lg:h-auto lg:min-h-[410px] lg:grid-cols-2 lg:gap-5 lg:rounded-[28px] lg:p-5 xl:min-h-[430px] xl:p-6 lg:shadow-[0_30px_110px_rgba(0,0,0,.35)] ${
-          align === "right" ? "lg:[&>*:first-child]:order-2" : ""
-        }`}
-        style={{ boxShadow: `0 24px 80px rgba(0,0,0,.35), 0 0 44px rgba(${color.rgb},.08)` }}
-      >
-        {/* Desktop Visual Preview */}
-        <div className="hidden lg:block h-full w-full overflow-hidden rounded-[18px] border border-white/10 lg:min-h-[280px] xl:min-h-[300px]">
-          <div className="h-full w-full">
-            <ServiceVisual serviceKey={service.key} />
+        className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity duration-500"
+        style={{ backgroundColor: color.hex }}
+      />
+
+      {/* Top 3D specular reflection bar */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] rounded-t-[26px]"
+        style={{
+          background: `linear-gradient(90deg, transparent 0%, rgba(${color.rgb},0.4) 30%, rgba(255,255,255,0.6) 50%, rgba(${color.rgb},0.4) 70%, transparent 100%)`,
+        }}
+      />
+
+      {/* Card Header Bar */}
+      <div className="relative z-10 flex items-center justify-between pb-2">
+        <div className="flex items-center gap-3">
+          <motion.div
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] transition-transform duration-300 group-hover:scale-105"
+            style={{ borderColor: `rgba(${color.rgb}, 0.28)` }}
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Icon className="h-5 w-5" style={{ color: color.hex }} strokeWidth={1.8} />
+          </motion.div>
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#c19a88]">
+              0{index + 1} · {service.label}
+            </span>
+            <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-white group-hover:text-white transition-colors">
+              {service.title}
+            </h3>
           </div>
         </div>
 
-        {/* Card Body */}
-        <div className="flex min-w-0 flex-1 flex-col justify-between lg:justify-center lg:p-4 xl:p-5">
-          <div>
-            <div className="flex items-center justify-between">
-              <motion.div
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] sm:h-12 sm:w-12 lg:h-13 lg:w-13"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-6 lg:w-6" style={{ color: color.hex }} strokeWidth={1.7} />
-              </motion.div>
-              <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-white/50 lg:hidden">
-                {service.label}
-              </span>
-            </div>
-
-            <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight text-white sm:text-xl lg:mt-6 lg:text-3xl xl:text-4xl">{service.title}</h2>
-            <p className="mt-1.5 text-xs leading-relaxed text-white/60 sm:text-sm lg:mt-4 lg:max-w-xl lg:text-base lg:leading-7">
-              {service.short}
-            </p>
-
-            {/* Mobile Capability Chips */}
-            <div className="mt-3 flex flex-wrap gap-1.5 lg:hidden">
-              {service.capabilities.slice(0, 3).map((cap) => (
-                <span key={cap} className="rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[10px] text-white/50">
-                  {cap}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => onExplore(service.key)}
-            className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full px-4 text-xs font-semibold text-white transition duration-300 group-hover:scale-[1.02] sm:text-sm lg:mt-6 lg:h-11 lg:w-fit lg:px-5"
-            style={{ backgroundColor: `rgba(${color.rgb},0.22)`, border: `1px solid rgba(${color.rgb},0.42)` }}
-          >
-            Explore Capabilities
-            <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          </button>
+        {/* Explore Pill Button */}
+        <div
+          className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 text-xs font-medium text-white/60 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white"
+          style={{ borderColor: `rgba(${color.rgb}, 0.22)` }}
+        >
+          <span className="hidden sm:inline">Explore</span>
+          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" style={{ color: color.hex }} />
         </div>
       </div>
-    </motion.section>
+
+      {/* Interactive Visual Preview Stage */}
+      <div className="relative z-10 my-3 h-[200px] sm:h-[220px] w-full overflow-hidden rounded-[20px] border border-white/8 bg-[#070707] shadow-inner transition-colors duration-300 group-hover:border-white/15">
+        <ServiceVisual serviceKey={service.key} compact={true} />
+      </div>
+
+      {/* Card Content & Capabilities */}
+      <div className="relative z-10 pt-1">
+        <p className="text-xs sm:text-sm leading-relaxed text-white/58 line-clamp-2">
+          {service.short}
+        </p>
+
+        {/* Capability Tags */}
+        <div className="mt-3.5 flex flex-wrap gap-1.5 pt-3 border-t border-white/6">
+          {service.capabilities.slice(0, 4).map((cap) => (
+            <span
+              key={cap}
+              className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-white/45 transition-colors duration-300 group-hover:border-white/15 group-hover:text-white/70"
+            >
+              {cap}
+            </span>
+          ))}
+          {service.capabilities.length > 4 && (
+            <span className="inline-flex items-center rounded-md border border-transparent px-1.5 py-1 text-[10px] text-white/30">
+              +{service.capabilities.length - 4} more
+            </span>
+          )}
+        </div>
+      </div>
+    </motion.article>
   );
 }
 
 export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
-  const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
-  const [activeSection, setActiveSection] = useState("home");
+  const [stage, setStage] = useState<Stage>("home");
   const [activeModal, setActiveModal] = useState<ServiceKey | null>(null);
-  const [animateHome, setAnimateHome] = useState(false);
-  const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
-  const [isIntroLeaving, setIsIntroLeaving] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
 
   useEffect(() => {
-    const hasSeenIntro = typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
-
     if (initialDest) {
       window.history.replaceState(window.history.state, "", "/");
-      return;
     }
-
-    if (hasSeenIntro) {
-      if (stage !== "home") {
-        const restoreHome = window.setTimeout(() => {
-          setStage("home");
-          setIsIntroMounted(false);
-        }, 0);
-        return () => window.clearTimeout(restoreHome);
-      }
-      return;
+    if (pendingTarget.current) {
+      const target = pendingTarget.current;
+      pendingTarget.current = null;
+      window.setTimeout(() => {
+        document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
     }
-
-    window.history.scrollRestoration = "manual";
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-    const beginExit = window.setTimeout(() => {
-      setIsIntroLeaving(true);
-    }, 1850);
-    const removeIntro = window.setTimeout(() => {
-      setIsIntroMounted(false);
-    }, 2350);
-
-    return () => {
-      window.clearTimeout(beginExit);
-      window.clearTimeout(removeIntro);
-    };
-  }, [initialDest, stage]);
-
-  useEffect(() => {
-    if (stage !== "home" || !pendingTarget.current) return;
-    const target = pendingTarget.current;
-    pendingTarget.current = null;
-    window.setTimeout(() => {
-      document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      setActiveSection(target);
-    }, 450);
-  }, [stage]);
-
-  useEffect(() => {
-    if (stage !== "home") return;
-    // Sidebar is hidden on mobile screens (hidden md:block). Skip running getBoundingClientRect on scroll.
-    if (typeof window !== "undefined" && window.innerWidth < 768) return;
-
-    const sections = sidebarLinks.map((link) => document.getElementById(link.id)).filter((section): section is HTMLElement => Boolean(section));
-    let frame = 0;
-
-    const updateActiveSection = () => {
-      const readingLine = window.innerHeight * 0.42;
-      const current = sections.find((section) => {
-        const rect = section.getBoundingClientRect();
-        return rect.top <= readingLine && rect.bottom > readingLine;
-      });
-
-      if (current?.id) setActiveSection(current.id);
-    };
-
-    const scheduleUpdate = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(updateActiveSection);
-    };
-
-    updateActiveSection();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-    };
-  }, [stage]);
+  }, [initialDest]);
 
   const chooseDestination = (destination: DestinationKey) => {
     window.sessionStorage.setItem("skalekraftDestination", destination);
     window.sessionStorage.setItem("skalekraftIntroSeen", "true");
-    pendingTarget.current = destination === "everything" ? "home" : destination;
-    setAnimateHome(true);
     setStage("home");
-  };
-
-  const navigate = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setActiveSection(id);
+    if (destination !== "everything") {
+      window.setTimeout(() => {
+        document.getElementById(destination)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    }
   };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
       {stage === "selection" && (
-        <>
-          {isIntroMounted && <IntroSplash isLeaving={isIntroLeaving} />}
-          <ServiceSelection
-            onChoose={chooseDestination}
-            onSkip={() => chooseDestination("everything")}
-          />
-        </>
+        <ServiceSelection
+          onChoose={chooseDestination}
+          onSkip={() => chooseDestination("everything")}
+        />
       )}
 
-      {/* Main homepage renders only after a destination is chosen or restored. */}
+      {/* Main homepage renders immediately for instant speed */}
       {stage === "home" && (
         <>
         <FluidParticlesBackground
           theme="dark"
-          particleCount={380}
+          particleCount={140}
           noiseIntensity={0.0026}
           particleSize={{ min: 0.5, max: 1.4 }}
           className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
         />
-        <Sidebar active={activeSection} onNavigate={navigate} />
-        <motion.div
-          key="home"
-          className="relative z-10"
-          initial={animateHome ? { opacity: 0 } : false}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.75, ease }}
-        >
+        <div key="home" className="relative z-10">
           <CinematicHero />
-          <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
+          <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10">
             <ImpactMetricsBar />
 
-            <div className="py-8 sm:py-12">
+            <div id="services" className="scroll-mt-28 py-8 sm:py-12">
               <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
                 <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
                 <h2 className="mt-2 text-2xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
-              <div className="mt-6 space-y-4 sm:mt-10 lg:mt-0 lg:space-y-6">
-                <ServiceBlock service={services.websites} onExplore={setActiveModal} />
-                <ServiceBlock service={services.apps} align="right" onExplore={setActiveModal} />
-                <ServiceBlock service={services.ai} onExplore={setActiveModal} />
-                <ServiceBlock service={services.creative} align="right" onExplore={setActiveModal} />
+              <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
+                <ServiceCard service={services.websites} index={0} onExplore={setActiveModal} />
+                <ServiceCard service={services.apps} index={1} onExplore={setActiveModal} />
+                <ServiceCard service={services.ai} index={2} onExplore={setActiveModal} />
+                <ServiceCard service={services.creative} index={3} onExplore={setActiveModal} />
               </div>
             </div>
 
             <SelectedWork />
 
-            <TechStackRadar />
+            <div className="[content-visibility:auto] [contain-intrinsic-size:1px_550px]">
+              <TechStackRadar />
+            </div>
 
-            <motion.section data-cursor-card id="contact" className="relative my-12 scroll-mt-24 overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:rounded-[30px] sm:p-8 md:p-10" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
+            <motion.section data-cursor-card id="contact" className="relative my-12 scroll-mt-24 overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:rounded-[30px] sm:p-8 md:p-10 [content-visibility:auto] [contain-intrinsic-size:1px_650px]" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
               <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
               <div className="relative grid items-center gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
@@ -754,7 +623,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
               </div>
             </motion.section>
           </main>
-        </motion.div>
+        </div>
         </>
       )}
 

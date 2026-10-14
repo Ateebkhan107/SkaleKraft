@@ -7,9 +7,10 @@ import { heroCodeLines, heroNotices } from "./data";
 interface HeroSoftwareVisualProps {
   embedded?: boolean;
   active?: boolean;
+  compact?: boolean;
 }
 
-export function HeroSoftwareVisual({ embedded = false, active }: HeroSoftwareVisualProps = {}) {
+export function HeroSoftwareVisual({ embedded = false, active, compact = false }: HeroSoftwareVisualProps = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const internalInView = useInView(ref, { amount: 0.35, margin: "-120px" });
   const inView = active !== undefined ? active : internalInView;
@@ -155,6 +156,19 @@ export function HeroSoftwareVisual({ embedded = false, active }: HeroSoftwareVis
   );
 
   if (embedded) {
+    if (compact) {
+      return (
+        <div
+          ref={ref}
+          className="relative flex h-full w-full items-center justify-center overflow-hidden"
+        >
+          <div className="relative h-[340px] w-[540px] shrink-0 scale-[0.54] sm:scale-[0.58] origin-center pointer-events-none">
+            {containerContent}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
         ref={ref}

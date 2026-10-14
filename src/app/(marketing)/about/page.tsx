@@ -15,6 +15,7 @@ import Image from "next/image";
 import BackHomeLink from "@/components/ui/BackHomeLink";
 import { FluidParticlesBackground } from "@/components/ui/fluid-particles-background";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
+import InteractiveCanvas3D from "@/components/3d/InteractiveCanvas3D";
 
 const values = [
   {
@@ -114,34 +115,41 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="relative mx-auto h-[300px] w-full max-w-[390px] sm:h-[340px]">
-            <div className="absolute left-1/2 top-1/2 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#c19a88]/15 sm:h-60 sm:w-60" />
-            <div className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/10 sm:h-40 sm:w-40" />
+          <div className="relative mx-auto h-[320px] w-full max-w-[390px] sm:h-[360px]">
+            {/* Realtime 3D Kinetic Gyroscope */}
+            <div className="absolute inset-0 z-0">
+              <InteractiveCanvas3D
+                type="gyroscope"
+                accentColor="#c19a88"
+                secondaryColor="#805948"
+                interactive={true}
+                autoRotateSpeed={1.2}
+                className="h-full w-full"
+              />
+            </div>
+
             <motion.div
-              className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-[#c19a88]/25 bg-[#110f0e]/90 shadow-[0_0_60px_rgba(128,89,72,.18)] backdrop-blur-xl"
+              className="pointer-events-none absolute left-1/2 top-1/2 z-10 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-[#c19a88]/30 bg-[#110f0e]/85 shadow-[0_0_50px_rgba(128,89,72,.25)] backdrop-blur-md"
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.7)]" />
-              <span className="mt-2 text-[10px] uppercase tracking-[0.2em] text-white/38">Studio</span>
-              <span className="mt-0.5 text-sm font-medium text-white">SkaleKraft</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,.8)]" />
+              <span className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/40">Studio</span>
+              <span className="mt-0.5 text-xs font-semibold text-white">SkaleKraft</span>
             </motion.div>
 
-            <motion.div className="absolute left-0 top-5 max-w-[160px]" animate={{ y: [0, -7, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
-              <div className="flex items-center gap-2 text-[#c19a88]"><Layers3 className="h-4 w-4" /><span className="text-[10px] uppercase tracking-[0.2em]">Build</span></div>
-              <p className="mt-2 text-sm leading-5 text-white/65">Websites, apps and intelligent systems.</p>
+            <motion.div className="pointer-events-none absolute left-0 top-3 z-10 max-w-[150px]" animate={{ y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+              <div className="flex items-center gap-1.5 text-[#c19a88]"><Layers3 className="h-3.5 w-3.5" /><span className="text-[9px] uppercase tracking-[0.2em]">Build</span></div>
+              <p className="mt-1.5 text-xs leading-4 text-white/65">Websites, apps & AI systems.</p>
             </motion.div>
-            <motion.div className="absolute right-0 top-16 text-right" animate={{ y: [0, 7, 0] }} transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}>
-              <div className="flex items-center justify-end gap-2 text-[#c19a88]"><span className="text-[10px] uppercase tracking-[0.2em]">Move</span><TimerReset className="h-4 w-4" /></div>
-              <p className="mt-2 text-sm text-white/65">Short feedback loops.</p>
+            <motion.div className="pointer-events-none absolute right-0 top-12 z-10 text-right max-w-[140px]" animate={{ y: [0, 6, 0] }} transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}>
+              <div className="flex items-center justify-end gap-1.5 text-[#c19a88]"><span className="text-[9px] uppercase tracking-[0.2em]">Move</span><TimerReset className="h-3.5 w-3.5" /></div>
+              <p className="mt-1.5 text-xs text-white/65">Short feedback loops.</p>
             </motion.div>
-            <motion.div className="absolute bottom-4 left-1/2 w-44 -translate-x-1/2 text-center" animate={{ y: [0, -5, 0] }} transition={{ duration: 4.7, repeat: Infinity, ease: "easeInOut" }}>
-              <Globe className="mx-auto h-4 w-4 text-[#c19a88]" />
-              <p className="mt-2 text-[10px] uppercase tracking-[0.2em] text-white/35">Worldwide delivery</p>
+            <motion.div className="pointer-events-none absolute bottom-2 left-1/2 z-10 w-44 -translate-x-1/2 text-center" animate={{ y: [0, -5, 0] }} transition={{ duration: 4.7, repeat: Infinity, ease: "easeInOut" }}>
+              <Globe className="mx-auto h-3.5 w-3.5 text-[#c19a88]" />
+              <p className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/40">Worldwide delivery</p>
             </motion.div>
-
-            <div className="absolute left-[24%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#c19a88] shadow-[0_0_10px_#c19a88]" />
-            <div className="absolute right-[22%] top-[57%] h-1 w-1 rounded-full bg-white/70" />
           </div>
         </motion.section>
 

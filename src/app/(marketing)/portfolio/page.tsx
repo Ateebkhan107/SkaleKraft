@@ -3,19 +3,57 @@ import { showcaseProjects } from "@/lib/showcase-projects";
 import BackHomeLink from "@/components/ui/BackHomeLink";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 import ProjectThumbnail from "@/components/work/ProjectThumbnail";
+import InteractiveCanvas3D from "@/components/3d/InteractiveCanvas3D";
 
 export default function PortfolioPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#0B0B0B] px-5 pb-24 pt-28 text-white md:px-10 md:pt-32">
       <section className="relative mx-auto max-w-6xl">
         <div className="pointer-events-none absolute -right-32 -top-28 hidden h-96 w-96 rounded-full bg-[#805948]/15 blur-3xl md:block" />
-        <div className="relative max-w-4xl">
-          <BackHomeLink className="mb-12" />
-          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
-          <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl text-white">
-            The work behind the <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">craft.</span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">Explore how SkaleKraft transforms ambitious ideas into scalable digital products—combining thoughtful design, intelligent systems, and dependable engineering to create experiences people enjoy using.</p>
+        <div className="relative flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+          <div className="max-w-2xl">
+            <BackHomeLink className="mb-8" />
+            <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
+            <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl text-white">
+              The work behind the <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">craft.</span>
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-7 text-white/58 sm:text-lg">
+              Explore how SkaleKraft transforms ambitious ideas into scalable digital products—combining thoughtful design, intelligent systems, and dependable engineering.
+            </p>
+          </div>
+
+          {/* Luxury Studio Craft Artifact Viewport */}
+          <div className="relative mx-auto hidden sm:flex flex-col items-center justify-center overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(14,14,14,0.92)_50%,rgba(8,8,8,0.98))] p-3.5 shadow-[0_20px_70px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl sm:h-[280px] sm:w-[280px] lg:h-[320px] lg:w-[320px]">
+            {/* Ambient Radial Backlight */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.18),transparent_70%)] blur-2xl" />
+
+            {/* Top HUD Bar */}
+            <div className="pointer-events-none absolute top-3.5 left-4 right-4 flex items-center justify-between text-[9px] uppercase tracking-[0.2em] text-white/40 font-mono">
+              <span>Craft Lab</span>
+              <span className="flex items-center gap-1 text-[#c19a88]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88] animate-pulse" />
+                3D Artifact
+              </span>
+            </div>
+
+            {/* 3D Realtime Canvas */}
+            <div className="relative h-full w-full pt-4">
+              <InteractiveCanvas3D
+                type="craft-prism"
+                accentColor="#c19a88"
+                secondaryColor="#805948"
+                interactive={true}
+                autoRotateSpeed={1.1}
+                className="h-full w-full"
+              />
+            </div>
+
+            {/* Bottom HUD Bar */}
+            <div className="pointer-events-none absolute bottom-3 left-4 right-4 flex items-center justify-between text-[9px] uppercase tracking-[0.16em] text-white/35 font-mono border-t border-white/[0.06] pt-1.5">
+              <span>Precision Engine</span>
+              <span>60 FPS</span>
+            </div>
+          </div>
         </div>
         <div className="relative mt-10 grid grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3">
           {showcaseProjects.map((project, index) => (

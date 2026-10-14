@@ -18,6 +18,7 @@ import {
 import BackHomeLink from "@/components/ui/BackHomeLink";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 import { FluidParticlesBackground } from "@/components/ui/fluid-particles-background";
+import InteractiveCanvas3D from "@/components/3d/InteractiveCanvas3D";
 
 const detailedServices = [
   {
@@ -209,36 +210,50 @@ export default function ServicesPage() {
       />
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        {/* Compact & Attractive Header */}
-        <section className="mb-6 sm:mb-8 max-w-3xl">
-          <div className="mb-3 flex flex-wrap items-center gap-2.5">
-            <BackHomeLink className="!h-8 !px-3 !text-xs" />
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#c19a88]/25 bg-[#805948]/12 px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-[#e8c5b4] shadow-[0_0_14px_rgba(193,154,136,0.14)]">
-              <Sparkles className="h-3 w-3 text-[#c19a88]" />
-              Full-Service Digital Studio
-            </span>
+        {/* Compact & Attractive Header with 3D Craft Visual */}
+        <section className="mb-6 sm:mb-8 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+          <div className="max-w-2xl">
+            <div className="mb-3 flex flex-wrap items-center gap-2.5">
+              <BackHomeLink className="!h-8 !px-3 !text-xs" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#c19a88]/25 bg-[#805948]/12 px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-[#e8c5b4] shadow-[0_0_14px_rgba(193,154,136,0.14)]">
+                <Sparkles className="h-3 w-3 text-[#c19a88]" />
+                Full-Service Digital Studio
+              </span>
+            </div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-[2.65rem] leading-[1.12]"
+            >
+              <span className="text-white">
+                Website Development, Mobile Apps,{" "}
+              </span>
+              <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">
+                AI & Creative Studio
+              </span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08 }}
+              className="mt-2 text-xs leading-relaxed text-white/55 sm:text-sm max-w-xl"
+            >
+              SkaleKraft designs, engineers, and scales high-performance websites, custom iOS & Android mobile apps, autonomous AI agents, viral video edits, and digital marketing systems for ambitious brands.
+            </motion.p>
           </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-[2.65rem] leading-[1.12]"
-          >
-            <span className="text-white">
-              Website Development, Mobile Apps,{" "}
-            </span>
-            <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">
-              AI & Creative Studio
-            </span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08 }}
-            className="mt-2 text-xs leading-relaxed text-white/55 sm:text-sm max-w-2xl"
-          >
-            SkaleKraft designs, engineers, and scales high-performance websites, custom iOS & Android mobile apps, autonomous AI agents, viral video edits, and digital marketing systems for ambitious brands.
-          </motion.p>
+          <div className="relative mx-auto hidden h-[180px] w-[180px] shrink-0 items-center justify-center sm:flex lg:h-[210px] lg:w-[210px]">
+            <div className="pointer-events-none absolute -inset-2 rounded-full bg-[#c19a88]/10 blur-2xl" />
+            <InteractiveCanvas3D
+              type="torus-knot"
+              accentColor="#c19a88"
+              secondaryColor="#805948"
+              interactive={true}
+              autoRotateSpeed={0.9}
+              className="h-full w-full"
+            />
+          </div>
         </section>
 
         {/* High-End Bento Service Cards */}
@@ -358,30 +373,45 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Luxury Bottom CTA */}
-        <section className="relative mt-12 overflow-hidden rounded-[24px] border border-white/12 bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(15,13,12,0.96)_45%,rgba(10,9,9,0.98))] p-6 text-center shadow-[0_24px_80px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] sm:p-9">
+        {/* Luxury Bottom CTA with 3D Cyber Sphere */}
+        <section className="relative mt-12 overflow-hidden rounded-[24px] border border-white/12 bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(15,13,12,0.96)_45%,rgba(10,9,9,0.98))] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] sm:p-9">
           <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-[#805948]/20 blur-[70px]" />
           <div className="pointer-events-none absolute -right-16 -bottom-16 h-48 w-48 rounded-full bg-[#c19a88]/15 blur-[70px]" />
 
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#c19a88]/20 bg-[#805948]/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#c19a88]">
-              <Sparkles className="h-3 w-3 text-[#c19a88]" />
-              Let&apos;s Build Together
-            </span>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Have a project <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">in mind?</span>
-            </h2>
-            <p className="mx-auto mt-2 max-w-lg text-xs leading-relaxed text-white/55 sm:text-sm">
-              Tell us about your website, mobile app, video editing, or AI automation goals. We&apos;ll prepare a practical roadmap within 24 hours.
-            </p>
-            <GlassmorphismCta
-              href="/contact"
-              label="Start Your Project"
-              avatarSrc="/images/skalekraft-logo.png"
-              avatarAlt="SkaleKraft logo"
-              shimmerColor="rgba(193,154,136,0.85)"
-              className="mx-auto mt-5"
-            />
+          <div className="relative z-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#c19a88]/20 bg-[#805948]/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#c19a88]">
+                <Sparkles className="h-3 w-3 text-[#c19a88]" />
+                Let&apos;s Build Together
+              </span>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                Have a project <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">in mind?</span>
+              </h2>
+              <p className="mt-2 max-w-lg text-xs leading-relaxed text-white/55 sm:text-sm">
+                Tell us about your website, mobile app, video editing, or AI automation goals. We&apos;ll prepare a practical roadmap within 24 hours.
+              </p>
+              <div className="mt-5">
+                <GlassmorphismCta
+                  href="/contact"
+                  label="Start Your Project"
+                  avatarSrc="/images/skalekraft-logo.png"
+                  avatarAlt="SkaleKraft logo"
+                  shimmerColor="rgba(193,154,136,0.85)"
+                />
+              </div>
+            </div>
+
+            <div className="relative mx-auto hidden h-[220px] w-[220px] items-center justify-center sm:flex lg:h-[260px] lg:w-[260px]">
+              <div className="pointer-events-none absolute -inset-2 rounded-full bg-[#c19a88]/10 blur-2xl" />
+              <InteractiveCanvas3D
+                type="cyber-sphere"
+                accentColor="#c19a88"
+                secondaryColor="#805948"
+                interactive={true}
+                autoRotateSpeed={1}
+                className="h-full w-full"
+              />
+            </div>
           </div>
         </section>
       </div>

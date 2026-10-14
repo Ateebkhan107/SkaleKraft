@@ -18,6 +18,7 @@ import {
   Smartphone,
   type LucideIcon,
 } from "lucide-react";
+import InteractiveCanvas3D, { Object3DType } from "@/components/3d/InteractiveCanvas3D";
 
 type Option = {
   label: string;
@@ -57,6 +58,14 @@ const teams: Record<string, string[]> = {
   "AI System": ["Frontend", "Backend", "AI Engineer"],
   "Creative Studio": ["Editor", "Motion Designer", "Producer"],
   "Brand Identity": ["Brand Designer", "Art Direction", "UI Designer"],
+};
+
+const serviceTo3DType: Record<string, Object3DType> = {
+  "Website Development": "torus-knot",
+  "Mobile App": "torus-knot",
+  "AI System": "neural-core",
+  "Creative Studio": "cyber-sphere",
+  "Brand Identity": "gyroscope",
 };
 
 function getDuration(service: string, timeline: string) {
@@ -483,6 +492,28 @@ export default function ContactPage() {
                           <span className="mt-0.5 block truncate text-xs font-semibold text-white" title={value}>{value}</span>
                         </motion.div>
                       ))}
+                    </div>
+
+                    {/* Interactive 3D Project Artifact Token */}
+                    <div className="relative flex h-20 sm:h-22 w-full items-center justify-between overflow-hidden rounded-xl border border-white/[0.08] bg-black/35 px-3 py-1.5 backdrop-blur-md">
+                      <div className="z-10 max-w-[60%]">
+                        <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-[#c19a88]">3D Project Token</span>
+                        <p className="mt-0.5 truncate text-xs font-medium text-white">{service}</p>
+                        <span className="mt-0.5 inline-flex items-center gap-1 text-[9px] text-white/40">
+                          <Sparkles className="h-2.5 w-2.5 text-[#c19a88]" /> Drag to inspect
+                        </span>
+                      </div>
+                      <div className="relative h-full w-24 sm:w-28">
+                        <InteractiveCanvas3D
+                          key={service}
+                          type={serviceTo3DType[service] || "neural-core"}
+                          accentColor="#c19a88"
+                          secondaryColor="#805948"
+                          interactive={true}
+                          autoRotateSpeed={1.4}
+                          className="h-full w-full"
+                        />
+                      </div>
                     </div>
 
                     {/* Stack & Team */}
