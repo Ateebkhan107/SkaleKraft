@@ -512,45 +512,79 @@ function ServiceCard({
 }
 
 export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
-  const [stage, setStage] = useState<Stage>("home");
+  const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
   const [activeModal, setActiveModal] = useState<ServiceKey | null>(null);
+  const [animateHome, setAnimateHome] = useState(false);
+  const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
+  const [isIntroLeaving, setIsIntroLeaving] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
 
   useEffect(() => {
+    const hasSeenIntro = typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
+
     if (initialDest) {
       window.history.replaceState(window.history.state, "", "/");
+      return;
     }
-    if (pendingTarget.current) {
-      const target = pendingTarget.current;
-      pendingTarget.current = null;
-      window.setTimeout(() => {
-        document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 250);
+
+    if (hasSeenIntro) {
+      if (stage !== "home") {
+        const restoreHome = window.setTimeout(() => {
+          setStage("home");
+          setIsIntroMounted(false);
+        }, 0);
+        return () => window.clearTimeout(restoreHome);
+      }
+      return;
     }
-  }, [initialDest]);
+
+    window.history.scrollRestoration = "manual";
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+    const beginExit = window.setTimeout(() => {
+      setIsIntroLeaving(true);
+    }, 1850);
+    const removeIntro = window.setTimeout(() => {
+      setIsIntroMounted(false);
+    }, 2350);
+
+    return () => {
+      window.clearTimeout(beginExit);
+      window.clearTimeout(removeIntro);
+    };
+  }, [initialDest, stage]);
+
+  useEffect(() => {
+    if (stage !== "home" || !pendingTarget.current) return;
+    const target = pendingTarget.current;
+    pendingTarget.current = null;
+    window.setTimeout(() => {
+      document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 450);
+  }, [stage]);
 
   const chooseDestination = (destination: DestinationKey) => {
     window.sessionStorage.setItem("skalekraftDestination", destination);
     window.sessionStorage.setItem("skalekraftIntroSeen", "true");
+    pendingTarget.current = destination === "everything" ? "home" : destination;
+    setAnimateHome(true);
     setStage("home");
-    if (destination !== "everything") {
-      window.setTimeout(() => {
-        document.getElementById(destination)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 150);
-    }
   };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
       {stage === "selection" && (
-        <ServiceSelection
-          onChoose={chooseDestination}
-          onSkip={() => chooseDestination("everything")}
-        />
+        <>
+          {isIntroMounted && <IntroSplash isLeaving={isIntroLeaving} />}
+          <ServiceSelection
+            onChoose={chooseDestination}
+            onSkip={() => chooseDestination("everything")}
+          />
+        </>
       )}
 
-      {/* Main homepage renders immediately for instant speed */}
+      {/* Main homepage renders only after a destination is chosen or restored. */}
       {stage === "home" && (
         <>
         <FluidParticlesBackground
@@ -560,7 +594,13 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           particleSize={{ min: 0.5, max: 1.4 }}
           className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
         />
-        <div key="home" className="relative z-10">
+        <motion.div
+          key="home"
+          className="relative z-10"
+          initial={animateHome ? { opacity: 0 } : false}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.75, ease }}
+        >
           <CinematicHero />
           <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10">
             <ImpactMetricsBar />
@@ -623,7 +663,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
               </div>
             </motion.section>
           </main>
-        </div>
+        </motion.div>
         </>
       )}
 
