@@ -246,7 +246,7 @@ export default function TechStackRadar() {
   };
 
   return (
-    <section className="relative scroll-mt-36 overflow-hidden bg-transparent py-14 text-white sm:py-20" id="tech-stack">
+    <section className="relative scroll-mt-36 overflow-hidden bg-transparent py-10 text-white sm:py-20" id="tech-stack">
       <div className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.15),transparent_68%)] blur-3xl" />
       <div className="pointer-events-none absolute inset-x-[8%] top-32 h-px bg-gradient-to-r from-transparent via-[#c19a88]/20 to-transparent" />
 
@@ -291,7 +291,7 @@ export default function TechStackRadar() {
           ))}
         </div>
 
-        <motion.div layout className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div layout className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {filteredTech.map((tech, index) => {
               const Icon = tech.icon;
@@ -305,7 +305,7 @@ export default function TechStackRadar() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className={`group relative flex min-h-[270px] flex-col justify-between overflow-hidden rounded-[22px] border border-white/[0.085] bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(13,13,13,0.94)_40%,rgba(7,7,7,0.98))] p-5 shadow-[0_22px_65px_rgba(0,0,0,0.28)] transition duration-500 hover:-translate-y-1 hover:border-[#c19a88]/30 hover:shadow-[0_30px_90px_rgba(0,0,0,0.46)] ${isFeatured ? "lg:col-span-2" : ""}`}
+                  className={`group relative flex min-h-[210px] flex-col justify-between overflow-hidden rounded-[16px] border border-white/[0.085] bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(13,13,13,0.94)_40%,rgba(7,7,7,0.98))] p-2.5 shadow-[0_16px_45px_rgba(0,0,0,0.26)] transition duration-500 hover:-translate-y-1 hover:border-[#c19a88]/30 hover:shadow-[0_30px_90px_rgba(0,0,0,0.46)] sm:min-h-[270px] sm:rounded-[22px] sm:p-5 sm:shadow-[0_22px_65px_rgba(0,0,0,0.28)] ${isFeatured ? "lg:col-span-2" : ""}`}
                 >
                   <div
                     className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full opacity-[0.07] blur-[55px] transition duration-700 group-hover:opacity-20"
@@ -313,34 +313,34 @@ export default function TechStackRadar() {
                   />
                   <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                   <div>
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-3">
                         <span
-                          className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.09] bg-white/[0.025] shadow-[inset_0_1px_0_rgba(255,255,255,.05),0_12px_35px_rgba(0,0,0,.3)] transition duration-500 group-hover:scale-105"
+                          className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/[0.09] bg-white/[0.025] shadow-[inset_0_1px_0_rgba(255,255,255,.05),0_12px_35px_rgba(0,0,0,.3)] transition duration-500 group-hover:scale-105 sm:h-11 sm:w-11 sm:rounded-2xl"
                           style={{ color: tech.accentColor }}
                         >
-                          <Icon className="h-5 w-5" strokeWidth={1.7} />
+                          <Icon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={1.7} />
                         </span>
-                        <span className="font-mono text-[10px] tracking-[0.16em] text-white/22">0{index + 1}</span>
+                        <span className="hidden font-mono text-[10px] tracking-[0.16em] text-white/22 sm:inline">0{index + 1}</span>
                       </div>
-                      <span className="rounded-full border border-white/[0.08] bg-black/25 px-2.5 py-1 font-mono text-[9px] tracking-[-0.01em] text-white/48 backdrop-blur-md">
+                      <span className="max-w-[86px] rounded-full border border-white/[0.08] bg-black/25 px-1.5 py-1 text-center font-mono text-[7px] leading-3 tracking-[-0.01em] text-white/48 backdrop-blur-md sm:max-w-none sm:px-2.5 sm:text-[9px]">
                         {tech.roiMetric}
                       </span>
                     </div>
 
-                    <p className="mt-6 text-[9px] font-medium uppercase tracking-[0.2em]" style={{ color: `${tech.accentColor}cc` }}>{tech.badge}</p>
-                    <h3 className={`mt-2 font-medium leading-tight tracking-[-0.025em] text-white transition group-hover:text-[#e8c5b4] ${isFeatured ? "text-2xl sm:text-3xl" : "text-lg"}`}>
+                    <p className="mt-4 text-[7px] font-medium uppercase tracking-[0.16em] sm:mt-6 sm:text-[9px] sm:tracking-[0.2em]" style={{ color: `${tech.accentColor}cc` }}>{tech.badge}</p>
+                    <h3 className={`mt-1.5 line-clamp-2 text-[13px] font-medium leading-tight tracking-[-0.025em] text-white transition group-hover:text-[#e8c5b4] sm:mt-2 sm:line-clamp-none ${isFeatured ? "sm:text-3xl" : "sm:text-lg"}`}>
                       {tech.name}
                     </h3>
-                    <p className={`mt-2.5 leading-relaxed text-white/46 ${isFeatured ? "max-w-xl text-sm" : "text-xs"}`}>
+                    <p className={`mt-2 line-clamp-2 text-[10px] leading-4 text-white/46 sm:mt-2.5 sm:line-clamp-none sm:leading-relaxed ${isFeatured ? "sm:max-w-xl sm:text-sm" : "sm:text-xs"}`}>
                       {tech.tagline}
                     </p>
 
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {tech.tags.slice(0, 3).map((tag) => (
+                    <div className="mt-3 flex flex-wrap gap-1 sm:mt-4 sm:gap-1.5">
+                      {tech.tags.slice(0, 3).map((tag, tagIndex) => (
                         <span
                           key={tag}
-                          className="rounded-lg border border-white/[0.075] bg-white/[0.025] px-2.5 py-1 text-[9px] text-white/42"
+                          className={`${tagIndex > 0 ? "hidden sm:inline" : "inline"} rounded-md border border-white/[0.075] bg-white/[0.025] px-1.5 py-0.5 text-[7px] leading-3 text-white/42 sm:rounded-lg sm:px-2.5 sm:py-1 sm:text-[9px]`}
                         >
                           {tag}
                         </span>
@@ -348,13 +348,13 @@ export default function TechStackRadar() {
                     </div>
                   </div>
 
-                  <div className="mt-5 flex items-center justify-between border-t border-white/[0.075] pt-4">
-                    <span className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-white/28">
-                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: tech.accentColor }} /> Production ready
+                  <div className="mt-3 flex items-center justify-between border-t border-white/[0.075] pt-2.5 sm:mt-5 sm:pt-4">
+                    <span className="flex items-center gap-1.5 text-[7px] uppercase tracking-[0.1em] text-white/28 sm:gap-2 sm:text-[9px] sm:tracking-[0.15em]">
+                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: tech.accentColor }} /> <span className="sm:hidden">Ready</span><span className="hidden sm:inline">Production ready</span>
                     </span>
                     <button
                       onClick={() => setActiveModalTech(tech)}
-                      className="inline-flex items-center gap-1.5 text-[10px] font-medium text-[#c19a88] transition hover:text-white"
+                      className="inline-flex items-center gap-1 text-[8px] font-medium text-[#c19a88] transition hover:text-white sm:gap-1.5 sm:text-[10px]"
                     >
                       Explore <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                     </button>
@@ -365,16 +365,16 @@ export default function TechStackRadar() {
           </AnimatePresence>
         </motion.div>
 
-        <div className="mt-6 grid overflow-hidden rounded-2xl border border-white/[0.08] bg-black/20 text-[10px] text-white/48 backdrop-blur-xl sm:grid-cols-3 sm:text-xs">
-          <span className="flex items-center justify-center gap-2 px-4 py-3.5 font-mono text-emerald-400/85 sm:justify-start">
+        <div className="mt-4 grid grid-cols-3 overflow-hidden rounded-xl border border-white/[0.08] bg-black/20 text-[8px] leading-3 text-white/48 backdrop-blur-xl sm:mt-6 sm:rounded-2xl sm:text-xs">
+          <span className="flex items-center justify-center gap-1.5 px-2 py-3 text-center font-mono text-emerald-400/85 sm:justify-start sm:gap-2 sm:px-4 sm:py-3.5">
             <span className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-50" /><span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" /></span>
             99.99% production uptime
           </span>
-          <span className="flex items-center justify-center gap-2 border-t border-white/[0.07] px-4 py-3.5 sm:border-l sm:border-t-0">
+          <span className="flex items-center justify-center gap-1.5 border-l border-white/[0.07] px-2 py-3 text-center sm:gap-2 sm:px-4 sm:py-3.5">
             <Lock className="h-3.5 w-3.5 text-[#c19a88]" />
             Enterprise-grade security architecture
           </span>
-          <span className="flex items-center justify-center gap-2 border-t border-white/[0.07] px-4 py-3.5 sm:border-l sm:border-t-0">
+          <span className="flex items-center justify-center gap-1.5 border-l border-white/[0.07] px-2 py-3 text-center sm:gap-2 sm:px-4 sm:py-3.5">
             <ShieldCheck className="h-3.5 w-3.5 text-[#c19a88]" />
             100% source-code ownership
           </span>
