@@ -256,6 +256,18 @@
   }
 }
 
+/* Backdrop filters repeatedly re-rasterize large page regions while a phone
+   scrolls. The solid translucent surfaces already provide enough contrast on
+   small screens, so keep the costly blur treatment for larger devices. */
+@media (max-width: 767px) {
+  .mobile-performance-root .backdrop-blur-md,
+  .mobile-performance-root .backdrop-blur-xl,
+  .mobile-performance-root .backdrop-blur-2xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .premium-cursor-dot,
   .premium-cursor-ring {

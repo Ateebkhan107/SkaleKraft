@@ -21,9 +21,9 @@ npm audit --omit=dev
 
 ```env
 RESEND_API_KEY=your_resend_api_key
-CONTACT_EMAIL_TO=skalekraft@gmail.com
-CONTACT_EMAIL_FROM=SkaleKraft <hello@skalekraft.in>
-JOIN_EMAIL_TO=skalekraft@gmail.com
+CONTACT_EMAIL_TO=ateeb@skalekraft.in
+CONTACT_EMAIL_FROM=SkaleKraft <ateeb@skalekraft.in>
+JOIN_EMAIL_TO=ateeb@skalekraft.in
 NEXT_PUBLIC_SITE_URL=https://skalekraft.in
 ```
 

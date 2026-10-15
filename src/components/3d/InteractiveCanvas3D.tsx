@@ -418,7 +418,7 @@ export default function InteractiveCanvas3D({
 
     // --- Visibility & Render Loop ---
     const clock = new THREE.Clock();
-    const targetFrameInterval = lowPower ? 1000 / 30 : 1000 / 60;
+    const targetFrameInterval = isMobile ? 1000 / 24 : lowPower ? 1000 / 30 : 1000 / 60;
     const animationStep = targetFrameInterval / (1000 / 60);
     let lastFrameTime = 0;
 
@@ -484,7 +484,7 @@ export default function InteractiveCanvas3D({
         if (isVisible) startRendering();
         else stopRendering();
       },
-      { rootMargin: "80px", threshold: 0.01 }
+      { rootMargin: isMobile ? "0px" : "80px", threshold: 0.01 }
     );
     observer.observe(container);
 

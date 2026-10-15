@@ -35,7 +35,7 @@ export default function SimpleFooter() {
         <div className="flex flex-col items-start gap-5 md:items-end">
           <div className="flex items-center gap-3">
             <a
-              href="mailto:skalekraft@gmail.com"
+              href="mailto:ateeb@skalekraft.in"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/55 transition duration-300 hover:border-[#c19a88]/60 hover:bg-[#c19a88]/15 hover:text-white"
               aria-label="Email SkaleKraft"
             >

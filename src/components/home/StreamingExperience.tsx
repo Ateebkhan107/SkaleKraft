@@ -557,13 +557,17 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     window.history.scrollRestoration = "manual";
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
+    const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+    const introExitDelay = isMobile ? 350 : 1850;
+    const introRemovalDelay = isMobile ? 850 : 2350;
+
     const beginExit = window.setTimeout(() => {
       setIsIntroLeaving(true);
-    }, 1850);
+    }, introExitDelay);
     const removeIntro = window.setTimeout(() => {
       setIsIntroMounted(false);
       window.history.scrollRestoration = "auto";
-    }, 2350);
+    }, introRemovalDelay);
 
     return () => {
       window.clearTimeout(beginExit);
@@ -583,6 +587,9 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
   useEffect(() => {
     if (stage !== "home") return;
+    // The sidebar is hidden on phones, so section tracking would only force
+    // repeated layout reads during touch scrolling without changing the UI.
+    if (window.matchMedia("(max-width: 767px)").matches) return;
 
     const sections = sidebarLinks
       .map((link) => document.getElementById(link.id))
@@ -632,7 +639,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   };
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
+    <div className="mobile-performance-root min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
       {stage === "selection" && (
         <>
           {isIntroMounted && <IntroSplash isLeaving={isIntroLeaving} />}

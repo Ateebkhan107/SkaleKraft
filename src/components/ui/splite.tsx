@@ -73,7 +73,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
         }
 
         const app = new Application(canvasRef.current, {
-          renderOnDemand: true,
+          renderMode: 'auto',
           wasmPath: '/spline',
           htmlContentMode: 'none',
         })
@@ -127,7 +127,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
           if (anyApp._renderer) {
             try {
               const isMobile = window.innerWidth < 768
-              const targetDpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5)
+              const targetDpr = isMobile ? 0.75 : Math.min(window.devicePixelRatio || 1, 1.5)
               anyApp._renderer.setPixelRatio?.(targetDpr)
 
               if (typeof anyApp._renderer.setClearColor === 'function') {
@@ -162,7 +162,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
             mobileIntroTimer = window.setTimeout(() => {
               mobileIntroComplete = true
               syncPlayback()
-            }, 6000)
+            }, 3200)
           }
         }
       } catch (error) {

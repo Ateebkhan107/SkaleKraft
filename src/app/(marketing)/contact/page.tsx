@@ -258,7 +258,7 @@ export default function ContactPage() {
       setCompany("");
       setMessage("");
     } catch (submissionError) {
-      setError(submissionError instanceof Error ? submissionError.message : "Could not send right now. Please email us directly at skalekraft@gmail.com.");
+      setError(submissionError instanceof Error ? submissionError.message : "Could not send right now. Please email us directly at ateeb@skalekraft.in.");
     } finally {
       setIsSubmitting(false);
     }

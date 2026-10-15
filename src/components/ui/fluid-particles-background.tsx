@@ -131,24 +131,8 @@ export function FluidParticlesBackground({
 
     const targetInterval = isMobile ? 1000 / 28 : 1000 / 36;
 
-    // Pause particle drawing during mobile touch scrolling for buttery smooth 60/120fps scrolling
-    let isScrolling = false;
-    let scrollTimeout: NodeJS.Timeout | number = 0;
-    const handleScroll = () => {
-      if (!isMobile) return;
-      isScrolling = true;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = window.setTimeout(() => {
-        isScrolling = false;
-      }, 100);
-    };
-
     const draw = (timestamp: number) => {
       if (!isTabVisible) return;
-      if (isScrolling) {
-        animationFrame = window.requestAnimationFrame(draw);
-        return;
-      }
 
       const elapsed = timestamp - lastDrawTime;
       if (elapsed < targetInterval && lastDrawTime !== 0) {
@@ -200,15 +184,12 @@ export function FluidParticlesBackground({
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(canvas);
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("scroll", handleScroll, { passive: true });
     resizeCanvas();
     animationFrame = window.requestAnimationFrame(draw);
 
     return () => {
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimeout);
       window.cancelAnimationFrame(animationFrame);
     };
   }, [particleCount, noiseIntensity, minSize, maxSize, noise, theme]);
