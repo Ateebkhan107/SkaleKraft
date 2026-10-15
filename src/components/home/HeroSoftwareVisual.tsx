@@ -162,7 +162,7 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
           ref={ref}
           className="relative flex h-full w-full items-center justify-center overflow-hidden"
         >
-          <div className="relative h-[340px] w-[540px] shrink-0 scale-[0.72] sm:scale-[0.82] lg:scale-[0.92] origin-center pointer-events-none">
+          <div className="relative h-[340px] w-[540px] shrink-0 scale-[0.6] origin-center pointer-events-none sm:scale-[0.82] lg:scale-[0.92]">
             {containerContent}
           </div>
         </div>

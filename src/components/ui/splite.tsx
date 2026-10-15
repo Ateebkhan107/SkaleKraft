@@ -26,13 +26,31 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
     let isMounted = true
     let isIntersecting = true
     let isDocumentVisible = document.visibilityState === 'visible'
+    const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches
+    let mobileStopTimer = 0
+    let mobileIntroTimer = 0
+    let mobileIntroComplete = false
 
     const syncPlayback = () => {
       if (!appRef.current) return
       try {
-        if (isIntersecting && isDocumentVisible) appRef.current.play?.()
+        if (isIntersecting && isDocumentVisible && (!isMobile || !mobileIntroComplete)) appRef.current.play?.()
         else appRef.current.stop?.()
       } catch {}
+    }
+
+    const handleMobileInteractionStart = () => {
+      if (!isMobile || !appRef.current || !isIntersecting || !isDocumentVisible) return
+      window.clearTimeout(mobileStopTimer)
+      try { appRef.current.play?.() } catch {}
+    }
+
+    const handleMobileInteractionEnd = () => {
+      if (!isMobile || !mobileIntroComplete) return
+      window.clearTimeout(mobileStopTimer)
+      mobileStopTimer = window.setTimeout(() => {
+        try { appRef.current?.stop?.() } catch {}
+      }, 450)
     }
 
     async function loadSpline() {
@@ -137,6 +155,15 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
           setIsLoading(false)
           syncPlayback()
           onLoadRef.current?.(app)
+          if (isMobile) {
+            // The robot assembles during its opening timeline. Let that reveal
+            // finish once before pausing the continuous render loop on phones.
+            window.clearTimeout(mobileIntroTimer)
+            mobileIntroTimer = window.setTimeout(() => {
+              mobileIntroComplete = true
+              syncPlayback()
+            }, 6000)
+          }
         }
       } catch (error) {
         const msg = error instanceof Error ? `${error.name}: ${error.message}` : String(error)
@@ -169,11 +196,20 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
       syncPlayback()
     }
     document.addEventListener('visibilitychange', handleVisibilityChange)
+    const canvas = canvasRef.current
+    canvas?.addEventListener('pointerdown', handleMobileInteractionStart, { passive: true })
+    canvas?.addEventListener('pointerup', handleMobileInteractionEnd, { passive: true })
+    canvas?.addEventListener('pointercancel', handleMobileInteractionEnd, { passive: true })
 
     return () => {
       isMounted = false
       observer?.disconnect()
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      canvas?.removeEventListener('pointerdown', handleMobileInteractionStart)
+      canvas?.removeEventListener('pointerup', handleMobileInteractionEnd)
+      canvas?.removeEventListener('pointercancel', handleMobileInteractionEnd)
+      window.clearTimeout(mobileStopTimer)
+      window.clearTimeout(mobileIntroTimer)
       if (appRef.current) {
         try {
           appRef.current.dispose()

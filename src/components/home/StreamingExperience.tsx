@@ -430,7 +430,7 @@ function ServiceCard({
     <motion.article
       id={service.key}
       data-cursor-card
-      className="group relative scroll-mt-28 overflow-hidden border-b border-white/[0.08] py-14 sm:py-20 lg:min-h-[630px] lg:py-20"
+      className="group relative scroll-mt-24 overflow-hidden border-b border-white/[0.08] py-10 sm:scroll-mt-28 sm:py-20 lg:min-h-[630px] lg:py-20"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -448,15 +448,15 @@ function ServiceCard({
       />
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute top-10 select-none font-serif text-[clamp(8rem,18vw,16rem)] italic leading-none text-white/[0.022] ${
+        className={`pointer-events-none absolute top-10 hidden select-none font-serif text-[clamp(8rem,18vw,16rem)] italic leading-none text-white/[0.022] sm:block ${
           index % 2 === 0 ? "right-0" : "left-0"
         }`}
       >
         0{index + 1}
       </span>
 
-      <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-12 xl:gap-16">
-        <div className={index % 2 === 0 ? "lg:order-1" : "lg:order-2"}>
+      <div className="relative z-10 grid items-center gap-y-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:gap-y-0 xl:gap-x-16">
+        <div className={index % 2 === 0 ? "lg:col-start-1 lg:row-start-1" : "lg:col-start-2 lg:row-start-1"}>
           <div className="flex items-center gap-4">
             <span className="h-2 w-2 rounded-full shadow-[0_0_18px_currentColor]" style={{ color: color.hex, backgroundColor: color.hex }} />
             <Icon className="h-4 w-4 text-white/56" strokeWidth={1.6} />
@@ -466,23 +466,43 @@ function ServiceCard({
             <span className="h-px flex-1 bg-gradient-to-r from-white/18 to-transparent" />
           </div>
 
-          <h3 className="mt-7 max-w-2xl text-[clamp(2.35rem,3.8vw,4.2rem)] font-medium leading-[1.01] tracking-[-0.05em] text-white">
+          <h3 className="mt-5 max-w-2xl text-[2.05rem] font-medium leading-[1.04] tracking-[-0.04em] text-white sm:mt-7 sm:text-[clamp(2.35rem,3.8vw,4.2rem)] sm:leading-[1.01] sm:tracking-[-0.05em]">
             {service.title}
           </h3>
-          <p className="mt-6 max-w-xl text-sm leading-7 text-white/52 sm:text-base sm:leading-8">
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onExplore(service.key)}
+          aria-label={`Explore ${service.title}`}
+          className={`relative h-[210px] w-full overflow-hidden rounded-[22px] border border-white/[0.07] bg-white/[0.018] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] [mask-image:radial-gradient(ellipse_94%_90%_at_50%_50%,black_62%,transparent_100%)] sm:h-[370px] sm:rounded-none sm:border-0 sm:bg-transparent lg:row-span-2 lg:row-start-1 lg:h-[440px] ${
+            index % 2 === 0 ? "lg:col-start-2" : "lg:col-start-1"
+          }`}
+        >
+          <div
+            className="pointer-events-none absolute inset-[12%] rounded-full opacity-20 blur-[70px] transition-opacity duration-1000 group-hover:opacity-35 sm:blur-[85px]"
+            style={{ backgroundColor: color.hex }}
+          />
+          <div className="relative h-full w-full transition-transform duration-1000 ease-out group-hover:scale-[1.035]">
+            <ServiceVisual serviceKey={service.key} compact={true} />
+          </div>
+        </button>
+
+        <div className={index % 2 === 0 ? "lg:col-start-1 lg:row-start-2" : "lg:col-start-2 lg:row-start-2"}>
+          <p className="max-w-xl line-clamp-4 text-[13px] leading-6 text-white/60 sm:mt-6 sm:line-clamp-none sm:text-base sm:leading-8 sm:text-white/52">
             {service.short}
           </p>
 
-          <div className="mt-8 grid grid-cols-2 border-y border-white/[0.07] text-[10px] uppercase tracking-[0.15em] text-white/38 sm:text-[11px]">
+          <div className="mt-6 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.018] text-[9px] uppercase tracking-[0.12em] text-white/48 sm:mt-8 sm:rounded-none sm:border-x-0 sm:bg-transparent sm:text-[11px] sm:tracking-[0.15em] sm:text-white/38">
             {service.capabilities.slice(0, 4).map((cap, capabilityIndex) => (
               <span
                 key={cap}
-                className={`flex items-center gap-3 py-3 transition-colors duration-300 group-hover:text-white/62 ${
-                  capabilityIndex % 2 === 1 ? "border-l border-white/[0.07] pl-4" : "pr-4"
+                className={`flex min-w-0 items-center gap-2 px-3 py-3 transition-colors duration-300 group-hover:text-white/62 sm:gap-3 sm:px-0 ${
+                  capabilityIndex % 2 === 1 ? "border-l border-white/[0.07] sm:pl-4" : "sm:pr-4"
                 } ${capabilityIndex > 1 ? "border-t border-white/[0.07]" : ""}`}
               >
-                <span className="font-mono text-white/20">0{capabilityIndex + 1}</span>
-                {cap}
+                <span className="shrink-0 font-mono text-white/25">0{capabilityIndex + 1}</span>
+                <span className="truncate sm:whitespace-normal">{cap}</span>
               </span>
             ))}
           </div>
@@ -490,7 +510,7 @@ function ServiceCard({
           <button
             type="button"
             onClick={() => onExplore(service.key)}
-            className="mt-8 inline-flex items-center gap-3.5 text-sm font-medium text-white/72 transition-colors duration-300 hover:text-white"
+            className="mt-6 inline-flex items-center gap-3.5 text-sm font-medium text-white/78 transition-colors duration-300 hover:text-white sm:mt-8"
           >
             <span>Explore service</span>
             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.07] group-hover:shadow-[0_0_24px_rgba(193,154,136,0.12)]">
@@ -498,23 +518,6 @@ function ServiceCard({
             </span>
           </button>
         </div>
-
-        <button
-          type="button"
-          onClick={() => onExplore(service.key)}
-          aria-label={`Explore ${service.title}`}
-          className={`relative h-[290px] w-full overflow-hidden text-left [mask-image:radial-gradient(ellipse_84%_80%_at_50%_50%,black_55%,transparent_100%)] sm:h-[370px] lg:h-[440px] ${
-            index % 2 === 0 ? "lg:order-2" : "lg:order-1"
-          }`}
-        >
-          <div
-            className="pointer-events-none absolute inset-[12%] rounded-full opacity-20 blur-[85px] transition-opacity duration-1000 group-hover:opacity-35"
-            style={{ backgroundColor: color.hex }}
-          />
-          <div className="relative h-full w-full transition-transform duration-1000 ease-out group-hover:scale-[1.035]">
-            <ServiceVisual serviceKey={service.key} compact={true} />
-          </div>
-        </button>
       </div>
     </motion.article>
   );

@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import type { Application } from "@splinetool/runtime";
 
@@ -22,38 +21,18 @@ const LEG_FADE_MASK =
   "linear-gradient(to bottom, black 0%, black 68%, transparent 96%)";
 
 const HERO_ROBOT_ZOOM = 0.68;
+const HERO_ROBOT_MOBILE_ZOOM = 0.44;
 
 function Hero3DRobotVisualInner() {
-  const [enableLive3D, setEnableLive3D] = useState(false);
-
-  useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 768px) and (pointer: fine)").matches;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!desktop || reducedMotion) return;
-
-    const windowWithIdle = window as Window & typeof globalThis & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-    const handle = windowWithIdle.requestIdleCallback
-      ? windowWithIdle.requestIdleCallback(() => setEnableLive3D(true), { timeout: 900 })
-      : window.setTimeout(() => setEnableLive3D(true), 450);
-
-    return () => {
-      if (windowWithIdle.cancelIdleCallback) windowWithIdle.cancelIdleCallback(handle);
-      else window.clearTimeout(handle);
-    };
-  }, []);
-
   const handleSplineLoad = useCallback((app: Application) => {
-    app.setZoom(HERO_ROBOT_ZOOM);
+    app.setZoom(window.innerWidth < 768 ? HERO_ROBOT_MOBILE_ZOOM : HERO_ROBOT_ZOOM);
   }, []);
 
   return (
     <div className="relative flex h-[350px] sm:h-[480px] md:h-[540px] lg:h-[600px] xl:h-[660px] w-full min-h-[300px] sm:min-h-[420px] items-center justify-center overflow-visible">
       {/* Ambient placeholder glow for instant paint before 3D loads */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="h-44 w-44 sm:h-64 sm:w-64 rounded-full bg-gradient-to-tr from-[#805948]/20 via-[#c19a88]/15 to-transparent blur-3xl opacity-60" />
+        <div className="h-60 w-60 rounded-full bg-[radial-gradient(circle,rgba(193,154,136,0.2)_0%,rgba(128,89,72,0.11)_42%,transparent_72%)] blur-2xl sm:h-64 sm:w-64 sm:blur-3xl" />
       </div>
 
       <div
@@ -64,22 +43,11 @@ function Hero3DRobotVisualInner() {
           className="h-full w-full"
           style={{ maskImage: EDGE_MASK, WebkitMaskImage: EDGE_MASK }}
         >
-          {enableLive3D ? (
-            <SplineScene
-              scene="/spline/robot.splinecode"
-              className="h-full w-full"
-              onLoad={handleSplineLoad}
-            />
-          ) : (
-            <Image
-              src="/images/robot-preview.webp"
-              alt="SkaleKraft 3D robot preview"
-              fill
-              priority
-              sizes="(max-width: 767px) 100vw, 50vw"
-              className="object-contain opacity-95"
-            />
-          )}
+          <SplineScene
+            scene="/spline/robot.splinecode"
+            className="h-full w-full"
+            onLoad={handleSplineLoad}
+          />
         </div>
       </div>
     </div>

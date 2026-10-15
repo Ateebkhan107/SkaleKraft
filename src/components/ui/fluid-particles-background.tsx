@@ -105,7 +105,8 @@ export function FluidParticlesBackground({
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.innerWidth < 768;
-    const effectiveCount = reducedMotion ? 20 : isMobile ? 32 : Math.min(particleCount, 450);
+    const shouldAnimate = !reducedMotion && !isMobile;
+    const effectiveCount = reducedMotion ? 20 : isMobile ? 22 : Math.min(particleCount, 450);
 
     const resolveDarkMode = () =>
       theme === "dark" || (theme === "auto" && (document.documentElement.classList.contains("dark") || window.matchMedia("(prefers-color-scheme: dark)").matches));
@@ -161,7 +162,7 @@ export function FluidParticlesBackground({
       ctx.fillRect(0, 0, width, height);
 
       for (const particle of particles) {
-        particle.life += reducedMotion ? 0 : 1;
+        particle.life += shouldAnimate ? 1 : 0;
         if (particle.life > particle.maxLife) {
           particle.life = 0;
           particle.x = Math.random() * width;
@@ -173,7 +174,7 @@ export function FluidParticlesBackground({
           ? (Math.sin(particle.x * 0.006 + timestamp * 0.0006) + Math.cos(particle.y * 0.006)) * Math.PI
           : noise(particle.x * noiseIntensity, particle.y * noiseIntensity, timestamp * 0.0001) * Math.PI * 4;
 
-        if (!reducedMotion) {
+        if (shouldAnimate) {
           particle.x = (particle.x + Math.cos(direction) * 1.1 + width) % width;
           particle.y = (particle.y + Math.sin(direction) * 1.1 + height) % height;
         }
@@ -183,7 +184,7 @@ export function FluidParticlesBackground({
         ctx.fill();
       }
 
-      if (!reducedMotion) animationFrame = window.requestAnimationFrame(draw);
+      if (shouldAnimate) animationFrame = window.requestAnimationFrame(draw);
     };
 
     const handleVisibilityChange = () => {
