@@ -5,9 +5,10 @@ type ProjectThumbnailProps = {
   title: string;
   sizes: string;
   priority?: boolean;
+  fit?: "contain" | "cover";
 };
 
-export default function ProjectThumbnail({ src, title, sizes, priority = false }: ProjectThumbnailProps) {
+export default function ProjectThumbnail({ src, title, sizes, priority = false, fit = "contain" }: ProjectThumbnailProps) {
   return (
     <div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-[#080808] shadow-[0_24px_65px_rgba(0,0,0,.42)]">
       <div className="flex h-9 items-center gap-1.5 border-b border-white/10 bg-white/[0.055] px-3 sm:h-10 sm:px-4">
@@ -25,7 +26,7 @@ export default function ProjectThumbnail({ src, title, sizes, priority = false }
           fill
           sizes={sizes}
           priority={priority}
-          className="object-contain transition duration-700 ease-out group-hover:scale-[1.025]"
+          className={`${fit === "cover" ? "object-cover" : "object-contain"} transition duration-700 ease-out group-hover:scale-[1.025]`}
         />
         <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.045]" />
       </div>

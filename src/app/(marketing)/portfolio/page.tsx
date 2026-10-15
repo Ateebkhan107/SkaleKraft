@@ -41,8 +41,14 @@ export default function PortfolioPage() {
         </div>
         <div className="relative mt-10 grid grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3">
           {showcaseProjects.map((project, index) => (
-            <article key={project.number} className="group flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.05),rgba(16,16,16,.98)_42%)] p-2 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.5)] sm:rounded-[28px] sm:p-3">
-              <ProjectThumbnail src={project.image} title={project.title} sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw" priority={index < 2} />
+            <article key={project.number} className="group flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.05),rgba(16,16,16,.98)_42%)] p-2 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.5)] sm:rounded-[28px] sm:p-3 lg:last:col-start-2">
+              <ProjectThumbnail
+                src={project.image}
+                title={project.title}
+                sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw"
+                priority={index < 2}
+                fit={project.number === "04" ? "cover" : "contain"}
+              />
               <div className="flex flex-1 flex-col px-2 pb-3 pt-3 sm:px-4 sm:pb-5 sm:pt-5">
                 <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.18em] sm:text-[11px] sm:tracking-[0.2em]"><span className="truncate text-[#c19a88]">{project.category}</span><span className="text-white/25">{project.number}</span></div>
                 <div className="my-3 h-px bg-gradient-to-r from-[#c19a88]/45 to-transparent sm:my-5" />

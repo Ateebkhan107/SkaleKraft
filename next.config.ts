@@ -9,7 +9,7 @@ const securityHeaders = [
       "object-src 'none'",
       "frame-ancestors 'none'",
       "form-action 'self'",
-      "img-src 'self' data: blob: https://images.unsplash.com https://*.spline.design https://*.unpkg.com",
+      "img-src 'self' data: blob: https://images.unsplash.com https://dryfruits-red.vercel.app https://*.spline.design https://*.unpkg.com",
       "font-src 'self' data:",
       "style-src 'self' 'unsafe-inline'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://*.spline.design https://unpkg.com",
@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "dryfruits-red.vercel.app",
+        pathname: "/images/**",
       },
     ],
   },
