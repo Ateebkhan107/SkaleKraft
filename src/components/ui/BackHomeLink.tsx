@@ -1,10 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function BackHomeLink({ className = "" }: { className?: string }) {
+  const router = useRouter();
+
+  const returnToPreviousPage = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    if (window.history.length > 1) {
+      router.back();
+      return;
+    }
+
+    router.push("/");
+  };
+
   return (
     <Link
       href="/"
+      onClick={returnToPreviousPage}
       className={`group inline-flex h-11 items-center gap-2 rounded-full border border-white/12 bg-white/[0.035] px-5 text-sm font-medium text-white/65 transition duration-300 hover:border-[#805948]/60 hover:bg-[#805948]/15 hover:text-white ${className}`}
     >
       <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />

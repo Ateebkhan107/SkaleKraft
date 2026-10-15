@@ -11,12 +11,6 @@ interface SplineSceneProps {
   onLoad?: (app: Application) => void
 }
 
-// Pre-warm @splinetool/runtime chunk as soon as this component module is evaluated
-let runtimePromise: Promise<typeof import('@splinetool/runtime')> | null = null
-if (typeof window !== 'undefined') {
-  runtimePromise = import('@splinetool/runtime')
-}
-
 export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -30,6 +24,16 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
   useEffect(() => {
     let isMounted = true
+    let isIntersecting = true
+    let isDocumentVisible = document.visibilityState === 'visible'
+
+    const syncPlayback = () => {
+      if (!appRef.current) return
+      try {
+        if (isIntersecting && isDocumentVisible) appRef.current.play?.()
+        else appRef.current.stop?.()
+      } catch {}
+    }
 
     async function loadSpline() {
       if (!canvasRef.current) return
@@ -37,7 +41,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
       setHasError(false)
 
       try {
-        const { Application } = runtimePromise ? await runtimePromise : await import('@splinetool/runtime')
+        const { Application } = await import('@splinetool/runtime')
         if (!isMounted || !canvasRef.current) return
 
         // Dispose any existing instance before initializing a new one
@@ -131,6 +135,7 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
 
         if (isMounted) {
           setIsLoading(false)
+          syncPlayback()
           onLoadRef.current?.(app)
         }
       } catch (error) {
@@ -151,23 +156,24 @@ export function SplineScene({ scene, className, fallback, onLoad }: SplineSceneP
     if (typeof IntersectionObserver !== 'undefined' && canvasRef.current) {
       observer = new IntersectionObserver(
         ([entry]) => {
-          if (!appRef.current) return
-          try {
-            if (entry.isIntersecting) {
-              appRef.current.play?.()
-            } else {
-              appRef.current.stop?.()
-            }
-          } catch {}
+          isIntersecting = entry.isIntersecting
+          syncPlayback()
         },
         { threshold: 0.05 }
       )
       observer.observe(canvasRef.current)
     }
 
+    const handleVisibilityChange = () => {
+      isDocumentVisible = document.visibilityState === 'visible'
+      syncPlayback()
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     return () => {
       isMounted = false
       observer?.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       if (appRef.current) {
         try {
           appRef.current.dispose()

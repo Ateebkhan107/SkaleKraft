@@ -92,14 +92,6 @@ export default function Navbar() {
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {
     if (isHome) {
-      if (href === "/services") {
-        const el = document.getElementById("services");
-        if (el) {
-          e.preventDefault();
-          el.scrollIntoView({ behavior: "smooth" });
-          return;
-        }
-      }
       if (href === "/work") {
         const el = document.getElementById("work");
         if (el) {

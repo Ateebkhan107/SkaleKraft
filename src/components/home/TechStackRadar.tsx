@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Code2,
@@ -8,7 +8,6 @@ import {
   Database,
   Layers,
   Smartphone,
-  Sparkles,
   Zap,
   CheckCircle2,
   ArrowRight,
@@ -218,6 +217,27 @@ export default function TechStackRadar() {
     (t) => selectedCategory === "all" || t.category === selectedCategory
   );
 
+  useEffect(() => {
+    if (!activeModalTech) return;
+
+    const body = document.body;
+    const root = document.documentElement;
+    const previousBodyOverflow = body.style.overflow;
+    const previousRootOverflow = root.style.overflow;
+    const previousBodyPaddingRight = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - root.clientWidth;
+
+    body.style.overflow = "hidden";
+    root.style.overflow = "hidden";
+    if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
+
+    return () => {
+      body.style.overflow = previousBodyOverflow;
+      root.style.overflow = previousRootOverflow;
+      body.style.paddingRight = previousBodyPaddingRight;
+    };
+  }, [activeModalTech]);
+
   const handleCopyCode = (code?: string) => {
     if (!code) return;
     navigator.clipboard.writeText(code);
@@ -226,50 +246,56 @@ export default function TechStackRadar() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-transparent py-14 text-white sm:py-20 scroll-mt-24" id="tech-stack">
-      {/* Background ambient radial glow */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[450px] w-[750px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.12),transparent_70%)] blur-3xl" />
+    <section className="relative scroll-mt-36 overflow-hidden bg-transparent py-14 text-white sm:py-20" id="tech-stack">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.15),transparent_68%)] blur-3xl" />
+      <div className="pointer-events-none absolute inset-x-[8%] top-32 h-px bg-gradient-to-r from-transparent via-[#c19a88]/20 to-transparent" />
 
       <div className="relative mx-auto max-w-[1360px] px-5 md:px-8">
-        {/* Compact Header */}
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#805948]/30 bg-[#805948]/10 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#c19a88]">
-            <Sparkles className="h-3 w-3" />
-            Engineering & Technology Architecture
+        <div className="grid items-end gap-8 lg:grid-cols-[1fr_auto]">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-9 bg-[#c19a88]/75" />
+              <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-[#c19a88]/85 sm:text-xs">Engineering architecture</p>
+            </div>
+            <h2 className="mt-4 text-3xl font-medium leading-[1.02] tracking-[-0.045em] text-white sm:text-5xl lg:text-[3.7rem]">
+              Technology chosen for{" "}
+              <span className="inline-block bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text pb-1 font-serif font-normal italic tracking-normal text-transparent">real-world scale.</span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
+              A modern, production-proven stack selected for speed, reliability, security, and maintainability—not trend cycles.
+            </p>
           </div>
-          <h2 className="mt-3.5 text-2xl font-light tracking-tight sm:text-3xl lg:text-4xl text-white">
-            Software built with <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">modern architecture.</span>
-          </h2>
-          <p className="mt-2 text-xs leading-relaxed text-white/55 sm:text-sm">
-            Battle-tested, high-performance technologies engineered to scale without legacy bloat.
-          </p>
+
+          <div className="hidden grid-cols-3 overflow-hidden rounded-2xl border border-white/[0.08] bg-black/20 backdrop-blur-xl lg:grid">
+            {[["08", "Core systems"], ["99.99%", "Uptime ready"], ["24/7", "Observable"]].map(([value, label], index) => (
+              <div key={label} className={`min-w-28 px-4 py-4 ${index > 0 ? "border-l border-white/[0.08]" : ""}`}>
+                <p className="font-mono text-lg tracking-[-0.04em] text-white/90">{value}</p>
+                <p className="mt-1 text-[9px] uppercase tracking-[0.17em] text-white/30">{label}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Category Filter Pills */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+        <div className="mt-9 flex flex-wrap items-center gap-1 rounded-2xl border border-white/[0.08] bg-black/25 p-1.5 backdrop-blur-xl sm:inline-flex">
           {categories.map((cat) => (
             <button
               key={cat.value}
               onClick={() => setSelectedCategory(cat.value)}
-              className={`rounded-full px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] transition duration-300 ${
-                selectedCategory === cat.value
-                  ? "border border-[#805948] bg-[#805948]/24 text-white shadow-[0_0_16px_rgba(128,89,72,0.25)]"
-                  : "border border-white/10 bg-white/[0.025] text-white/55 hover:border-white/20 hover:bg-white/[0.05] hover:text-white"
-              }`}
+              className={`relative rounded-xl px-3.5 py-2 text-[10px] font-medium uppercase tracking-[0.12em] transition duration-300 sm:px-4 ${selectedCategory === cat.value ? "text-white" : "text-white/42 hover:text-white/75"}`}
             >
-              {cat.label}
+              {selectedCategory === cat.value && (
+                <motion.span layoutId="tech-category" className="absolute inset-0 rounded-xl border border-[#c19a88]/25 bg-[#805948]/18 shadow-[inset_0_1px_0_rgba(255,255,255,.05),0_8px_28px_rgba(0,0,0,.25)]" transition={{ type: "spring", stiffness: 350, damping: 30 }} />
+              )}
+              <span className="relative z-10">{cat.label}</span>
             </button>
           ))}
         </div>
 
-        {/* Visual Bento Tech Grid */}
-        <motion.div
-          layout
-          className="mt-8 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4"
-        >
+        <motion.div layout className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
-            {filteredTech.map((tech) => {
+            {filteredTech.map((tech, index) => {
               const Icon = tech.icon;
+              const isFeatured = selectedCategory === "all" && index === 0;
 
               return (
                 <motion.div
@@ -278,43 +304,43 @@ export default function TechStackRadar() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0E0E0E]/80 p-4 transition duration-300 hover:-translate-y-1 hover:border-[#805948]/60 hover:bg-[#121212] hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  className={`group relative flex min-h-[270px] flex-col justify-between overflow-hidden rounded-[22px] border border-white/[0.085] bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(13,13,13,0.94)_40%,rgba(7,7,7,0.98))] p-5 shadow-[0_22px_65px_rgba(0,0,0,0.28)] transition duration-500 hover:-translate-y-1 hover:border-[#c19a88]/30 hover:shadow-[0_30px_90px_rgba(0,0,0,0.46)] ${isFeatured ? "lg:col-span-2" : ""}`}
                 >
-                  {/* Subtle hover accent glow */}
                   <div
-                    className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-2xl transition duration-500 group-hover:opacity-20"
+                    className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full opacity-[0.07] blur-[55px] transition duration-700 group-hover:opacity-20"
                     style={{ backgroundColor: tech.accentColor }}
                   />
-
+                  <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                   <div>
-                    {/* Top Icon & Badge */}
                     <div className="flex items-center justify-between gap-2">
-                      <span
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/50 transition duration-300 group-hover:scale-105"
-                        style={{ color: tech.accentColor }}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      <span className="rounded-full border border-white/10 bg-black/30 px-2.5 py-0.5 font-mono text-[10px] text-[#c19a88]">
+                      <div className="flex items-center gap-3">
+                        <span
+                          className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.09] bg-white/[0.025] shadow-[inset_0_1px_0_rgba(255,255,255,.05),0_12px_35px_rgba(0,0,0,.3)] transition duration-500 group-hover:scale-105"
+                          style={{ color: tech.accentColor }}
+                        >
+                          <Icon className="h-5 w-5" strokeWidth={1.7} />
+                        </span>
+                        <span className="font-mono text-[10px] tracking-[0.16em] text-white/22">0{index + 1}</span>
+                      </div>
+                      <span className="rounded-full border border-white/[0.08] bg-black/25 px-2.5 py-1 font-mono text-[9px] tracking-[-0.01em] text-white/48 backdrop-blur-md">
                         {tech.roiMetric}
                       </span>
                     </div>
 
-                    {/* Title & Tagline */}
-                    <h3 className="mt-3.5 text-base font-semibold text-white group-hover:text-[#d2a28d] transition">
+                    <p className="mt-6 text-[9px] font-medium uppercase tracking-[0.2em]" style={{ color: `${tech.accentColor}cc` }}>{tech.badge}</p>
+                    <h3 className={`mt-2 font-medium leading-tight tracking-[-0.025em] text-white transition group-hover:text-[#e8c5b4] ${isFeatured ? "text-2xl sm:text-3xl" : "text-lg"}`}>
                       {tech.name}
                     </h3>
-                    <p className="mt-1.5 text-xs leading-relaxed text-white/60">
+                    <p className={`mt-2.5 leading-relaxed text-white/46 ${isFeatured ? "max-w-xl text-sm" : "text-xs"}`}>
                       {tech.tagline}
                     </p>
 
-                    {/* Tag Pills */}
-                    <div className="mt-3.5 flex flex-wrap gap-1.5">
+                    <div className="mt-4 flex flex-wrap gap-1.5">
                       {tech.tags.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[10px] text-white/50"
+                          className="rounded-lg border border-white/[0.075] bg-white/[0.025] px-2.5 py-1 text-[9px] text-white/42"
                         >
                           {tag}
                         </span>
@@ -322,16 +348,15 @@ export default function TechStackRadar() {
                     </div>
                   </div>
 
-                  {/* Card Footer Quick Action */}
-                  <div className="mt-4 flex items-center justify-between border-t border-white/[0.08] pt-3">
-                    <span className="text-[10px] uppercase tracking-wider text-white/40">
-                      {tech.badge}
+                  <div className="mt-5 flex items-center justify-between border-t border-white/[0.075] pt-4">
+                    <span className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-white/28">
+                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: tech.accentColor }} /> Production ready
                     </span>
                     <button
                       onClick={() => setActiveModalTech(tech)}
-                      className="inline-flex items-center gap-1 text-[11px] font-medium text-[#c19a88] hover:text-white transition"
+                      className="inline-flex items-center gap-1.5 text-[10px] font-medium text-[#c19a88] transition hover:text-white"
                     >
-                      Details <ArrowRight className="h-3 w-3" />
+                      Explore <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                     </button>
                   </div>
                 </motion.div>
@@ -340,21 +365,18 @@ export default function TechStackRadar() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Compact Guarantee Bar */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4 border-y border-white/10 py-3 text-xs text-white/60 sm:gap-8">
-          <span className="flex items-center gap-1.5 font-mono text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            99.99% Production Uptime
+        <div className="mt-6 grid overflow-hidden rounded-2xl border border-white/[0.08] bg-black/20 text-[10px] text-white/48 backdrop-blur-xl sm:grid-cols-3 sm:text-xs">
+          <span className="flex items-center justify-center gap-2 px-4 py-3.5 font-mono text-emerald-400/85 sm:justify-start">
+            <span className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-50" /><span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" /></span>
+            99.99% production uptime
           </span>
-          <span className="hidden sm:inline text-white/20">•</span>
-          <span className="flex items-center gap-1.5">
+          <span className="flex items-center justify-center gap-2 border-t border-white/[0.07] px-4 py-3.5 sm:border-l sm:border-t-0">
             <Lock className="h-3.5 w-3.5 text-[#c19a88]" />
-            SOC2 & Enterprise Security Compliant
+            Enterprise-grade security architecture
           </span>
-          <span className="hidden sm:inline text-white/20">•</span>
-          <span className="flex items-center gap-1.5">
+          <span className="flex items-center justify-center gap-2 border-t border-white/[0.07] px-4 py-3.5 sm:border-l sm:border-t-0">
             <ShieldCheck className="h-3.5 w-3.5 text-[#c19a88]" />
-            100% Full Source Code Ownership
+            100% source-code ownership
           </span>
         </div>
       </div>

@@ -110,7 +110,7 @@ function AnimatedCounter({
 
   return (
     <span
-      className={`bg-gradient-to-r ${gradientClass} bg-clip-text font-mono text-2xl font-extrabold tracking-tight text-transparent sm:text-4xl lg:text-5xl`}
+      className={`bg-gradient-to-br ${gradientClass} bg-clip-text font-mono text-[2rem] font-semibold leading-none tracking-[-0.065em] text-transparent sm:text-[2.7rem] lg:text-[3.15rem]`}
     >
       {prefix}
       {formatted}
@@ -124,12 +124,26 @@ export default function ImpactMetricsBar() {
   const isInView = useInView(containerRef, { once: true, margin: "-60px" });
 
   return (
-    <section ref={containerRef} className="relative py-4 sm:py-10">
-      {/* Background luxury ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-40 w-3/4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.15),transparent_70%)] blur-3xl" />
+    <section ref={containerRef} className="relative py-7 sm:py-11">
+      <div className="pointer-events-none absolute left-1/2 top-[62%] h-48 w-[82%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.12),transparent_70%)] blur-3xl" />
 
-      {/* Grid of Luxury Bento Metric Cards */}
-      <div className="relative grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative mb-5 flex items-end justify-between gap-6"
+      >
+        <div>
+          <div className="flex items-center gap-2.5">
+            <span className="h-px w-7 bg-[#c19a88]/70" />
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#c19a88]/80 sm:text-xs">Built for production</p>
+          </div>
+          <h2 className="mt-2 text-xl font-medium tracking-[-0.035em] text-white sm:text-[1.7rem]">Proof in the performance.</h2>
+        </div>
+        <p className="hidden max-w-xs text-right text-xs leading-5 text-white/35 md:block">Measurable reliability, direct collaboration, and complete ownership from day one.</p>
+      </motion.div>
+
+      <div className="relative grid grid-cols-2 overflow-hidden rounded-[22px] border border-white/[0.09] bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(12,12,12,0.94)_38%,rgba(7,7,7,0.98))] shadow-[0_28px_90px_rgba(0,0,0,0.38)] sm:rounded-[28px] lg:grid-cols-4">
         {metrics.map((m, idx) => {
           const Icon = m.icon;
           return (
@@ -142,35 +156,37 @@ export default function ImpactMetricsBar() {
                 delay: idx * 0.08,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(14,14,14,0.92)_50%,rgba(8,8,8,0.98)_100%)] p-3.5 shadow-[0_20px_60px_rgba(0,0,0,0.5)] transition duration-500 hover:-translate-y-1.5 hover:border-[#805948]/50 hover:shadow-[0_25px_80px_rgba(128,89,72,0.15)] sm:rounded-2xl sm:p-6"
+              className={`group relative flex min-h-[190px] flex-col overflow-hidden p-4 transition duration-500 hover:bg-white/[0.025] sm:min-h-[225px] sm:p-5 ${idx === 0 ? "border-b border-r border-white/[0.08] lg:border-b-0" : ""} ${idx === 1 ? "border-b border-white/[0.08] lg:border-b-0 lg:border-r" : ""} ${idx === 2 ? "border-r border-white/[0.08]" : ""}`}
             >
-              {/* Subtle hover accent illumination */}
               <div
-                className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-2xl transition duration-500 group-hover:opacity-25"
+                className={`pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full blur-[48px] transition duration-700 group-hover:opacity-20 ${idx === 1 ? "opacity-[0.13]" : "opacity-[0.06]"}`}
                 style={{ backgroundColor: m.accentColor }}
               />
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.025),transparent_34%)]" />
 
-              {/* Top Header: Icon & Luxury Status Badge */}
-              <div className="flex items-center justify-between gap-1">
+              <div className="relative flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.09] bg-white/[0.025] shadow-[inset_0_1px_0_rgba(255,255,255,.05),0_10px_30px_rgba(0,0,0,.2)]" style={{ color: m.accentColor }}>
+                    <Icon className="h-4 w-4" strokeWidth={1.7} />
+                  </span>
+                  <span className="font-mono text-[9px] tracking-[0.2em] text-white/22">0{idx + 1}</span>
+                </div>
                 <span
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-black/50 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition duration-300 group-hover:scale-105 sm:h-11 sm:w-11 sm:rounded-xl"
-                  style={{ color: m.accentColor }}
+                  className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-black/20 px-2 py-1 text-[7px] font-medium uppercase tracking-[0.14em] text-white/42 backdrop-blur-xl sm:text-[8px]"
                 >
-                  <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                </span>
-
-                <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider text-white/60 sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[10px]">
                   {m.id === "uptime" ? (
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-60" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    </span>
                   ) : (
-                    <CheckCircle2 className="h-2.5 w-2.5 text-[#c19a88] sm:h-3 sm:w-3" />
+                    <CheckCircle2 className="h-2.5 w-2.5 text-[#c19a88]/80" strokeWidth={1.8} />
                   )}
                   {m.badge}
                 </span>
               </div>
 
-              {/* Counter Value */}
-              <div className="mt-3 sm:mt-6">
+              <div className="relative pb-3 pt-6 sm:pt-7">
                 <AnimatedCounter
                   value={m.value}
                   prefix={m.prefix}
@@ -181,14 +197,23 @@ export default function ImpactMetricsBar() {
                 />
               </div>
 
-              {/* Label & Description */}
-              <div className="mt-2 border-t border-white/[0.08] pt-2 sm:mt-3 sm:pt-3">
-                <h3 className="text-[11px] font-semibold uppercase tracking-wider text-white/90 sm:text-sm">
+              <div className="relative mt-auto border-t border-white/[0.07] pt-3">
+                <h3 className="text-[9px] font-semibold uppercase leading-4 tracking-[0.12em] text-white/82 sm:text-[11px]">
                   {m.label}
                 </h3>
-                <p className="mt-0.5 text-[10px] font-light leading-relaxed text-white/50 sm:text-xs">
+                <p className="mt-0.5 text-[8px] font-light leading-4 text-white/34 sm:text-[10px]">
                   {m.sublabel}
                 </p>
+              </div>
+
+              <div className="absolute inset-x-4 bottom-0 h-px overflow-hidden sm:inset-x-5">
+                <motion.div
+                  className="h-full origin-left"
+                  style={{ background: `linear-gradient(90deg, transparent, ${m.accentColor}, transparent)` }}
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={isInView ? { scaleX: 1, opacity: 0.55 } : {}}
+                  transition={{ duration: 0.9, delay: 0.3 + idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                />
               </div>
             </motion.div>
           );

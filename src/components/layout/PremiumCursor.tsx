@@ -103,6 +103,7 @@ export default function PremiumCursor() {
 
       pointer.current = { x, y };
       updateHoverState(target, event);
+      if (!frame) frame = window.requestAnimationFrame(animate);
     };
 
     const onPointerLeave = () => {
@@ -112,9 +113,15 @@ export default function PremiumCursor() {
     };
 
     const animate = () => {
+      frame = 0;
       if (!mounted) return;
 
       const mode = modeRef.current;
+      const movement =
+        Math.abs(dot.current.x - pointer.current.x) +
+        Math.abs(dot.current.y - pointer.current.y) +
+        Math.abs(ring.current.x - dot.current.x) +
+        Math.abs(ring.current.y - dot.current.y);
       dot.current.x = lerp(dot.current.x, pointer.current.x, mode === "text" ? 0.48 : 0.36);
       dot.current.y = lerp(dot.current.y, pointer.current.y, mode === "text" ? 0.48 : 0.36);
       ring.current.x = lerp(ring.current.x, dot.current.x, mode === "text" ? 0.34 : 0.18);
@@ -127,7 +134,7 @@ export default function PremiumCursor() {
         ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
       }
 
-      frame = window.requestAnimationFrame(animate);
+      if (movement > 0.15) frame = window.requestAnimationFrame(animate);
     };
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });

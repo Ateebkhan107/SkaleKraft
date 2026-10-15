@@ -1,6 +1,7 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import Image from "next/image";
+import { memo, useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { Application } from "@splinetool/runtime";
 
@@ -23,6 +24,27 @@ const LEG_FADE_MASK =
 const HERO_ROBOT_ZOOM = 0.68;
 
 function Hero3DRobotVisualInner() {
+  const [enableLive3D, setEnableLive3D] = useState(false);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 768px) and (pointer: fine)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!desktop || reducedMotion) return;
+
+    const windowWithIdle = window as Window & typeof globalThis & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    const handle = windowWithIdle.requestIdleCallback
+      ? windowWithIdle.requestIdleCallback(() => setEnableLive3D(true), { timeout: 900 })
+      : window.setTimeout(() => setEnableLive3D(true), 450);
+
+    return () => {
+      if (windowWithIdle.cancelIdleCallback) windowWithIdle.cancelIdleCallback(handle);
+      else window.clearTimeout(handle);
+    };
+  }, []);
+
   const handleSplineLoad = useCallback((app: Application) => {
     app.setZoom(HERO_ROBOT_ZOOM);
   }, []);
@@ -42,11 +64,22 @@ function Hero3DRobotVisualInner() {
           className="h-full w-full"
           style={{ maskImage: EDGE_MASK, WebkitMaskImage: EDGE_MASK }}
         >
-          <SplineScene
-            scene="/spline/robot.splinecode"
-            className="h-full w-full"
-            onLoad={handleSplineLoad}
-          />
+          {enableLive3D ? (
+            <SplineScene
+              scene="/spline/robot.splinecode"
+              className="h-full w-full"
+              onLoad={handleSplineLoad}
+            />
+          ) : (
+            <Image
+              src="/images/robot-preview.webp"
+              alt="SkaleKraft 3D robot preview"
+              fill
+              priority
+              sizes="(max-width: 767px) 100vw, 50vw"
+              className="object-contain opacity-95"
+            />
+          )}
         </div>
       </div>
     </div>

@@ -495,7 +495,8 @@ export default function ContactPage() {
                     </div>
 
                     {/* Interactive 3D Project Artifact Token */}
-                    <div className="relative flex h-20 sm:h-22 w-full items-center justify-between overflow-hidden rounded-xl border border-white/[0.08] bg-black/35 px-3 py-1.5 backdrop-blur-md">
+                    <div className="relative flex h-20 sm:h-22 w-full items-center justify-between px-3 py-1.5">
+                      <div className="pointer-events-none absolute right-0 top-1/2 h-20 w-28 -translate-y-1/2 rounded-full bg-[#805948]/12 blur-2xl" />
                       <div className="z-10 max-w-[60%]">
                         <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-[#c19a88]">3D Project Token</span>
                         <p className="mt-0.5 truncate text-xs font-medium text-white">{service}</p>

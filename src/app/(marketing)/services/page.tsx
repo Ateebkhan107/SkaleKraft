@@ -7,9 +7,7 @@ import {
   Monitor,
   Smartphone,
   Bot,
-  TrendingUp,
   Clapperboard,
-  Zap,
   ChevronDown,
   CheckCircle2,
   ArrowUpRight,
@@ -22,100 +20,80 @@ import InteractiveCanvas3D from "@/components/3d/InteractiveCanvas3D";
 
 const detailedServices = [
   {
-    id: "web",
-    title: "Website Development & Custom Web Apps",
-    badge: "Web Development",
+    id: "websites",
+    title: "Websites & Web Platforms",
+    badge: "Website",
     icon: Monitor,
     accentColor: "#3B82F6",
     description:
-      "Full-stack website development, high-converting landing pages, e-commerce platforms, SaaS dashboards, and modern web applications engineered with Next.js, React, and TypeScript.",
+      "We design and build fast, responsive websites that make your business clear, credible, and easy to choose. From a focused landing page to a full SaaS platform, every experience is planned around real user journeys, measurable conversion goals, and a codebase that can grow with you.",
     features: [
-      "Custom Business Websites",
-      "High-Converting Landing Pages",
-      "SaaS Platforms & Dashboards",
-      "E-Commerce Solutions",
-      "SEO & Performance Optimized",
+      "Brand and business websites",
+      "Landing pages and campaign microsites",
+      "E-commerce stores and payment flows",
+      "SaaS products, portals, and dashboards",
+      "CMS, booking, and custom integrations",
+      "SEO, accessibility, speed, and analytics",
     ],
+    idealFor: "Startups, service businesses, e-commerce brands, and teams replacing an outdated or underperforming website.",
+    outcome: "A polished, search-ready website that communicates your value quickly, performs beautifully on every device, and is easy to maintain after launch.",
   },
   {
-    id: "app",
-    title: "Mobile App Development (iOS & Android)",
-    badge: "App Development",
+    id: "apps",
+    title: "Mobile Apps for iOS & Android",
+    badge: "App",
     icon: Smartphone,
     accentColor: "#A855F7",
     description:
-      "Native and universal mobile apps for Apple iOS and Google Android with 60 FPS fluid interactions, offline caching, push notifications, and resilient cloud backends built using React Native and Expo.",
+      "We turn product ideas and operational workflows into dependable mobile apps for iOS and Android. Our team handles the full journey—from product strategy and interface design to backend engineering, testing, store submission, and the improvements that follow real-world use.",
     features: [
-      "iOS & Android Mobile Apps",
-      "Cross-Platform React Native",
-      "App Store & Play Store Launch",
-      "Scalable Backend APIs",
-      "Realtime Sync & Notifications",
+      "Product strategy and user-flow mapping",
+      "Native-feeling cross-platform development",
+      "Accounts, subscriptions, and secure payments",
+      "Offline support, realtime sync, and notifications",
+      "Scalable APIs, databases, and admin tools",
+      "App Store and Play Store launch support",
     ],
+    idealFor: "Founders validating a mobile product, businesses digitising a workflow, and teams expanding an existing platform to mobile.",
+    outcome: "A production-ready app with intuitive flows, reliable infrastructure, and a launch plan designed for long-term iteration—not just a one-time release.",
   },
   {
     id: "ai",
-    title: "AI Agents & Workflow Automation",
-    badge: "AI Systems",
+    title: "AI Systems, Agents & Automation",
+    badge: "AI",
     icon: Bot,
     accentColor: "#06B6D4",
     description:
-      "Autonomous AI chatbots, customer support agents, internal knowledge retrieval (RAG) systems, document intelligence, and automated pipelines powered by OpenAI, Claude, and Gemini.",
+      "We build practical AI systems around the work your team already does. That can mean an assistant grounded in your company knowledge, an agent that qualifies leads, a document pipeline that extracts and routes information, or an automated workflow that removes hours of repetitive operations.",
     features: [
-      "Custom AI Chatbots",
-      "Autonomous Support Agents",
-      "Document AI & RAG Search",
-      "Workflow Process Automation",
-      "LLM API Integrations",
+      "Customer support and sales assistants",
+      "RAG search across private company knowledge",
+      "Voice agents and conversational interfaces",
+      "Document extraction, OCR, and classification",
+      "Multi-step agents with human approval controls",
+      "CRM, email, WhatsApp, and internal-tool automation",
     ],
+    idealFor: "Support, sales, operations, and knowledge-heavy teams with repetitive work, fragmented information, or slow response times.",
+    outcome: "A secure, measurable AI workflow connected to your real tools and data, with guardrails, monitoring, and human oversight built in from the beginning.",
   },
   {
-    id: "editing",
-    title: "Video Editing & Creative Motion Studio",
-    badge: "Video Editing",
+    id: "creative",
+    title: "Creative, Video & Motion Design",
+    badge: "Creative",
     icon: Clapperboard,
     accentColor: "#F97316",
     description:
-      "High-retention short-form video editing for Instagram Reels, YouTube Shorts, and TikTok, long-form YouTube cuts, commercial ad creatives, motion graphics, and sound design.",
+      "We shape raw ideas and footage into clear, memorable visual stories. Whether the goal is stronger brand presence, a product launch, or a consistent stream of social content, we combine editorial judgment, motion, sound, and platform-aware design to hold attention without losing the message.",
     features: [
-      "Short-Form Reels & Shorts",
-      "Long-Form YouTube Editing",
-      "High-Converting Ad Creatives",
-      "Motion Graphics & Titles",
-      "Color Grading & Audio Polish",
+      "Reels, Shorts, and social-first content",
+      "Long-form YouTube and branded films",
+      "Product launches and performance ad creatives",
+      "Motion graphics, titles, and explainers",
+      "Thumbnails, campaign assets, and visual systems",
+      "Color grading, sound design, and delivery formats",
     ],
-  },
-  {
-    id: "marketing",
-    title: "Digital Marketing & Social Media Agency",
-    badge: "Digital Marketing",
-    icon: TrendingUp,
-    accentColor: "#EAB308",
-    description:
-      "End-to-end digital marketing and social media growth management. We combine search engine optimization (SEO), Meta & Google ad campaigns, content creation, and conversion funnels.",
-    features: [
-      "Social Media Management",
-      "Search Engine Optimization (SEO)",
-      "Google & Meta Ad Campaigns",
-      "Content Strategy & Calendars",
-      "Conversion Rate Optimization",
-    ],
-  },
-  {
-    id: "automation",
-    title: "Enterprise Automation & System Integrations",
-    badge: "Automation",
-    icon: Zap,
-    accentColor: "#10B981",
-    description:
-      "Connect disparate business tools, automate CRM pipelines, sync databases, trigger WhatsApp and email workflows, and eliminate repetitive manual busywork.",
-    features: [
-      "CRM & Lead Flow Automation",
-      "WhatsApp & Email Automations",
-      "Multi-Tool Webhook Bridges",
-      "Payment & Invoicing Workflows",
-      "Custom API Connectors",
-    ],
+    idealFor: "Creators, product teams, agencies, and brands that need sharper storytelling and a repeatable visual language across channels.",
+    outcome: "A cohesive set of platform-ready creative assets that feels unmistakably yours, communicates faster, and gives every campaign a professional finish.",
   },
 ];
 
@@ -130,11 +108,7 @@ const serviceFaqs = [
   },
   {
     q: "What does your video editing and creative studio service include?",
-    a: "Our video editing services cover viral short-form cuts for Instagram Reels, YouTube Shorts, and TikTok, long-form YouTube editing, high-converting ad creatives, motion graphics, and audio polish.",
-  },
-  {
-    q: "What digital marketing and social media services do you provide?",
-    a: "We manage social channels, execute SEO to rank your website on Google, run targeted paid ad campaigns (Meta, Google, LinkedIn), and engineer high-converting marketing funnels.",
+    a: "Our creative studio covers short-form social content, long-form YouTube editing, brand and product films, ad creatives, motion graphics, thumbnails, color grading, sound design, and delivery in the right formats for each platform.",
   },
   {
     q: "How can custom AI agents and automation help my business?",
@@ -256,10 +230,10 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* High-End Bento Service Cards */}
+        {/* Four detailed service pillars */}
         <section>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-3.5 lg:grid-cols-3">
-            {detailedServices.map((service) => {
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+            {detailedServices.map((service, serviceIndex) => {
               const Icon = service.icon;
 
               return (
@@ -270,7 +244,7 @@ export default function ServicesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.4 }}
-                  className="group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(16,16,16,0.95)_45%,rgba(10,10,10,0.98)_100%)] p-4 shadow-[0_16px_50px_rgba(0,0,0,0.45)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:p-5"
+                  className="group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(16,16,16,0.95)_45%,rgba(10,10,10,0.98)_100%)] p-5 shadow-[0_16px_50px_rgba(0,0,0,0.45)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:p-6"
                 >
                   {/* Top specular 3D light reflection highlight */}
                   <div
@@ -289,50 +263,66 @@ export default function ServicesPage() {
 
                   <div>
                     {/* Header: Icon with custom glow & badge */}
-                    <div className="flex items-center justify-between gap-2.5">
+                    <div className="flex items-center justify-between gap-3">
                       <div
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/60 shadow-[0_4px_16px_rgba(0,0,0,0.4)] transition duration-300 group-hover:scale-105 group-hover:border-white/20"
+                        className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-black/60 shadow-[0_4px_16px_rgba(0,0,0,0.4)] transition duration-300 group-hover:scale-105 group-hover:border-white/20"
                         style={{
                           boxShadow: `0 0 20px ${service.accentColor}25`,
                         }}
                       >
-                        <Icon className="h-5 w-5" style={{ color: service.accentColor }} />
+                        <Icon className="h-5.5 w-5.5" style={{ color: service.accentColor }} />
                       </div>
 
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/40 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70 backdrop-blur-md">
-                        <span
-                          className="h-1.5 w-1.5 rounded-full"
-                          style={{
-                            backgroundColor: service.accentColor,
-                            boxShadow: `0 0 6px ${service.accentColor}`,
-                          }}
-                        />
-                        {service.badge}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] tracking-[0.18em] text-white/30">0{serviceIndex + 1}</span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/40 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70 backdrop-blur-md">
+                          <span
+                            className="h-1.5 w-1.5 rounded-full"
+                            style={{
+                              backgroundColor: service.accentColor,
+                              boxShadow: `0 0 6px ${service.accentColor}`,
+                            }}
+                          />
+                          {service.badge}
+                        </span>
+                      </div>
                     </div>
 
-                    <h2 className="mt-3 text-sm font-medium tracking-tight text-white sm:text-base line-clamp-1 transition duration-200 group-hover:text-white">
+                    <h2 className="mt-4 text-xl font-medium tracking-tight text-white sm:text-2xl transition duration-200 group-hover:text-white">
                       {service.title}
                     </h2>
-                    <p className="mt-1.5 text-xs leading-relaxed text-white/55 line-clamp-2">
+                    <p className="mt-2.5 text-sm leading-6 text-white/58">
                       {service.description}
                     </p>
 
-                    {/* Feature tags with color-coded checkmarks */}
-                    <ul className="mt-3 flex flex-wrap gap-1">
+                    <div className="mt-5 border-t border-white/[0.07] pt-4">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/35">What we deliver</p>
+                    </div>
+                    <ul className="mt-3 grid gap-2 sm:grid-cols-2">
                       {service.features.map((feature, fIndex) => (
                         <li
                           key={fIndex}
-                          className="inline-flex items-center gap-1 rounded-md border border-white/[0.08] bg-white/[0.025] px-2 py-0.5 text-[11px] text-white/60 transition duration-200 group-hover:border-white/15 group-hover:text-white/80"
+                          className="flex items-start gap-2 text-xs leading-5 text-white/62 transition duration-200 group-hover:text-white/80"
                         >
                           <CheckCircle2
-                            className="h-2.5 w-2.5 shrink-0"
+                            className="mt-0.5 h-3.5 w-3.5 shrink-0"
                             style={{ color: service.accentColor }}
                           />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
+
+                    <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
+                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-3.5">
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-white/35">Ideal for</p>
+                        <p className="mt-1.5 text-xs leading-5 text-white/58">{service.idealFor}</p>
+                      </div>
+                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-3.5">
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-white/35">The outcome</p>
+                        <p className="mt-1.5 text-xs leading-5 text-white/58">{service.outcome}</p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Interactive luxury Discuss Project CTA */}
@@ -388,7 +378,7 @@ export default function ServicesPage() {
                 Have a project <span className="font-serif italic font-normal tracking-normal bg-gradient-to-r from-[#e8c5b4] via-[#c19a88] to-[#805948] bg-clip-text text-transparent pb-1 inline-block">in mind?</span>
               </h2>
               <p className="mt-2 max-w-lg text-xs leading-relaxed text-white/55 sm:text-sm">
-                Tell us about your website, mobile app, video editing, or AI automation goals. We&apos;ll prepare a practical roadmap within 24 hours.
+                Tell us about your website, mobile app, AI system, or creative project. We&apos;ll prepare a practical roadmap within 24 hours.
               </p>
               <div className="mt-5">
                 <GlassmorphismCta

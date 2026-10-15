@@ -28,7 +28,7 @@ export function ServiceVisual({ serviceKey, compact = false }: { serviceKey: Ser
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
       className={`relative h-full w-full overflow-hidden ${
         compact
-          ? "rounded-[18px] bg-[#070707]"
+          ? "bg-transparent"
           : "min-h-[360px] rounded-[26px] border border-white/10 bg-[#0B0B0B] p-4 md:min-h-[430px]"
       }`}
       style={compact ? undefined : { boxShadow: `inset 0 0 0 1px rgba(${color.rgb},.08), 0 0 58px rgba(${color.rgb},.12)` }}
@@ -111,7 +111,7 @@ function AppShowcase({ active, compact }: { active: boolean; compact?: boolean }
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_65%,rgba(139,92,246,.22),transparent_38%)]" />
-      <div className={`relative flex items-center gap-2 sm:gap-4 ${compact ? "scale-[0.58] sm:scale-[0.62] origin-center" : ""}`}>
+      <div className={`relative flex items-center gap-2 sm:gap-4 ${compact ? "scale-[0.68] sm:scale-[0.78] lg:scale-[0.86] origin-center" : ""}`}>
         <PhoneMock index={screen + 2} side="left" active={active} />
         <PhoneMock index={screen} side="center" active={active} />
         <PhoneMock index={screen + 1} side="right" active={active} />
@@ -125,7 +125,7 @@ function AIShowcase({ active, compact }: { active: boolean; compact?: boolean })
 
   return (
     <div className="absolute inset-0 flex items-center justify-center p-2">
-      <div className={`relative h-[360px] w-[640px] max-w-none ${compact ? "scale-[0.44] sm:scale-[0.48] lg:scale-[0.52] origin-center" : "scale-[0.34] sm:scale-[0.58] lg:scale-100"}`}>
+      <div className={`relative h-[360px] w-[640px] max-w-none ${compact ? "scale-[0.56] sm:scale-[0.64] lg:scale-[0.72] origin-center" : "scale-[0.34] sm:scale-[0.58] lg:scale-100"}`}>
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 640 360" aria-hidden="true">
           <defs>
             <linearGradient id="ai-line" x1="0" x2="1">
@@ -176,7 +176,7 @@ function CreativeShowcase({ active, compact }: { active: boolean; compact?: bool
   ];
 
   return (
-    <div className={`absolute inset-2 sm:inset-3 overflow-hidden rounded-[18px] border border-white/10 bg-[#080808] ${compact ? "scale-[0.88] sm:scale-[0.92] origin-center" : ""}`}>
+    <div className={`absolute inset-2 sm:inset-3 overflow-hidden rounded-[18px] border border-white/10 bg-[#080808] ${compact ? "scale-[0.92] sm:scale-[0.96] origin-center" : ""}`}>
       <div className="flex h-full">
         <div className="hidden w-14 border-r border-white/8 bg-white/[0.025] p-2 sm:block">
           {[0, 1, 2, 3].map((item) => <div key={item} className="mb-2 h-9 rounded-lg border border-white/8 bg-white/[0.04]" />)}

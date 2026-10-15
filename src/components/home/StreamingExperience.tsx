@@ -12,8 +12,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import dynamic from "next/dynamic";
-import { showcaseProjects } from "@/lib/showcase-projects";
-import ProjectThumbnail from "@/components/work/ProjectThumbnail";
 import { FluidParticlesBackground } from "@/components/ui/fluid-particles-background";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 
@@ -23,6 +21,7 @@ import {
   DestinationKey,
   destinations,
   services,
+  sidebarLinks,
   accent,
   ease,
 } from "./data";
@@ -34,9 +33,10 @@ import { Spotlight } from "@/components/ui/spotlight";
 const ServiceModal = dynamic(() => import("./ServiceModal"), {
   ssr: false,
   loading: () => (
-    <div className="fixed inset-0 z-[80] bg-[#0B0B0B]/60 backdrop-blur-sm" aria-hidden="true" />
+    <div className="fixed inset-0 z-[100] bg-[#0B0B0B]/70 backdrop-blur-xl" aria-hidden="true" />
   ),
 });
+
 const ServiceVisual = dynamic(
   () => import("./Showcases").then((mod) => mod.ServiceVisual),
   {
@@ -46,7 +46,6 @@ const ServiceVisual = dynamic(
     ),
   },
 );
-
 
 function IntroSplash({ isLeaving }: { isLeaving: boolean }) {
   return (
@@ -284,7 +283,7 @@ function CinematicHero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 lg:pb-12 lg:pt-28"
+      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 md:pl-56 lg:pb-12 lg:pt-28"
       onMouseMove={(event) => {
         if (isMobile) return;
         const rect = event.currentTarget.getBoundingClientRect();
@@ -345,62 +344,73 @@ function CinematicHero() {
   );
 }
 
-function SelectedWork() {
+function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: string) => void }) {
   return (
-    <section id="work" className="scroll-mt-24 py-20 sm:py-28 [content-visibility:auto] [contain-intrinsic-size:1px_850px]">
-      <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-        <div>
-          <p className="text-sm uppercase tracking-[0.26em] text-[#c19a88]">Selected work</p>
-          <h2 className="mt-3 text-3xl font-medium tracking-tight text-white sm:text-5xl">Recent systems and launches.</h2>
-        </div>
-        <Link href="/work" className="inline-flex h-12 w-fit items-center gap-2 rounded-full border border-white/10 px-5 text-sm text-white/60 transition hover:border-white/25 hover:text-white">
-          View all work
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-      <motion.div
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.075, delayChildren: 0.08 } },
-        }}
-      >
-        {showcaseProjects.map((project) => (
-          <motion.article
-            key={project.url}
-            data-cursor-card
-            className="group overflow-hidden rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,.045),rgba(16,16,16,.96)_42%)] p-2 shadow-[0_26px_90px_rgba(0,0,0,.32)] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_32px_100px_rgba(0,0,0,.48)] sm:rounded-[28px] sm:p-3"
-            variants={{
-              hidden: { opacity: 0, y: 28, scale: 0.975 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                transition: {
-                  default: { type: "spring", stiffness: 115, damping: 20, mass: 0.8 },
-                  opacity: { duration: 0.45, ease: "easeOut" },
-                },
-              },
-            }}
-          >
-            <a href={project.url} target="_blank" rel="noreferrer" className="block">
-              <ProjectThumbnail src={project.image} title={project.title} sizes="(max-width: 767px) calc(100vw - 3.25rem), (max-width: 1279px) 50vw, 33vw" />
-              <div className="px-2 pb-3 pt-3 sm:px-4 sm:pb-5 sm:pt-5">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="truncate text-[9px] uppercase tracking-[0.18em] text-[#c19a88] sm:text-[11px] sm:tracking-[0.22em]">{project.category}</p>
-                  <span className="text-xs text-white/25">{project.number}</span>
-                </div>
-                <h3 className="mt-3 text-base font-medium leading-tight text-white sm:text-lg lg:text-xl">{project.title}</h3>
-                <p className="mt-2 hidden overflow-hidden text-sm leading-6 text-white/52 [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:[display:-webkit-box]">{project.short}</p>
-              </div>
-            </a>
-          </motion.article>
-        ))}
-      </motion.div>
-    </section>
+    <aside
+      className="group/sidebar fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 overflow-hidden rounded-[24px] border border-white/10 bg-[#0B0B0B]/80 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_2px_rgba(0,0,0,0.5)] backdrop-blur-2xl md:block"
+      aria-label="Homepage sections"
+    >
+      <Spotlight
+        size={200}
+        className="from-[#c19a88]/30 via-[#805948]/15 to-transparent blur-2xl"
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] rounded-t-[24px] bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.3)_25%,rgba(255,255,255,0.7)_50%,rgba(255,255,255,0.3)_75%,transparent_100%)]"
+      />
+
+      <nav className="relative z-10 flex flex-col gap-1">
+        {sidebarLinks.map((link) => {
+          const Icon = link.icon;
+          const isActive = active === link.id;
+          const glow = link.color ? accent[link.color].rgb : "193,154,136";
+          const itemClassName = `group/item relative flex h-10 items-center gap-3 overflow-hidden rounded-xl px-3 text-left transition-all duration-200 ${
+            isActive ? "font-medium text-white" : "text-white/45 hover:text-white"
+          }`;
+          const content = (
+            <>
+              {isActive && (
+                <motion.span
+                  layoutId="active-sidebar-pill"
+                  className="absolute inset-0 -z-10 rounded-xl border border-white/15 bg-white/[0.08] shadow-[0_0_20px_rgba(193,154,136,0.2),inset_0_1px_0_rgba(255,255,255,0.2)]"
+                  style={{
+                    backgroundColor: `rgba(${glow}, 0.16)`,
+                    borderColor: `rgba(${glow}, 0.35)`,
+                  }}
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+              {isActive && (
+                <motion.span
+                  layoutId="active-sidebar-notch"
+                  className="absolute left-1 h-3.5 w-1 rounded-full bg-[#c19a88] shadow-[0_0_10px_rgba(193,154,136,0.8)]"
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+              <Icon
+                className="ml-0.5 h-4 w-4 shrink-0 transition-transform duration-300 group-hover/item:scale-110"
+                style={{ color: isActive ? "#c19a88" : undefined }}
+              />
+              <span className="whitespace-nowrap text-sm tracking-wide">{link.label}</span>
+            </>
+          );
+
+          return (
+            <motion.button
+              key={link.id}
+              type="button"
+              onClick={() => onNavigate(link.id)}
+              whileHover={{ x: 3 }}
+              whileTap={{ scale: 0.97 }}
+              className={itemClassName}
+              aria-label={`Go to ${link.label}`}
+              aria-current={isActive ? "location" : undefined}
+            >
+              {content}
+            </motion.button>
+          );
+        })}
+      </nav>
+    </aside>
   );
 }
 
@@ -420,11 +430,7 @@ function ServiceCard({
     <motion.article
       id={service.key}
       data-cursor-card
-      onClick={() => onExplore(service.key)}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(14,14,14,0.96)_48%)] p-5 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)] transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.65)] cursor-pointer scroll-mt-28"
-      style={{
-        boxShadow: `0 20px 60px rgba(0,0,0,0.45), 0 0 45px rgba(${color.rgb}, 0.06), inset 0 1px 0 rgba(255,255,255,0.08)`,
-      }}
+      className="group relative scroll-mt-28 overflow-hidden border-b border-white/[0.08] py-14 sm:py-20 lg:min-h-[630px] lg:py-20"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -434,78 +440,81 @@ function ServiceCard({
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      {/* Ambient background glow matching service accent */}
       <div
-        className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-        style={{ backgroundColor: color.hex }}
+        className={`pointer-events-none absolute top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full opacity-[0.065] blur-[145px] transition-opacity duration-1000 group-hover:opacity-[0.12] ${
+          index % 2 === 0 ? "-right-48" : "-left-48"
+        }`}
+        style={{ background: color.hex }}
       />
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute top-10 select-none font-serif text-[clamp(8rem,18vw,16rem)] italic leading-none text-white/[0.022] ${
+          index % 2 === 0 ? "right-0" : "left-0"
+        }`}
+      >
+        0{index + 1}
+      </span>
 
-      {/* Top 3D specular reflection bar */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] rounded-t-[26px]"
-        style={{
-          background: `linear-gradient(90deg, transparent 0%, rgba(${color.rgb},0.4) 30%, rgba(255,255,255,0.6) 50%, rgba(${color.rgb},0.4) 70%, transparent 100%)`,
-        }}
-      />
-
-      {/* Card Header Bar */}
-      <div className="relative z-10 flex items-center justify-between pb-2">
-        <div className="flex items-center gap-3">
-          <motion.div
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] transition-transform duration-300 group-hover:scale-105"
-            style={{ borderColor: `rgba(${color.rgb}, 0.28)` }}
-            animate={{ y: [0, -3, 0] }}
-            transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon className="h-5 w-5" style={{ color: color.hex }} strokeWidth={1.8} />
-          </motion.div>
-          <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#c19a88]">
-              0{index + 1} · {service.label}
+      <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-12 xl:gap-16">
+        <div className={index % 2 === 0 ? "lg:order-1" : "lg:order-2"}>
+          <div className="flex items-center gap-4">
+            <span className="h-2 w-2 rounded-full shadow-[0_0_18px_currentColor]" style={{ color: color.hex, backgroundColor: color.hex }} />
+            <Icon className="h-4 w-4 text-white/56" strokeWidth={1.6} />
+            <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-white/42 sm:text-xs">
+              0{index + 1} / {service.label}
             </span>
-            <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-white group-hover:text-white transition-colors">
-              {service.title}
-            </h3>
+            <span className="h-px flex-1 bg-gradient-to-r from-white/18 to-transparent" />
           </div>
+
+          <h3 className="mt-7 max-w-2xl text-[clamp(2.35rem,3.8vw,4.2rem)] font-medium leading-[1.01] tracking-[-0.05em] text-white">
+            {service.title}
+          </h3>
+          <p className="mt-6 max-w-xl text-sm leading-7 text-white/52 sm:text-base sm:leading-8">
+            {service.short}
+          </p>
+
+          <div className="mt-8 grid grid-cols-2 border-y border-white/[0.07] text-[10px] uppercase tracking-[0.15em] text-white/38 sm:text-[11px]">
+            {service.capabilities.slice(0, 4).map((cap, capabilityIndex) => (
+              <span
+                key={cap}
+                className={`flex items-center gap-3 py-3 transition-colors duration-300 group-hover:text-white/62 ${
+                  capabilityIndex % 2 === 1 ? "border-l border-white/[0.07] pl-4" : "pr-4"
+                } ${capabilityIndex > 1 ? "border-t border-white/[0.07]" : ""}`}
+              >
+                <span className="font-mono text-white/20">0{capabilityIndex + 1}</span>
+                {cap}
+              </span>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onExplore(service.key)}
+            className="mt-8 inline-flex items-center gap-3.5 text-sm font-medium text-white/72 transition-colors duration-300 hover:text-white"
+          >
+            <span>Explore service</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.07] group-hover:shadow-[0_0_24px_rgba(193,154,136,0.12)]">
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" style={{ color: color.hex }} />
+            </span>
+          </button>
         </div>
 
-        {/* Explore Pill Button */}
-        <div
-          className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 text-xs font-medium text-white/60 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white"
-          style={{ borderColor: `rgba(${color.rgb}, 0.22)` }}
+        <button
+          type="button"
+          onClick={() => onExplore(service.key)}
+          aria-label={`Explore ${service.title}`}
+          className={`relative h-[290px] w-full overflow-hidden text-left [mask-image:radial-gradient(ellipse_84%_80%_at_50%_50%,black_55%,transparent_100%)] sm:h-[370px] lg:h-[440px] ${
+            index % 2 === 0 ? "lg:order-2" : "lg:order-1"
+          }`}
         >
-          <span className="hidden sm:inline">Explore</span>
-          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" style={{ color: color.hex }} />
-        </div>
-      </div>
-
-      {/* Interactive Visual Preview Stage */}
-      <div className="relative z-10 my-3 h-[200px] sm:h-[220px] w-full overflow-hidden rounded-[20px] border border-white/8 bg-[#070707] shadow-inner transition-colors duration-300 group-hover:border-white/15">
-        <ServiceVisual serviceKey={service.key} compact={true} />
-      </div>
-
-      {/* Card Content & Capabilities */}
-      <div className="relative z-10 pt-1">
-        <p className="text-xs sm:text-sm leading-relaxed text-white/58 line-clamp-2">
-          {service.short}
-        </p>
-
-        {/* Capability Tags */}
-        <div className="mt-3.5 flex flex-wrap gap-1.5 pt-3 border-t border-white/6">
-          {service.capabilities.slice(0, 4).map((cap) => (
-            <span
-              key={cap}
-              className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-white/45 transition-colors duration-300 group-hover:border-white/15 group-hover:text-white/70"
-            >
-              {cap}
-            </span>
-          ))}
-          {service.capabilities.length > 4 && (
-            <span className="inline-flex items-center rounded-md border border-transparent px-1.5 py-1 text-[10px] text-white/30">
-              +{service.capabilities.length - 4} more
-            </span>
-          )}
-        </div>
+          <div
+            className="pointer-events-none absolute inset-[12%] rounded-full opacity-20 blur-[85px] transition-opacity duration-1000 group-hover:opacity-35"
+            style={{ backgroundColor: color.hex }}
+          />
+          <div className="relative h-full w-full transition-transform duration-1000 ease-out group-hover:scale-[1.035]">
+            <ServiceVisual serviceKey={service.key} compact={true} />
+          </div>
+        </button>
       </div>
     </motion.article>
   );
@@ -513,6 +522,7 @@ function ServiceCard({
 
 export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
   const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
+  const [activeSection, setActiveSection] = useState("home");
   const [activeModal, setActiveModal] = useState<ServiceKey | null>(null);
   const [animateHome, setAnimateHome] = useState(false);
   const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
@@ -524,11 +534,13 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     const hasSeenIntro = typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
 
     if (initialDest) {
+      window.history.scrollRestoration = "auto";
       window.history.replaceState(window.history.state, "", "/");
       return;
     }
 
     if (hasSeenIntro) {
+      window.history.scrollRestoration = "auto";
       if (stage !== "home") {
         const restoreHome = window.setTimeout(() => {
           setStage("home");
@@ -547,6 +559,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     }, 1850);
     const removeIntro = window.setTimeout(() => {
       setIsIntroMounted(false);
+      window.history.scrollRestoration = "auto";
     }, 2350);
 
     return () => {
@@ -561,7 +574,45 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     pendingTarget.current = null;
     window.setTimeout(() => {
       document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(target);
     }, 450);
+  }, [stage]);
+
+  useEffect(() => {
+    if (stage !== "home") return;
+
+    const sections = sidebarLinks
+      .map((link) => document.getElementById(link.id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    let frame = 0;
+
+    const updateActiveSection = () => {
+      const readingLine = window.innerHeight * 0.42;
+      // Sections such as `services` contain the individual service sections.
+      // Prefer the deepest/later matching section so the sidebar follows the
+      // specific service currently crossing the reading line.
+      const current = [...sections].reverse().find((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= readingLine && rect.bottom > readingLine;
+      });
+
+      if (current) setActiveSection(current.id);
+    };
+
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
   }, [stage]);
 
   const chooseDestination = (destination: DestinationKey) => {
@@ -570,6 +621,11 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     pendingTarget.current = destination === "everything" ? "home" : destination;
     setAnimateHome(true);
     setStage("home");
+  };
+
+  const navigate = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActiveSection(id);
   };
 
   return (
@@ -587,13 +643,15 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
       {/* Main homepage renders only after a destination is chosen or restored. */}
       {stage === "home" && (
         <>
-        <FluidParticlesBackground
-          theme="dark"
-          particleCount={140}
-          noiseIntensity={0.0026}
-          particleSize={{ min: 0.5, max: 1.4 }}
-          className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
-        />
+        {!activeModal && (
+          <FluidParticlesBackground
+            theme="dark"
+            particleCount={110}
+            noiseIntensity={0.0026}
+            particleSize={{ min: 0.5, max: 1.4 }}
+            className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
+          />
+        )}
         <motion.div
           key="home"
           className="relative z-10"
@@ -601,8 +659,9 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           animate={{ opacity: 1 }}
           transition={{ duration: 0.75, ease }}
         >
+          <Sidebar active={activeSection} onNavigate={navigate} />
           <CinematicHero />
-          <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10">
+          <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
             <ImpactMetricsBar />
 
             <div id="services" className="scroll-mt-28 py-8 sm:py-12">
@@ -610,15 +669,13 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                 <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
                 <h2 className="mt-2 text-2xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
-              <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
+              <div className="mt-8 grid grid-cols-1">
                 <ServiceCard service={services.websites} index={0} onExplore={setActiveModal} />
                 <ServiceCard service={services.apps} index={1} onExplore={setActiveModal} />
                 <ServiceCard service={services.ai} index={2} onExplore={setActiveModal} />
                 <ServiceCard service={services.creative} index={3} onExplore={setActiveModal} />
               </div>
             </div>
-
-            <SelectedWork />
 
             <div className="[content-visibility:auto] [contain-intrinsic-size:1px_550px]">
               <TechStackRadar />
@@ -667,7 +724,15 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
         </>
       )}
 
-      <AnimatePresence>{activeModal && <ServiceModal key={`modal-${activeModal}`} serviceKey={activeModal} onClose={() => setActiveModal(null)} />}</AnimatePresence>
+      <AnimatePresence>
+        {activeModal && (
+          <ServiceModal
+            key={`service-modal-${activeModal}`}
+            serviceKey={activeModal}
+            onClose={() => setActiveModal(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

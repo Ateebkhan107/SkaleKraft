@@ -35,8 +35,13 @@ export default function InteractiveCanvas3D({
     const container = containerRef.current;
     if (!container) return;
 
-    let animationFrameId: number;
-    let isVisible = true;
+    let animationFrameId = 0;
+    let isVisible = false;
+    let isDocumentVisible = document.visibilityState === "visible";
+    const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lowPower = isMobile || (navigator.hardwareConcurrency ?? 8) <= 4;
+    const pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, lowPower ? 1.15 : 1.4);
 
     // --- Scene, Camera, Renderer ---
     const scene = new THREE.Scene();
@@ -48,12 +53,12 @@ export default function InteractiveCanvas3D({
     camera.position.set(0, 0, 4.2);
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: !lowPower,
       alpha: true,
-      powerPreference: "high-performance",
+      powerPreference: lowPower ? "low-power" : "high-performance",
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(pixelRatio);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
@@ -135,8 +140,8 @@ export default function InteractiveCanvas3D({
       }
 
       // 3. Orbiting Data Points / Particles
-      const particleCount = 28;
-      const particleGeom = new THREE.SphereGeometry(0.038, 8, 8);
+      const particleCount = lowPower ? 16 : 24;
+      const particleGeom = new THREE.SphereGeometry(0.038, lowPower ? 5 : 7, lowPower ? 5 : 7);
       geometriesToDispose.push(particleGeom);
       const particleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
       materialsToDispose.push(particleMat);
@@ -164,7 +169,7 @@ export default function InteractiveCanvas3D({
       const ringThickness = 0.045;
 
       ringRadii.forEach((r, idx) => {
-        const ringGeom = new THREE.TorusGeometry(r, ringThickness, 16, 64);
+        const ringGeom = new THREE.TorusGeometry(r, ringThickness, lowPower ? 10 : 14, lowPower ? 36 : 56);
         geometriesToDispose.push(ringGeom);
         const ringMat = createMaterial({
           color: idx % 2 === 0 ? primaryColor : secColor,
@@ -192,7 +197,7 @@ export default function InteractiveCanvas3D({
       });
 
       // Central core nucleus
-      const nucleusGeom = new THREE.SphereGeometry(0.38, 32, 32);
+      const nucleusGeom = new THREE.SphereGeometry(0.38, lowPower ? 18 : 26, lowPower ? 18 : 26);
       geometriesToDispose.push(nucleusGeom);
       const nucleusMat = createMaterial({
         color: 0xffffff,
@@ -207,7 +212,7 @@ export default function InteractiveCanvas3D({
 
     } else if (type === "torus-knot") {
       // Sleek Braided Torus Ribbon
-      const knotGeom = new THREE.TorusKnotGeometry(0.85, 0.11, 160, 32, 2, 3);
+      const knotGeom = new THREE.TorusKnotGeometry(0.85, 0.11, lowPower ? 88 : 128, lowPower ? 14 : 22, 2, 3);
       geometriesToDispose.push(knotGeom);
       const knotMat = createMaterial({
         color: primaryColor,
@@ -251,7 +256,7 @@ export default function InteractiveCanvas3D({
       animatedParts.push({ mesh: coreMesh, rotSpeed: new THREE.Vector3(0.007, 0.01, 0.004) });
 
       // 2. Sleek Aerodynamic Ribbon
-      const ribbonGeom = new THREE.TorusKnotGeometry(0.96, 0.055, 180, 24, 2, 5);
+      const ribbonGeom = new THREE.TorusKnotGeometry(0.96, 0.055, lowPower ? 96 : 140, lowPower ? 12 : 18, 2, 5);
       geometriesToDispose.push(ribbonGeom);
       const ribbonMat = createMaterial({
         color: primaryColor,
@@ -265,7 +270,7 @@ export default function InteractiveCanvas3D({
       animatedParts.push({ mesh: ribbonMesh, rotSpeed: new THREE.Vector3(-0.005, -0.007, 0.003) });
 
       // 3. Precision Thin Orbital Ring
-      const ringGeom = new THREE.TorusGeometry(1.32, 0.016, 16, 80);
+      const ringGeom = new THREE.TorusGeometry(1.32, 0.016, lowPower ? 8 : 12, lowPower ? 40 : 64);
       geometriesToDispose.push(ringGeom);
       const ringMat = createMaterial({
         color: primaryColor,
@@ -280,7 +285,7 @@ export default function InteractiveCanvas3D({
 
       // 4. Satellite Orbiting Nodes
       const satelliteGroup = new THREE.Group();
-      const satelliteGeom = new THREE.SphereGeometry(0.045, 16, 16);
+      const satelliteGeom = new THREE.SphereGeometry(0.045, lowPower ? 8 : 12, lowPower ? 8 : 12);
       geometriesToDispose.push(satelliteGeom);
       const satelliteMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
@@ -303,7 +308,7 @@ export default function InteractiveCanvas3D({
       animatedParts.push({ mesh: satelliteGroup, rotSpeed: new THREE.Vector3(0.003, 0.006, 0.002) });
 
       // 5. Floating Micro-Particle Nebula
-      const particleCount = 42;
+      const particleCount = lowPower ? 22 : 34;
       const positions = new Float32Array(particleCount * 3);
       for (let i = 0; i < particleCount; i++) {
         const rad = 1.35 + Math.random() * 0.95;
@@ -331,7 +336,7 @@ export default function InteractiveCanvas3D({
 
     } else if (type === "cyber-sphere") {
       // Geodesic Faceted Cyber Sphere
-      const sphereGeom = new THREE.IcosahedronGeometry(1.05, 3);
+      const sphereGeom = new THREE.IcosahedronGeometry(1.05, lowPower ? 1 : 2);
       geometriesToDispose.push(sphereGeom);
       const sphereMat = createMaterial({
         color: primaryColor,
@@ -344,7 +349,7 @@ export default function InteractiveCanvas3D({
       animatedParts.push({ mesh: sphereMesh, rotSpeed: new THREE.Vector3(0.005, 0.007, 0.002) });
 
       if (showWireframe) {
-        const wireGeom = new THREE.IcosahedronGeometry(1.16, 2);
+        const wireGeom = new THREE.IcosahedronGeometry(1.16, lowPower ? 1 : 2);
         geometriesToDispose.push(wireGeom);
         const wireMat = new THREE.MeshBasicMaterial({
           color: secColor,
@@ -412,31 +417,33 @@ export default function InteractiveCanvas3D({
     }
 
     // --- Visibility & Render Loop ---
-    const observer = new IntersectionObserver(
-      (entries) => {
-        isVisible = entries[0]?.isIntersecting ?? true;
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(container);
-
     const clock = new THREE.Clock();
+    const targetFrameInterval = lowPower ? 1000 / 30 : 1000 / 60;
+    const animationStep = targetFrameInterval / (1000 / 60);
+    let lastFrameTime = 0;
 
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      if (!isVisible) return;
+    const animate = (timestamp: number) => {
+      animationFrameId = 0;
+      if (!isVisible || !isDocumentVisible || reducedMotion) return;
+
+      const elapsedSinceFrame = timestamp - lastFrameTime;
+      if (lastFrameTime !== 0 && elapsedSinceFrame < targetFrameInterval) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameTime = timestamp - (elapsedSinceFrame % targetFrameInterval);
 
       const elapsedTime = clock.getElapsedTime();
 
       // Smooth Lerp Towards Target Rotation
       if (interactive) {
         if (!isDragging) {
-          targetRotationY += 0.004 * autoRotateSpeed;
+          targetRotationY += 0.004 * autoRotateSpeed * animationStep;
         }
         rootGroup.rotation.y += (targetRotationY + mouseX - rootGroup.rotation.y) * 0.06;
         rootGroup.rotation.x += (targetRotationX - mouseY - rootGroup.rotation.x) * 0.06;
       } else {
-        rootGroup.rotation.y += 0.005 * autoRotateSpeed;
+        rootGroup.rotation.y += 0.005 * autoRotateSpeed * animationStep;
       }
 
       // Gentle floating sine motion
@@ -444,15 +451,49 @@ export default function InteractiveCanvas3D({
 
       // Animate internal subcomponents
       animatedParts.forEach((part) => {
-        part.mesh.rotation.x += part.rotSpeed.x;
-        part.mesh.rotation.y += part.rotSpeed.y;
-        part.mesh.rotation.z += part.rotSpeed.z;
+        part.mesh.rotation.x += part.rotSpeed.x * animationStep;
+        part.mesh.rotation.y += part.rotSpeed.y * animationStep;
+        part.mesh.rotation.z += part.rotSpeed.z * animationStep;
       });
 
       renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    animate();
+    const stopRendering = () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = 0;
+      lastFrameTime = 0;
+    };
+
+    const startRendering = () => {
+      if (!isVisible || !isDocumentVisible) return;
+      if (reducedMotion) {
+        renderer.render(scene, camera);
+        return;
+      }
+      if (!animationFrameId) {
+        clock.start();
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0]?.isIntersecting ?? true;
+        if (isVisible) startRendering();
+        else stopRendering();
+      },
+      { rootMargin: "80px", threshold: 0.01 }
+    );
+    observer.observe(container);
+
+    const handleVisibilityChange = () => {
+      isDocumentVisible = document.visibilityState === "visible";
+      if (isDocumentVisible) startRendering();
+      else stopRendering();
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // --- Resize Handling ---
     const handleResize = () => {
@@ -464,7 +505,8 @@ export default function InteractiveCanvas3D({
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(newWidth, newHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+      renderer.setPixelRatio(pixelRatio);
+      if (reducedMotion) renderer.render(scene, camera);
     };
 
     const resizeObserver = new ResizeObserver(handleResize);
@@ -475,6 +517,7 @@ export default function InteractiveCanvas3D({
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
       resizeObserver.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
 
       if (interactive) {
         container.removeEventListener("mousemove", handlePointerMove);

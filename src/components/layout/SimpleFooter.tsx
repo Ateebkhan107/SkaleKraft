@@ -6,7 +6,6 @@ import { FaInstagram } from "react-icons/fa6";
 const links = [
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
-  { label: "AI Systems", href: "/ai-consultant" },
   { label: "Join the Agency", href: "/join" },
   { label: "Contact", href: "/contact" },
   { label: "Terms", href: "/terms" },

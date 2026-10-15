@@ -22,22 +22,12 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          {/* Luxury Studio Craft Artifact Viewport */}
-          <div className="relative mx-auto hidden sm:flex flex-col items-center justify-center overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(14,14,14,0.92)_50%,rgba(8,8,8,0.98))] p-3.5 shadow-[0_20px_70px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl sm:h-[280px] sm:w-[280px] lg:h-[320px] lg:w-[320px]">
-            {/* Ambient Radial Backlight */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.18),transparent_70%)] blur-2xl" />
-
-            {/* Top HUD Bar */}
-            <div className="pointer-events-none absolute top-3.5 left-4 right-4 flex items-center justify-between text-[9px] uppercase tracking-[0.2em] text-white/40 font-mono">
-              <span>Craft Lab</span>
-              <span className="flex items-center gap-1 text-[#c19a88]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88] animate-pulse" />
-                3D Artifact
-              </span>
-            </div>
-
-            {/* 3D Realtime Canvas */}
-            <div className="relative h-full w-full pt-4">
+          {/* Borderless studio artifact, blended into the page atmosphere */}
+          <div className="relative mx-auto hidden sm:block sm:h-[330px] sm:w-[360px] lg:h-[400px] lg:w-[430px]">
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[78%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#805948]/18 blur-[85px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(193,154,136,0.18),rgba(128,89,72,0.06)_45%,transparent_72%)]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#c19a88]/[0.07]" />
+            <div className="relative h-full w-full [mask-image:radial-gradient(ellipse_76%_76%_at_50%_50%,black_58%,transparent_100%)] drop-shadow-[0_28px_55px_rgba(128,89,72,0.16)]">
               <InteractiveCanvas3D
                 type="craft-prism"
                 accentColor="#c19a88"
@@ -46,12 +36,6 @@ export default function PortfolioPage() {
                 autoRotateSpeed={1.1}
                 className="h-full w-full"
               />
-            </div>
-
-            {/* Bottom HUD Bar */}
-            <div className="pointer-events-none absolute bottom-3 left-4 right-4 flex items-center justify-between text-[9px] uppercase tracking-[0.16em] text-white/35 font-mono border-t border-white/[0.06] pt-1.5">
-              <span>Precision Engine</span>
-              <span>60 FPS</span>
             </div>
           </div>
         </div>
