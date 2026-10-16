@@ -18,6 +18,17 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
   const [notice, setNotice] = useState(0);
   const [step, setStep] = useState(0);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const loopRepeat = Infinity;
+
   useEffect(() => {
     if (!inView) return;
     const noticeTimer = window.setInterval(() => setNotice((current) => (current + 1) % heroNotices.length), 3200);
@@ -29,7 +40,7 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
   }, [inView]);
 
   const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (embedded) return;
+    if (embedded || isMobile) return;
     const rect = event.currentTarget.getBoundingClientRect();
     setTilt({
       x: ((event.clientY - rect.top) / rect.height - 0.5) * -5,
@@ -47,14 +58,14 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
           style={{ left: `${left}%`, top: `${[18, 72, 28, 58][index]}%` }}
           initial={{ opacity: 0.18 }}
           animate={inView ? { opacity: [0.18, 0.55, 0.18], y: [0, -10, 0] } : { opacity: 0.18 }}
-          transition={{ duration: 4 + index, delay: index * 0.45, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
+          transition={{ duration: 4 + index, delay: index * 0.45, repeat: inView ? loopRepeat : 0, ease: "easeInOut" }}
         />
       ))}
 
       <motion.div
         className="absolute left-3 top-3 sm:left-5 sm:top-5 h-[80%] w-[82%] sm:h-[72%] sm:w-[72%] overflow-hidden rounded-[20px] sm:rounded-[24px] border border-white/10 bg-[#0d0d0d]/88 shadow-[0_24px_80px_rgba(0,0,0,.42)] backdrop-blur"
         animate={inView ? { y: [0, -7, 0] } : { y: 0 }}
-        transition={{ duration: 7, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
+        transition={{ duration: 7, repeat: inView ? loopRepeat : 0, ease: "easeInOut" }}
       >
         <div className="flex h-9 items-center gap-2 border-b border-white/10 bg-white/[0.035] px-4">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400/65" />
@@ -62,7 +73,7 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-300/65" />
           <div className="ml-3 h-5 flex-1 rounded-full border border-white/8 bg-black/28" />
         </div>
-        <motion.div className="p-4" animate={inView ? { y: [0, -58, -58, 0] } : { y: 0 }} transition={{ duration: 9, repeat: inView ? Infinity : 0, ease: "easeInOut" }}>
+        <motion.div className="p-4" animate={inView ? { y: [0, -58, -58, 0] } : { y: 0 }} transition={{ duration: 9, repeat: inView ? loopRepeat : 0, ease: "easeInOut" }}>
           <div className="flex items-center justify-between text-[10px] text-white/40">
             <span className="font-semibold tracking-[0.2em] text-[#c19a88]">SKALE UI</span>
             <div className="flex gap-3"><span>Home</span><span>Work</span><span>Build</span></div>
@@ -83,17 +94,17 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
                   strokeLinecap="round"
                   initial={{ pathLength: 0 }}
                   animate={inView ? { pathLength: 1 } : { pathLength: 0.45 }}
-                  transition={{ duration: 3.6, repeat: inView ? Infinity : 0, repeatType: "reverse", ease: "easeInOut" }}
+                  transition={{ duration: 3.6, repeat: inView ? loopRepeat : 0, repeatType: "reverse", ease: "easeInOut" }}
                 />
                 {[8, 86, 166, 214].map((cx, index) => (
-                  <motion.circle key={cx} cx={cx} cy={[88, 48, 44, 24][index]} r="4" fill="#D8A25A" initial={{ opacity: 0.7 }} animate={inView ? { scale: [1, 1.6, 1], opacity: [0.7, 1, 0.7] } : { scale: 1, opacity: 0.7 }} transition={{ duration: 2, delay: index * 0.22, repeat: inView ? Infinity : 0 }} />
+                  <motion.circle key={cx} cx={cx} cy={[88, 48, 44, 24][index]} r="4" fill="#D8A25A" initial={{ opacity: 0.7 }} animate={inView ? { scale: [1, 1.6, 1], opacity: [0.7, 1, 0.7] } : { scale: 1, opacity: 0.7 }} transition={{ duration: 2, delay: index * 0.22, repeat: inView ? loopRepeat : 0 }} />
                 ))}
               </svg>
             </div>
           </div>
           <div className="mt-5 grid grid-cols-3 gap-2">
             {["Speed", "Leads", "Health"].map((label, index) => (
-              <motion.div key={label} className="rounded-xl border border-white/8 bg-black/24 p-3" initial={false} animate={inView ? { opacity: [0.55, 1, 0.72] } : { opacity: 0.7 }} transition={{ duration: 3, delay: index * 0.22, repeat: inView ? Infinity : 0 }}>
+              <motion.div key={label} className="rounded-xl border border-white/8 bg-black/24 p-3" initial={false} animate={inView ? { opacity: [0.55, 1, 0.72] } : { opacity: 0.7 }} transition={{ duration: 3, delay: index * 0.22, repeat: inView ? loopRepeat : 0 }}>
                 <p className="text-[10px] text-white/36">{label}</p>
                 <p className="mt-1 text-lg font-semibold text-white">{[98, 42, 99][index]}%</p>
               </motion.div>
@@ -105,7 +116,7 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
       <motion.div
         className="absolute right-3 top-10 sm:right-5 sm:top-14 w-40 sm:w-44 rounded-2xl border border-white/10 bg-white/[0.055] p-3 sm:p-4 shadow-[0_22px_70px_rgba(0,0,0,.38)] backdrop-blur-xl hidden sm:block"
         animate={inView ? { y: [0, 10, 0], x: [0, -4, 0] } : { y: 0, x: 0 }}
-        transition={{ duration: 6, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
+        transition={{ duration: 6, repeat: inView ? loopRepeat : 0, ease: "easeInOut" }}
       >
         <p className="text-xs text-white/40">Revenue</p>
         <p className="mt-1 text-2xl font-semibold text-white">$24.8k</p>
@@ -132,7 +143,7 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
       <motion.div
         className="absolute bottom-6 right-7 w-[250px] rounded-2xl border border-white/10 bg-black/45 p-4 font-mono text-xs text-white/70 shadow-[0_22px_70px_rgba(0,0,0,.42)] backdrop-blur-xl hidden sm:block"
         animate={inView ? { y: [0, -8, 0] } : { y: 0 }}
-        transition={{ duration: 6.5, repeat: inView ? Infinity : 0, ease: "easeInOut" }}
+        transition={{ duration: 6.5, repeat: inView ? loopRepeat : 0, ease: "easeInOut" }}
       >
         {heroCodeLines.map((line, index) => (
           <motion.p key={line} className={index === 0 ? "text-white" : "text-emerald-300/86"} initial={false} animate={{ opacity: index <= step ? 1 : 0.18, x: index <= step ? 0 : -8 }} transition={{ duration: 0.35 }}>
@@ -144,8 +155,8 @@ export function HeroSoftwareVisual({ embedded = false, active, compact = false }
       <div className="absolute bottom-8 left-8 w-[60%] sm:w-[42%] rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl hidden sm:block">
         <div className="mb-3 flex items-center justify-between text-xs text-white/45"><span>Live graph</span><span>12:48</span></div>
         <svg viewBox="0 0 260 110" className="h-16 sm:h-28 w-full overflow-visible">
-          <motion.path d="M6 92 C 44 42, 58 82, 92 54 S 150 20, 174 52 S 222 84, 254 22" fill="none" stroke="#805948" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={inView ? { pathLength: 1 } : { pathLength: 0.35 }} transition={{ duration: 4.4, repeat: inView ? Infinity : 0, repeatType: "reverse", ease: "easeInOut" }} />
-          <motion.g animate={inView ? { x: [6, 254], y: [92, 22] } : { x: 6, y: 92 }} transition={{ duration: 4.4, repeat: inView ? Infinity : 0, repeatType: "reverse", ease: "easeInOut" }}>
+          <motion.path d="M6 92 C 44 42, 58 82, 92 54 S 150 20, 174 52 S 222 84, 254 22" fill="none" stroke="#805948" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={inView ? { pathLength: 1 } : { pathLength: 0.35 }} transition={{ duration: 4.4, repeat: inView ? loopRepeat : 0, repeatType: "reverse", ease: "easeInOut" }} />
+          <motion.g animate={inView ? { x: [6, 254], y: [92, 22] } : { x: 6, y: 92 }} transition={{ duration: 4.4, repeat: inView ? loopRepeat : 0, repeatType: "reverse", ease: "easeInOut" }}>
             <rect x="-30" y="-34" width="62" height="24" rx="8" fill="rgba(255,255,255,.1)" />
             <text x="-20" y="-18" fill="rgba(255,255,255,.75)" fontSize="10">+18.6%</text>
             <circle r="5" fill="#805948" />

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
@@ -14,6 +14,7 @@ import {
 import dynamic from "next/dynamic";
 import { FluidParticlesBackground } from "@/components/ui/fluid-particles-background";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
+
 
 import {
   Stage,
@@ -73,14 +74,13 @@ function IntroSplash({ isLeaving }: { isLeaving: boolean }) {
 }
 
 function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: DestinationKey) => void; onSkip: () => void }) {
-  const [mouseGlow, setMouseGlow] = useState({ x: 50, y: 35 });
+  const glowRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!glowRef.current) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    setMouseGlow({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
+    glowRef.current.style.left = `${((e.clientX - rect.left) / rect.width) * 100}%`;
+    glowRef.current.style.top = `${((e.clientY - rect.top) / rect.height) * 100}%`;
   };
 
   return (
@@ -90,15 +90,16 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
       style={{ position: "fixed", inset: 0, zIndex: 70, backgroundColor: "#0B0B0B" }}
     >
       {/* Dynamic Cursor Light Spotlight */}
-      <motion.div
-        animate={{ left: `${mouseGlow.x}%`, top: `${mouseGlow.y}%` }}
-        transition={{ type: "spring", stiffness: 120, damping: 24, mass: 0.5 }}
-        className="pointer-events-none fixed h-[580px] w-[580px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.04)_45%,transparent_70%)] blur-3xl hidden md:block"
+      <div
+        ref={glowRef}
+        style={{ left: "50%", top: "35%", transform: "translate(-50%, -50%)" }}
+        className="pointer-events-none fixed h-[580px] w-[580px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.04)_45%,transparent_70%)] blur-3xl hidden md:block transition-[left,top] duration-150 ease-out will-change-[left,top]"
       />
 
       {/* Layered luxury background atmosphere */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_50%_at_50%_-12%,rgba(193,154,136,0.22),transparent_70%),radial-gradient(ellipse_60%_40%_at_50%_115%,rgba(128,89,72,0.12),transparent_70%)]" />
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.025)_1px,transparent_0)] [background-size:32px_32px] opacity-70" />
+
 
       {/* Top Left Studio Logo Badge */}
       <div className="absolute left-6 top-6 z-20 flex items-center gap-2.5">
@@ -256,7 +257,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
 }
 
 function CinematicHero() {
-  const [glow, setGlow] = useState({ x: "68%", y: "42%" });
+  const glowRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -285,19 +286,16 @@ function CinematicHero() {
       id="home"
       className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 md:pl-56 lg:pb-12 lg:pt-28"
       onMouseMove={(event) => {
-        if (isMobile) return;
+        if (isMobile || !glowRef.current) return;
         const rect = event.currentTarget.getBoundingClientRect();
-        setGlow({
-          x: `${((event.clientX - rect.left) / rect.width) * 100}%`,
-          y: `${((event.clientY - rect.top) / rect.height) * 100}%`,
-        });
+        glowRef.current.style.left = `${((event.clientX - rect.left) / rect.width) * 100}%`;
+        glowRef.current.style.top = `${((event.clientY - rect.top) / rect.height) * 100}%`;
       }}
     >
-      <motion.div
-        className="pointer-events-none absolute h-[450px] w-[450px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.06)_40%,transparent_70%)] blur-2xl hidden md:block"
-        animate={{ left: glow.x, top: glow.y }}
-        transition={{ duration: 0.6, ease }}
-        style={{ transform: "translate(-50%, -50%)" }}
+      <div
+        ref={glowRef}
+        className="pointer-events-none absolute h-[450px] w-[450px] rounded-full bg-[radial-gradient(circle_at_center,rgba(193,154,136,0.14)_0%,rgba(128,89,72,0.06)_40%,transparent_70%)] blur-2xl hidden md:block transition-[left,top] duration-150 ease-out will-change-[left,top]"
+        style={{ left: "68%", top: "42%", transform: "translate(-50%, -50%)" }}
       />
       <div className="relative z-10 mx-auto grid w-full max-w-[1500px] items-center gap-12 lg:grid-cols-[45fr_55fr] xl:gap-16">
         <motion.div
@@ -336,7 +334,10 @@ function CinematicHero() {
           </motion.div>
         </motion.div>
 
-        <motion.div className="relative flex w-full items-center justify-center overflow-visible" style={{ y: visualY, scale: visualScale, opacity: heroOpacity }}>
+        <motion.div
+          className="relative hidden md:flex w-full items-center justify-center overflow-visible"
+          style={isMobile ? undefined : { y: visualY, scale: visualScale, opacity: heroOpacity }}
+        >
           <Hero3DRobotVisual />
         </motion.div>
       </div>
@@ -344,7 +345,15 @@ function CinematicHero() {
   );
 }
 
-function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: string) => void }) {
+function Sidebar({
+  active,
+  onNavigate,
+  onReturnToGateway,
+}: {
+  active: string;
+  onNavigate: (id: string) => void;
+  onReturnToGateway?: () => void;
+}) {
   return (
     <aside
       className="group/sidebar fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 overflow-hidden rounded-[24px] border border-white/10 bg-[#0B0B0B]/80 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_2px_rgba(0,0,0,0.5)] backdrop-blur-2xl md:block"
@@ -357,6 +366,22 @@ function Sidebar({ active, onNavigate }: { active: string; onNavigate: (id: stri
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[2px] rounded-t-[24px] bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.3)_25%,rgba(255,255,255,0.7)_50%,rgba(255,255,255,0.3)_75%,transparent_100%)]"
       />
+
+      {onReturnToGateway && (
+        <div className="relative z-10 mb-2 border-b border-white/10 pb-2">
+          <motion.button
+            type="button"
+            onClick={onReturnToGateway}
+            whileHover={{ x: 2 }}
+            whileTap={{ scale: 0.97 }}
+            className="group/item relative flex h-9 w-full items-center gap-2.5 overflow-hidden rounded-xl px-2.5 text-left text-xs font-medium text-[#c19a88] hover:bg-white/[0.06] hover:text-white transition-colors"
+            aria-label="Return to Studio Landing Gateway"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-[#c19a88] group-hover/item:scale-110 transition-transform" />
+            <span className="truncate">Landing Gateway</span>
+          </motion.button>
+        </div>
+      )}
 
       <nav className="relative z-10 flex flex-col gap-1">
         {sidebarLinks.map((link) => {
@@ -430,7 +455,7 @@ function ServiceCard({
     <motion.article
       id={service.key}
       data-cursor-card
-      className="group relative scroll-mt-24 overflow-hidden border-b border-white/[0.08] py-10 sm:scroll-mt-28 sm:py-20 lg:min-h-[630px] lg:py-20"
+      className="group relative scroll-mt-24 overflow-hidden border-b border-white/[0.08] py-10 sm:scroll-mt-28 sm:py-20 lg:min-h-[630px] lg:py-20 [content-visibility:auto] [contain-intrinsic-size:1px_600px]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -441,7 +466,7 @@ function ServiceCard({
       }}
     >
       <div
-        className={`pointer-events-none absolute top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full opacity-[0.065] blur-[145px] transition-opacity duration-1000 group-hover:opacity-[0.12] ${
+        className={`pointer-events-none absolute top-1/2 h-[24rem] sm:h-[36rem] w-[24rem] sm:w-[36rem] -translate-y-1/2 rounded-full opacity-[0.075] blur-[90px] sm:blur-[145px] transition-opacity duration-1000 group-hover:opacity-[0.14] ${
           index % 2 === 0 ? "-right-48" : "-left-48"
         }`}
         style={{ background: color.hex }}
@@ -475,12 +500,12 @@ function ServiceCard({
           type="button"
           onClick={() => onExplore(service.key)}
           aria-label={`Explore ${service.title}`}
-          className={`relative h-[210px] w-full overflow-hidden rounded-[22px] border border-white/[0.07] bg-white/[0.018] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] [mask-image:radial-gradient(ellipse_94%_90%_at_50%_50%,black_62%,transparent_100%)] sm:h-[370px] sm:rounded-none sm:border-0 sm:bg-transparent lg:row-span-2 lg:row-start-1 lg:h-[440px] ${
+          className={`relative h-[210px] w-full overflow-hidden rounded-[22px] border border-white/[0.07] bg-white/[0.018] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:h-[370px] sm:rounded-none sm:border-0 sm:bg-transparent lg:row-span-2 lg:row-start-1 lg:h-[440px] ${
             index % 2 === 0 ? "lg:col-start-2" : "lg:col-start-1"
           }`}
         >
           <div
-            className="pointer-events-none absolute inset-[12%] rounded-full opacity-20 blur-[70px] transition-opacity duration-1000 group-hover:opacity-35 sm:blur-[85px]"
+            className="pointer-events-none absolute inset-[12%] rounded-full opacity-20 blur-[70px] transition-opacity duration-1000 group-hover:opacity-35 hidden sm:block sm:blur-[85px]"
             style={{ backgroundColor: color.hex }}
           />
           <div className="relative h-full w-full transition-transform duration-1000 ease-out group-hover:scale-[1.035]">
@@ -523,6 +548,12 @@ function ServiceCard({
   );
 }
 
+const MemoizedSidebar = memo(Sidebar);
+const MemoizedHero = memo(CinematicHero);
+const MemoizedServiceCard = memo(ServiceCard);
+const MemoizedMetricsBar = memo(ImpactMetricsBar);
+const MemoizedTechStackRadar = memo(TechStackRadar);
+
 export default function StreamingExperience({ initialDest }: { initialDest?: DestinationKey | null }) {
   const [stage, setStage] = useState<Stage>(initialDest ? "home" : "selection");
   const [activeSection, setActiveSection] = useState("home");
@@ -532,6 +563,16 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   const [isIntroLeaving, setIsIntroLeaving] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
+
+  useEffect(() => {
+    const handleOpenLanding = () => {
+      setStage("selection");
+      setIsIntroMounted(false);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    };
+    window.addEventListener("skalekraft:open-landing", handleOpenLanding);
+    return () => window.removeEventListener("skalekraft:open-landing", handleOpenLanding);
+  }, []);
 
   useEffect(() => {
     const hasSeenIntro = typeof window !== "undefined" && window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
@@ -544,14 +585,10 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
     if (hasSeenIntro) {
       window.history.scrollRestoration = "auto";
-      if (stage !== "home") {
-        const restoreHome = window.setTimeout(() => {
-          setStage("home");
-          setIsIntroMounted(false);
-        }, 0);
-        return () => window.clearTimeout(restoreHome);
-      }
-      return;
+      const skipTimer = window.setTimeout(() => {
+        setIsIntroMounted(false);
+      }, 0);
+      return () => window.clearTimeout(skipTimer);
     }
 
     window.history.scrollRestoration = "manual";
@@ -594,35 +631,30 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     const sections = sidebarLinks
       .map((link) => document.getElementById(link.id))
       .filter((section): section is HTMLElement => Boolean(section));
-    let frame = 0;
 
-    const updateActiveSection = () => {
-      const readingLine = window.innerHeight * 0.42;
-      // Sections such as `services` contain the individual service sections.
-      // Prefer the deepest/later matching section so the sidebar follows the
-      // specific service currently crossing the reading line.
-      const current = [...sections].reverse().find((section) => {
-        const rect = section.getBoundingClientRect();
-        return rect.top <= readingLine && rect.bottom > readingLine;
-      });
+    if (sections.length === 0) return;
 
-      if (current) setActiveSection(current.id);
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length > 0) {
+          const topVisible = intersecting.reduce((prev, curr) =>
+            curr.intersectionRatio > prev.intersectionRatio ? curr : prev
+          );
+          if (topVisible.target.id) {
+            setActiveSection(topVisible.target.id);
+          }
+        }
+      },
+      {
+        rootMargin: "-15% 0px -45% 0px",
+        threshold: [0.1, 0.4],
+      }
+    );
 
-    const scheduleUpdate = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(updateActiveSection);
-    };
+    sections.forEach((section) => observer.observe(section));
 
-    updateActiveSection();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-    };
+    return () => observer.disconnect();
   }, [stage]);
 
   const chooseDestination = (destination: DestinationKey) => {
@@ -633,10 +665,20 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
     setStage("home");
   };
 
-  const navigate = (id: string) => {
+  const navigate = useCallback((id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveSection(id);
-  };
+  }, []);
+
+  const handleExplore = useCallback((key: ServiceKey) => {
+    setActiveModal(key);
+  }, []);
+
+  const handleReturnToGateway = useCallback(() => {
+    setStage("selection");
+    setIsIntroMounted(false);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   return (
     <div className="mobile-performance-root min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
@@ -659,7 +701,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
             particleCount={110}
             noiseIntensity={0.0026}
             particleSize={{ min: 0.5, max: 1.4 }}
-            className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent"
+            className="pointer-events-none fixed inset-0 z-0 h-screen bg-transparent opacity-85 dark:bg-transparent block"
           />
         )}
         <motion.div
@@ -669,10 +711,14 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           animate={{ opacity: 1 }}
           transition={{ duration: 0.75, ease }}
         >
-          <Sidebar active={activeSection} onNavigate={navigate} />
-          <CinematicHero />
+          <MemoizedSidebar
+            active={activeSection}
+            onNavigate={navigate}
+            onReturnToGateway={handleReturnToGateway}
+          />
+          <MemoizedHero />
           <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
-            <ImpactMetricsBar />
+            <MemoizedMetricsBar />
 
             <div id="services" className="scroll-mt-28 py-8 sm:py-12">
               <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
@@ -680,20 +726,21 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                 <h2 className="mt-2 text-2xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
               <div className="mt-8 grid grid-cols-1">
-                <ServiceCard service={services.websites} index={0} onExplore={setActiveModal} />
-                <ServiceCard service={services.apps} index={1} onExplore={setActiveModal} />
-                <ServiceCard service={services.ai} index={2} onExplore={setActiveModal} />
-                <ServiceCard service={services.creative} index={3} onExplore={setActiveModal} />
+                <MemoizedServiceCard service={services.websites} index={0} onExplore={handleExplore} />
+                <MemoizedServiceCard service={services.apps} index={1} onExplore={handleExplore} />
+                <MemoizedServiceCard service={services.ai} index={2} onExplore={handleExplore} />
+                <MemoizedServiceCard service={services.creative} index={3} onExplore={handleExplore} />
               </div>
             </div>
 
             <div className="[content-visibility:auto] [contain-intrinsic-size:1px_550px]">
-              <TechStackRadar />
+              <MemoizedTechStackRadar />
             </div>
 
             <motion.section data-cursor-card id="contact" className="relative my-12 scroll-mt-24 overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:rounded-[30px] sm:p-8 md:p-10 [content-visibility:auto] [contain-intrinsic-size:1px_650px]" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
               <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
+
               <div className="relative grid items-center gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
                 <div className="max-w-3xl">
                   <div className="flex items-center gap-2.5">

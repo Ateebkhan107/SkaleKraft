@@ -86,12 +86,19 @@ export default function Navbar() {
   const handleLogoClick = (e: React.MouseEvent) => {
     if (isHome) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.dispatchEvent(new CustomEvent("skalekraft:open-landing"));
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
   };
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {
     if (isHome) {
+      if (href === "/") {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent("skalekraft:open-landing"));
+        window.scrollTo({ top: 0, behavior: "instant" });
+        return;
+      }
       if (href === "/work") {
         const el = document.getElementById("work");
         if (el) {

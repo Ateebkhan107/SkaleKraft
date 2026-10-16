@@ -105,8 +105,8 @@ export function FluidParticlesBackground({
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.innerWidth < 768;
-    const shouldAnimate = !reducedMotion && !isMobile;
-    const effectiveCount = reducedMotion ? 20 : isMobile ? 22 : Math.min(particleCount, 450);
+    const shouldAnimate = !reducedMotion;
+    const effectiveCount = reducedMotion ? 20 : isMobile ? 36 : Math.min(particleCount, 200);
 
     const resolveDarkMode = () =>
       theme === "dark" || (theme === "auto" && (document.documentElement.classList.contains("dark") || window.matchMedia("(prefers-color-scheme: dark)").matches));

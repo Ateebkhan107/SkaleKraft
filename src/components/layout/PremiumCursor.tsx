@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const sectionColors = {
   websites: "#D8A25A",
@@ -10,11 +10,7 @@ const sectionColors = {
 };
 
 type CursorMode = "default" | "button" | "card" | "image" | "text";
-type CursorState = {
-  mode: CursorMode;
-  color: string;
-  visible: boolean;
-};
+
 
 const defaultColor = "rgba(255,255,255,0.76)";
 
@@ -37,6 +33,8 @@ function getMode(target: Element | null): CursorMode {
   return "default";
 }
 
+const getSize = (mode: CursorMode) => (mode === "button" ? 42 : mode === "image" ? 36 : mode === "card" ? 30 : mode === "text" ? 18 : 24);
+
 export default function PremiumCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -45,7 +43,6 @@ export default function PremiumCursor() {
   const ring = useRef({ x: 0, y: 0 });
   const hoveredImage = useRef<HTMLElement | null>(null);
   const modeRef = useRef<CursorMode>("default");
-  const [state, setState] = useState<CursorState>({ mode: "default", color: defaultColor, visible: false });
 
   useEffect(() => {
     const canUseCursor = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -54,6 +51,8 @@ export default function PremiumCursor() {
 
     let frame = 0;
     let mounted = true;
+    let lastButton: HTMLElement | null = null;
+    let lastButtonRect: DOMRect | null = null;
 
     document.documentElement.classList.add("premium-cursor-enabled");
     pointer.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -69,10 +68,18 @@ export default function PremiumCursor() {
       const nextMode = getMode(target);
       const nextColor = getSectionColor(target);
       modeRef.current = nextMode;
-      setState((current) => {
-        if (current.mode === nextMode && current.color === nextColor && current.visible) return current;
-        return { mode: nextMode, color: nextColor, visible: true };
-      });
+      const size = getSize(nextMode);
+
+      if (ringRef.current) {
+        ringRef.current.style.borderColor = nextColor;
+        ringRef.current.style.color = nextColor;
+        ringRef.current.style.width = `${size}px`;
+        ringRef.current.style.height = `${size}px`;
+        ringRef.current.style.opacity = "1";
+      }
+      if (dotRef.current) {
+        dotRef.current.style.opacity = "1";
+      }
 
       const nextImage = target?.closest("[data-cursor-image], img, picture") as HTMLElement | null;
       if (hoveredImage.current !== nextImage) {
@@ -96,9 +103,15 @@ export default function PremiumCursor() {
       let y = event.clientY;
 
       if (mode === "button" && button) {
-        const rect = button.getBoundingClientRect();
-        x = lerp(x, rect.left + rect.width / 2, 0.16);
-        y = lerp(y, rect.top + rect.height / 2, 0.16);
+        if (button !== lastButton || !lastButtonRect) {
+          lastButton = button;
+          lastButtonRect = button.getBoundingClientRect();
+        }
+        x = lerp(x, lastButtonRect.left + lastButtonRect.width / 2, 0.16);
+        y = lerp(y, lastButtonRect.top + lastButtonRect.height / 2, 0.16);
+      } else {
+        lastButton = null;
+        lastButtonRect = null;
       }
 
       pointer.current = { x, y };
@@ -107,9 +120,12 @@ export default function PremiumCursor() {
     };
 
     const onPointerLeave = () => {
-      setState((current) => ({ ...current, visible: false }));
+      if (ringRef.current) ringRef.current.style.opacity = "0";
+      if (dotRef.current) dotRef.current.style.opacity = "0";
       resetInteractiveElement(hoveredImage.current);
       hoveredImage.current = null;
+      lastButton = null;
+      lastButtonRect = null;
     };
 
     const animate = () => {
@@ -122,10 +138,10 @@ export default function PremiumCursor() {
         Math.abs(dot.current.y - pointer.current.y) +
         Math.abs(ring.current.x - dot.current.x) +
         Math.abs(ring.current.y - dot.current.y);
-      dot.current.x = lerp(dot.current.x, pointer.current.x, mode === "text" ? 0.48 : 0.36);
-      dot.current.y = lerp(dot.current.y, pointer.current.y, mode === "text" ? 0.48 : 0.36);
-      ring.current.x = lerp(ring.current.x, dot.current.x, mode === "text" ? 0.34 : 0.18);
-      ring.current.y = lerp(ring.current.y, dot.current.y, mode === "text" ? 0.34 : 0.18);
+      dot.current.x = lerp(dot.current.x, pointer.current.x, mode === "text" ? 0.9 : 0.78);
+      dot.current.y = lerp(dot.current.y, pointer.current.y, mode === "text" ? 0.9 : 0.78);
+      ring.current.x = lerp(ring.current.x, dot.current.x, mode === "text" ? 0.6 : 0.42);
+      ring.current.y = lerp(ring.current.y, dot.current.y, mode === "text" ? 0.6 : 0.42);
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${dot.current.x}px, ${dot.current.y}px, 0) translate(-50%, -50%)`;
@@ -134,7 +150,7 @@ export default function PremiumCursor() {
         ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
       }
 
-      if (movement > 0.15) frame = window.requestAnimationFrame(animate);
+      if (movement > 0.08) frame = window.requestAnimationFrame(animate);
     };
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
@@ -151,22 +167,20 @@ export default function PremiumCursor() {
     };
   }, []);
 
-  const size = state.mode === "button" ? 42 : state.mode === "image" ? 36 : state.mode === "card" ? 30 : state.mode === "text" ? 18 : 24;
-
   return (
     <>
       <div
         ref={ringRef}
         className="premium-cursor-ring"
         style={{
-          borderColor: state.color,
-          color: state.color,
-          height: size,
-          opacity: state.visible ? 1 : 0,
-          width: size,
+          borderColor: defaultColor,
+          color: defaultColor,
+          height: 24,
+          opacity: 0,
+          width: 24,
         }}
       />
-      <div ref={dotRef} className="premium-cursor-dot" style={{ opacity: state.visible ? 1 : 0 }} />
+      <div ref={dotRef} className="premium-cursor-dot" style={{ opacity: 0 }} />
     </>
   );
 }

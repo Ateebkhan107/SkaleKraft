@@ -10,9 +10,10 @@ export function ServiceVisual({ serviceKey, compact = false }: { serviceKey: Ser
   const inView = useInView(ref, { amount: 0.28, margin: "-120px" });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const color = accent[serviceKey];
+  const isMobile = useIsMobile();
 
   const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (compact) return;
+    if (compact || isMobile) return;
     const rect = event.currentTarget.getBoundingClientRect();
     setTilt({
       x: ((event.clientY - rect.top) / rect.height - 0.5) * -7,
@@ -47,6 +48,17 @@ export function ServiceVisual({ serviceKey, compact = false }: { serviceKey: Ser
   );
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 function WebsiteShowcase({ active, compact }: { active: boolean; compact?: boolean }) {
   return <HeroSoftwareVisual embedded={true} active={active} compact={compact} />;
 }
@@ -57,7 +69,7 @@ const phoneScreens = [
   { title: "Travel", metric: "12", color: "#38BDF8", items: ["Trips", "Hotels", "Routes"] },
 ];
 
-function PhoneMock({ index, side, active }: { index: number; side: "left" | "center" | "right"; active: boolean }) {
+function PhoneMock({ index, side, active, loopRepeat }: { index: number; side: "left" | "center" | "right"; active: boolean; loopRepeat: number }) {
   const screen = phoneScreens[index % phoneScreens.length];
   const scale = side === "center" ? 1 : 0.78;
   const blur = side === "center" ? "" : "blur-[1px] opacity-55";
@@ -67,7 +79,7 @@ function PhoneMock({ index, side, active }: { index: number; side: "left" | "cen
     <motion.div
       className={`relative h-[300px] w-[148px] shrink-0 rounded-[34px] border border-white/15 bg-[#050505] p-2 shadow-[0_30px_90px_rgba(0,0,0,.45)] ${blur} ${visibility}`}
       animate={active ? { y: side === "center" ? [0, -12, 0] : [10, 0, 10], rotate: side === "left" ? [-8, -5, -8] : side === "right" ? [8, 5, 8] : [-2, 2, -2], scale } : { scale }}
-      transition={{ duration: 6, repeat: active ? Infinity : 0, ease: "easeInOut" }}
+      transition={{ duration: 6, repeat: active ? loopRepeat : 0, ease: "easeInOut" }}
     >
       <div className="absolute left-1/2 top-3 h-5 w-16 -translate-x-1/2 rounded-full bg-black" />
       <div className="h-full overflow-hidden rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,#111,#050505)] p-4">
@@ -82,7 +94,7 @@ function PhoneMock({ index, side, active }: { index: number; side: "left" | "cen
             <p className="text-[10px] text-white/52">Today</p>
             <p className="mt-1 text-3xl font-semibold text-white">{screen.metric}</p>
             <svg viewBox="0 0 120 40" className="mt-3 h-10 w-full">
-              <motion.path d="M4 32 C 24 10, 32 36, 48 18 S 78 8, 92 22 S 110 16, 118 6" fill="none" stroke={screen.color} strokeWidth="4" strokeLinecap="round" initial={{ pathLength: 0 }} animate={active ? { pathLength: 1 } : { pathLength: 0.4 }} transition={{ duration: 2.4, repeat: active ? Infinity : 0, repeatType: "reverse" }} />
+              <motion.path d="M4 32 C 24 10, 32 36, 48 18 S 78 8, 92 22 S 110 16, 118 6" fill="none" stroke={screen.color} strokeWidth="4" strokeLinecap="round" initial={{ pathLength: 0 }} animate={active ? { pathLength: 1 } : { pathLength: 0.4 }} transition={{ duration: 2.4, repeat: active ? loopRepeat : 0, repeatType: "reverse" }} />
             </svg>
           </div>
           <div className="mt-4 space-y-2">
@@ -112,9 +124,9 @@ function AppShowcase({ active, compact }: { active: boolean; compact?: boolean }
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_65%,rgba(139,92,246,.22),transparent_38%)]" />
       <div className={`relative flex items-center gap-2 sm:gap-4 ${compact ? "scale-[0.68] sm:scale-[0.78] lg:scale-[0.86] origin-center" : ""}`}>
-        <PhoneMock index={screen + 2} side="left" active={active} />
-        <PhoneMock index={screen} side="center" active={active} />
-        <PhoneMock index={screen + 1} side="right" active={active} />
+        <PhoneMock index={screen + 2} side="left" active={active} loopRepeat={Infinity} />
+        <PhoneMock index={screen} side="center" active={active} loopRepeat={Infinity} />
+        <PhoneMock index={screen + 1} side="right" active={active} loopRepeat={Infinity} />
       </div>
     </div>
   );
@@ -169,6 +181,7 @@ function AIShowcase({ active, compact }: { active: boolean; compact?: boolean })
 }
 
 function CreativeShowcase({ active, compact }: { active: boolean; compact?: boolean }) {
+  const loopRepeat = Infinity;
   const clips = [
     { label: "Intro", width: "22%", color: "#F97316" },
     { label: "Scene", width: "34%", color: "#8B5CF6" },
@@ -189,7 +202,7 @@ function CreativeShowcase({ active, compact }: { active: boolean; compact?: bool
           <div className="grid flex-1 gap-2.5 p-3 lg:grid-cols-[1fr_150px]">
             <div className="flex flex-col gap-2.5">
               <div className="relative flex-1 overflow-hidden rounded-xl border border-white/10 bg-[linear-gradient(135deg,#151515,#050505)] min-h-[90px]">
-                <motion.div className="absolute inset-4 rounded-[20px] border border-orange-300/14 bg-orange-500/10" initial={{ opacity: 0.45 }} animate={active ? { scale: [1, 1.04, 1], opacity: [0.45, 0.75, 0.45] } : { scale: 1, opacity: 0.45 }} transition={{ duration: 4.5, repeat: active ? Infinity : 0 }} />
+                <motion.div className="absolute inset-4 rounded-[20px] border border-orange-300/14 bg-orange-500/10" initial={{ opacity: 0.45 }} animate={active ? { scale: [1, 1.04, 1], opacity: [0.45, 0.75, 0.45] } : { scale: 1, opacity: 0.45 }} transition={{ duration: 4.5, repeat: active ? loopRepeat : 0 }} />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs text-white/78 backdrop-blur">Preview 4K</div>
                 </div>
@@ -202,7 +215,7 @@ function CreativeShowcase({ active, compact }: { active: boolean; compact?: bool
                       <span className="w-8 text-[9px] text-white/34">{track}</span>
                       <div className="flex h-5 flex-1 gap-1.5 overflow-hidden rounded-md bg-black/20 p-0.5">
                         {clips.map((clip, index) => (
-                          <motion.span key={`${clip.label}-${track}`} className="flex items-center rounded px-1.5 text-[9px] text-white/80" style={{ width: clip.width, backgroundColor: `${clip.color}${trackIndex === 2 ? "55" : "77"}` }} initial={{ opacity: 0.82 }} animate={active && index === 1 ? { opacity: [0.65, 1, 0.65] } : { opacity: 0.82 }} transition={{ duration: 2.2, repeat: active ? Infinity : 0 }}>
+                          <motion.span key={`${clip.label}-${track}`} className="flex items-center rounded px-1.5 text-[9px] text-white/80" style={{ width: clip.width, backgroundColor: `${clip.color}${trackIndex === 2 ? "55" : "77"}` }} initial={{ opacity: 0.82 }} animate={active && index === 1 ? { opacity: [0.65, 1, 0.65] } : { opacity: 0.82 }} transition={{ duration: 2.2, repeat: active ? loopRepeat : 0 }}>
                             {clip.label}
                           </motion.span>
                         ))}
@@ -210,14 +223,14 @@ function CreativeShowcase({ active, compact }: { active: boolean; compact?: bool
                     </div>
                   ))}
                 </div>
-                <motion.div className="absolute bottom-2 top-4 w-px bg-[#F97316] shadow-[0_0_14px_rgba(249,115,22,.6)]" animate={active ? { left: ["14%", "86%", "14%"] } : { left: "14%" }} transition={{ duration: 5.5, repeat: active ? Infinity : 0, ease: "easeInOut" }} />
+                <motion.div className="absolute bottom-2 top-4 w-px bg-[#F97316] shadow-[0_0_14px_rgba(249,115,22,.6)]" animate={active ? { left: ["14%", "86%", "14%"] } : { left: "14%" }} transition={{ duration: 5.5, repeat: active ? loopRepeat : 0, ease: "easeInOut" }} />
               </div>
             </div>
             <div className="hidden rounded-xl border border-white/10 bg-white/[0.035] p-2.5 lg:block">
               {["Scale", "Opacity", "Contrast", "Warmth"].map((item, index) => (
                 <div key={item} className="mb-3.5">
                   <div className="mb-1 flex justify-between text-[9px] text-white/42"><span>{item}</span><span>{[92, 78, 64, 48][index]}%</span></div>
-                  <div className="h-1 rounded-full bg-white/10"><motion.div className="h-full rounded-full bg-[#F97316]" animate={active ? { width: [`${[42, 58, 36, 72][index]}%`, `${[86, 72, 64, 52][index]}%`] } : { width: "50%" }} transition={{ duration: 3, delay: index * 0.25, repeat: active ? Infinity : 0, repeatType: "reverse" }} /></div>
+                  <div className="h-1 rounded-full bg-white/10"><motion.div className="h-full rounded-full bg-[#F97316]" animate={active ? { width: [`${[42, 58, 36, 72][index]}%`, `${[86, 72, 64, 52][index]}%`] } : { width: "50%" }} transition={{ duration: 3, delay: index * 0.25, repeat: active ? loopRepeat : 0, repeatType: "reverse" }} /></div>
                 </div>
               ))}
             </div>

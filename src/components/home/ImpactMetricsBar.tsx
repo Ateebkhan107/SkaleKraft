@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Rocket, ShieldCheck, Clock3, Activity, CheckCircle2, type LucideIcon } from "lucide-react";
 
@@ -82,39 +82,44 @@ function AnimatedCounter({
   gradientClass: string;
   inView: boolean;
 }) {
-  const [count, setCount] = useState(0);
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || hasAnimated.current || !spanRef.current) return;
+    hasAnimated.current = true;
 
-    let start = 0;
-    const duration = 1600; // ms
-    const steps = 40;
-    const increment = value / steps;
-    const stepTime = duration / steps;
+    const span = spanRef.current;
+    const duration = 1200;
+    const startTime = performance.now();
 
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= value) {
-        setCount(value);
-        clearInterval(timer);
+    let animationFrame = 0;
+    const update = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = value * ease;
+      const formatted = decimals > 0 ? current.toFixed(decimals) : Math.floor(current);
+      span.textContent = `${prefix}${formatted}${suffix}`;
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(update);
       } else {
-        setCount(start);
+        const finalFormatted = decimals > 0 ? value.toFixed(decimals) : Math.floor(value);
+        span.textContent = `${prefix}${finalFormatted}${suffix}`;
       }
-    }, stepTime);
+    };
 
-    return () => clearInterval(timer);
-  }, [inView, value]);
-
-  const formatted = decimals > 0 ? count.toFixed(decimals) : Math.floor(count);
+    animationFrame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [inView, value, prefix, suffix, decimals]);
 
   return (
     <span
+      ref={spanRef}
       className={`bg-gradient-to-br ${gradientClass} bg-clip-text font-mono text-[2rem] font-semibold leading-none tracking-[-0.065em] text-transparent sm:text-[2.7rem] lg:text-[3.15rem]`}
     >
-      {prefix}
-      {formatted}
-      {suffix}
+      {prefix}0{suffix}
     </span>
   );
 }

@@ -40,8 +40,8 @@ export default function InteractiveCanvas3D({
     let isDocumentVisible = document.visibilityState === "visible";
     const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const lowPower = isMobile || (navigator.hardwareConcurrency ?? 8) <= 4;
-    const pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, lowPower ? 1.15 : 1.4);
+    const lowPower = isMobile || reducedMotion;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
 
     // --- Scene, Camera, Renderer ---
     const scene = new THREE.Scene();
@@ -53,9 +53,9 @@ export default function InteractiveCanvas3D({
     camera.position.set(0, 0, 4.2);
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: !lowPower,
+      antialias: true,
       alpha: true,
-      powerPreference: lowPower ? "low-power" : "high-performance",
+      powerPreference: "high-performance",
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(pixelRatio);
@@ -384,6 +384,10 @@ export default function InteractiveCanvas3D({
       if (isDragging) {
         const deltaX = clientX - previousPointerX;
         const deltaY = clientY - previousPointerY;
+        if (isMobile && Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 8) {
+          isDragging = false;
+          return;
+        }
         targetRotationY += deltaX * 0.01;
         targetRotationX += deltaY * 0.01;
         previousPointerX = clientX;
@@ -418,8 +422,8 @@ export default function InteractiveCanvas3D({
 
     // --- Visibility & Render Loop ---
     const clock = new THREE.Clock();
-    const targetFrameInterval = isMobile ? 1000 / 24 : lowPower ? 1000 / 30 : 1000 / 60;
-    const animationStep = targetFrameInterval / (1000 / 60);
+    const targetFrameInterval = 1000 / 60;
+    const animationStep = 1;
     let lastFrameTime = 0;
 
     const animate = (timestamp: number) => {
@@ -552,7 +556,7 @@ export default function InteractiveCanvas3D({
       ref={containerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative cursor-grab active:cursor-grabbing select-none ${className}`}
+      className={`relative cursor-grab active:cursor-grabbing select-none [touch-action:pan-y] ${className}`}
       aria-label={`Interactive 3D ${type} visual`}
     >
       {/* Subtle touch indicator pill on hover */}
