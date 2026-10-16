@@ -133,9 +133,10 @@ export default function ImpactMetricsBar() {
       <div className="pointer-events-none absolute left-1/2 top-[62%] h-48 w-[82%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(128,89,72,0.12),transparent_70%)] blur-3xl" />
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: 22 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.18 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative mb-3.5 sm:mb-5 flex items-end justify-between gap-6"
       >
         <div>
@@ -154,11 +155,12 @@ export default function ImpactMetricsBar() {
           return (
             <motion.div
               key={m.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{
-                duration: 0.45,
-                delay: idx * 0.04,
+                duration: 0.55,
+                delay: idx * 0.08,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className={`group relative flex min-h-[135px] flex-col overflow-hidden p-3 transition duration-500 hover:bg-white/[0.025] sm:min-h-[225px] sm:p-5 ${idx === 0 ? "border-b border-r border-white/[0.08] lg:border-b-0" : ""} ${idx === 1 ? "border-b border-white/[0.08] lg:border-b-0 lg:border-r" : ""} ${idx === 2 ? "border-r border-white/[0.08]" : ""}`}

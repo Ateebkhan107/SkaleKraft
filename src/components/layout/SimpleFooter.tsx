@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
 import { FaInstagram } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 const links = [
   { label: "Services", href: "/services" },
@@ -14,7 +17,13 @@ const links = [
 
 export default function SimpleFooter() {
   return (
-    <footer className="relative z-10 border-t border-white/10 bg-[#0B0B0B] px-5 py-10 text-white md:px-10">
+    <motion.footer
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="relative z-10 border-t border-white/10 bg-[#0B0B0B] px-5 py-10 text-white md:px-10"
+    >
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <Link href="/" className="inline-flex items-center gap-3 text-lg font-semibold tracking-[0.24em] text-white">
@@ -64,6 +73,6 @@ export default function SimpleFooter() {
       <div className="mx-auto mt-8 max-w-[1500px] text-xs text-white/35">
         © {new Date().getFullYear()} SkaleKraft. All rights reserved.
       </div>
-    </footer>
+    </motion.footer>
   );
 }

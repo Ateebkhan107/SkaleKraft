@@ -169,8 +169,9 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
                 <motion.div
                   key={destination.key}
                   initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.18 + idx * 0.07, ease }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.55, delay: idx * 0.06, ease }}
                   whileHover={{ y: -6 }}
                   className={`h-full ${isEverything ? "col-span-2 sm:col-span-2 lg:col-span-1" : ""}`}
                 >
@@ -848,13 +849,19 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
             <MemoizedMetricsBar />
 
             <div id="services" className="scroll-mt-28 py-5 sm:py-12">
-              <motion.div className="mb-3 sm:mb-4 max-w-3xl" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
+              <motion.div
+                className="mb-3 sm:mb-4 max-w-3xl"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <p className="text-[10px] uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
                 <h2 className="mt-1 text-xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
 
               {/* Mobile Services Vertical List: Compact, sleek rows instead of a bulky grid */}
-              <div className="mt-4 flex flex-col gap-2 md:hidden">
+              <div className="mt-4 flex flex-col gap-2.5 md:hidden">
                 {[services.websites, services.apps, services.ai, services.creative].map((srv, idx) => {
                   const SrvIcon = srv.icon;
                   const color = accent[srv.key];
@@ -862,10 +869,10 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                     <motion.div
                       key={srv.key}
                       id={srv.key}
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={{ opacity: 0, y: 22 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-20px" }}
-                      transition={{ duration: 0.35, delay: idx * 0.04 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.55, delay: idx * 0.07, ease: [0.16, 1, 0.3, 1] }}
                       onClick={() => handleExplore(srv.key)}
                       className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-[14px] border border-white/[0.08] bg-[linear-gradient(135deg,rgba(255,255,255,0.035),rgba(14,14,14,0.92)_50%,rgba(8,8,8,0.98))] p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.3)] active:scale-[0.985] transition-all cursor-pointer hover:border-white/20"
                     >
@@ -932,16 +939,22 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
               data-cursor-card
               id="contact"
               className="relative my-6 scroll-mt-24 overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-3.5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:my-12 sm:rounded-[30px] sm:p-8 md:p-10"
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.05 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, amount: 0.08 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
               <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
 
               <div className="relative grid items-center gap-4 sm:gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
-                <div className="max-w-3xl">
+                <motion.div
+                  className="max-w-3xl"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <div className="flex items-center gap-2 sm:gap-2.5">
                     <span className="flex h-5 w-5 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10"><Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#c19a88]" /></span>
                     <p className="text-[9.5px] uppercase tracking-[0.24em] text-[#c19a88] sm:text-xs">Start a conversation</p>
@@ -953,14 +966,14 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 sm:px-3 sm:py-2"><CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#c19a88]" />No-obligation discovery</span>
                   </div>
                   <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-3.5 sm:mt-8" />
-                </div>
+                </motion.div>
 
                 <motion.div
                   className="relative overflow-hidden rounded-[14px] border border-white/10 bg-black/25 p-3 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:rounded-[24px] sm:p-6"
-                  initial={{ opacity: 0, x: 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
+                  initial={{ opacity: 0, y: 22 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
                 >
                   <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 sm:pb-4">
                     <div>

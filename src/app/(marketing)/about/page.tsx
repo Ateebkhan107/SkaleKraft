@@ -179,7 +179,7 @@ export default function AboutPage() {
         <motion.section 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}
           className="mt-10 sm:mt-14 grid gap-4 sm:gap-6 md:grid-cols-[.55fr_1fr] md:gap-14"
         >
@@ -194,7 +194,7 @@ export default function AboutPage() {
         </motion.section>
 
         {/* Mission & Vision */}
-        <motion.section className="mt-10 sm:mt-16 grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerGroup}>
+        <motion.section className="mt-10 sm:mt-16 grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={staggerGroup}>
           <motion.div 
             variants={springReveal}
             className="group relative overflow-hidden rounded-2xl sm:rounded-[28px] border border-white/10 bg-[#101010] p-3.5 sm:p-7 md:p-8"
@@ -226,7 +226,7 @@ export default function AboutPage() {
             <p className="text-[11px] sm:text-sm uppercase tracking-[0.26em] text-[#c19a88]">Culture</p>
             <h2 className="mt-2 sm:mt-4 text-xl sm:text-4xl font-medium">Our Core Values</h2>
           </div>
-          <motion.div className="mt-5 sm:mt-7 grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={staggerGroup}>
+          <motion.div className="mt-5 sm:mt-7 grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={staggerGroup}>
             {values.map((value) => {
               const Icon = value.icon;
               return (

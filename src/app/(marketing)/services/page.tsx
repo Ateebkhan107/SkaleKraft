@@ -240,10 +240,10 @@ export default function ServicesPage() {
                 <motion.div
                   key={service.id}
                   id={service.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.4 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.55, delay: (serviceIndex % 2) * 0.08, ease: [0.16, 1, 0.3, 1] }}
                   className="group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(16,16,16,0.95)_45%,rgba(10,10,10,0.98)_100%)] p-4 shadow-[0_16px_50px_rgba(0,0,0,0.45)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:rounded-[24px] sm:p-5 lg:p-6"
                 >
                   {/* Top specular 3D light reflection highlight */}

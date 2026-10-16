@@ -252,7 +252,13 @@ export default function TechStackRadar() {
 
       <div className="relative mx-auto max-w-[1360px] px-5 md:px-8">
         <div className="grid items-end gap-8 lg:grid-cols-[1fr_auto]">
-          <div className="max-w-3xl">
+          <motion.div
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="flex items-center gap-3">
               <span className="h-px w-9 bg-[#c19a88]/75" />
               <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-[#c19a88]/85 sm:text-xs">Engineering architecture</p>
@@ -264,7 +270,7 @@ export default function TechStackRadar() {
             <p className="mt-4 max-w-2xl text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
               A modern, production-proven stack selected for speed, reliability, security, and maintainability—not trend cycles.
             </p>
-          </div>
+          </motion.div>
 
           <div className="hidden grid-cols-3 overflow-hidden rounded-2xl border border-white/[0.08] bg-black/20 backdrop-blur-xl lg:grid">
             {[["08", "Core systems"], ["99.99%", "Uptime ready"], ["24/7", "Observable"]].map(([value, label], index) => (
@@ -276,7 +282,13 @@ export default function TechStackRadar() {
           </div>
         </div>
 
-        <div className="mt-9 flex flex-wrap items-center gap-1 rounded-2xl border border-white/[0.08] bg-black/25 p-1.5 backdrop-blur-xl sm:inline-flex">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-9 flex flex-wrap items-center gap-1 rounded-2xl border border-white/[0.08] bg-black/25 p-1.5 backdrop-blur-xl sm:inline-flex"
+        >
           {categories.map((cat) => (
             <button
               key={cat.value}
@@ -289,7 +301,7 @@ export default function TechStackRadar() {
               <span className="relative z-10">{cat.label}</span>
             </button>
           ))}
-        </div>
+        </motion.div>
 
         <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
@@ -300,10 +312,11 @@ export default function TechStackRadar() {
               return (
                 <motion.div
                   key={tech.id}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.12 }}
                   exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.48, delay: (index % 4) * 0.07, ease: [0.16, 1, 0.3, 1] }}
                   className={`group relative flex min-h-[210px] flex-col justify-between overflow-hidden rounded-[16px] border border-white/[0.085] bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(13,13,13,0.94)_40%,rgba(7,7,7,0.98))] p-2.5 shadow-[0_16px_45px_rgba(0,0,0,0.26)] transition duration-500 hover:-translate-y-1 hover:border-[#c19a88]/30 hover:shadow-[0_30px_90px_rgba(0,0,0,0.46)] sm:min-h-[270px] sm:rounded-[22px] sm:p-5 sm:shadow-[0_22px_65px_rgba(0,0,0,0.28)] ${isFeatured ? "lg:col-span-2" : ""}`}
                 >
                   <div
@@ -364,7 +377,13 @@ export default function TechStackRadar() {
           </AnimatePresence>
         </div>
 
-        <div className="mt-4 grid grid-cols-3 overflow-hidden rounded-xl border border-white/[0.08] bg-black/20 text-[8px] leading-3 text-white/48 backdrop-blur-xl sm:mt-6 sm:rounded-2xl sm:text-xs">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 grid grid-cols-3 overflow-hidden rounded-xl border border-white/[0.08] bg-black/20 text-[8px] leading-3 text-white/48 backdrop-blur-xl sm:mt-6 sm:rounded-2xl sm:text-xs"
+        >
           <span className="flex items-center justify-center gap-1.5 px-2 py-3 text-center font-mono text-emerald-400/85 sm:justify-start sm:gap-2 sm:px-4 sm:py-3.5">
             <span className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-50" /><span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" /></span>
             99.99% production uptime
@@ -377,7 +396,7 @@ export default function TechStackRadar() {
             <ShieldCheck className="h-3.5 w-3.5 text-[#c19a88]" />
             100% source-code ownership
           </span>
-        </div>
+        </motion.div>
       </div>
 
       {/* Quick Peek Tech Detail Modal */}
