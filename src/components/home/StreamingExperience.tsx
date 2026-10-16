@@ -177,7 +177,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
                   <Link
                     href={`/?dest=${destination.key}`}
                     onClick={(e) => { e.preventDefault(); onChoose(destination.key); }}
-                    className={`group relative flex h-full overflow-hidden rounded-[16px] sm:rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-2.5 sm:p-6 backdrop-blur-2xl shadow-[0_16px_50px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)] ${
+                    className={`group relative flex h-full overflow-hidden rounded-[16px] sm:rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-2.5 sm:p-6 backdrop-blur-none sm:backdrop-blur-2xl shadow-[0_16px_50px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)] ${
                       isEverything
                         ? "min-h-[50px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-center sm:justify-between"
                         : "min-h-[120px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-between"
@@ -393,7 +393,7 @@ function CinematicHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, ease }}
         >
-          <motion.div className="flex max-w-3xl flex-col justify-center" style={{ y: copyY, opacity: heroOpacity }}>
+          <motion.div className="flex max-w-3xl flex-col justify-center" style={isMobile ? undefined : { y: copyY, opacity: heroOpacity }}>
             <div className="inline-flex items-center gap-2.5">
               <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88] shadow-[0_0_10px_rgba(193,154,136,0.9)] animate-pulse" />
               <p className="text-xs sm:text-sm uppercase tracking-[0.28em] font-medium text-[#c19a88]">
@@ -651,8 +651,16 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   const [animateHome, setAnimateHome] = useState(false);
   const [isIntroMounted, setIsIntroMounted] = useState(!initialDest);
   const [isIntroLeaving, setIsIntroLeaving] = useState(false);
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobileScreen(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleGoHome = () => {
@@ -704,9 +712,10 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
     if (hasSeenIntro) {
       window.history.scrollRestoration = "auto";
-      setStage("home");
-      setIsIntroMounted(false);
-      return;
+      const skipTimer = window.setTimeout(() => {
+        setIsIntroMounted(false);
+      }, 0);
+      return () => window.clearTimeout(skipTimer);
     }
 
     window.history.scrollRestoration = "manual";
@@ -799,7 +808,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   }, []);
 
   return (
-    <div className="mobile-performance-root min-h-screen overflow-hidden bg-[#0B0B0B] text-white" suppressHydrationWarning>
+    <div className="mobile-performance-root min-h-screen overflow-x-clip bg-[#0B0B0B] text-white" suppressHydrationWarning>
       {stage === "selection" && (
         <>
           {isIntroMounted && <IntroSplash isLeaving={isIntroLeaving} />}
@@ -839,7 +848,7 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
             <MemoizedMetricsBar />
 
             <div id="services" className="scroll-mt-28 py-5 sm:py-12">
-              <motion.div className="mb-3 sm:mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
+              <motion.div className="mb-3 sm:mb-4 max-w-3xl" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
                 <p className="text-[10px] uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
                 <h2 className="mt-1 text-xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
@@ -904,20 +913,30 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                 })}
               </div>
 
-              {/* Desktop Alternating Detailed Showcase */}
-              <div className="mt-8 hidden md:grid md:grid-cols-1">
-                <MemoizedServiceCard service={services.websites} index={0} onExplore={handleExplore} />
-                <MemoizedServiceCard service={services.apps} index={1} onExplore={handleExplore} />
-                <MemoizedServiceCard service={services.ai} index={2} onExplore={handleExplore} />
-                <MemoizedServiceCard service={services.creative} index={3} onExplore={handleExplore} />
-              </div>
+              {/* Desktop Alternating Detailed Showcase (unmounted on mobile to eliminate DOM/CPU strain) */}
+              {!isMobileScreen && (
+                <div className="mt-8 hidden md:grid md:grid-cols-1">
+                  <MemoizedServiceCard service={services.websites} index={0} onExplore={handleExplore} />
+                  <MemoizedServiceCard service={services.apps} index={1} onExplore={handleExplore} />
+                  <MemoizedServiceCard service={services.ai} index={2} onExplore={handleExplore} />
+                  <MemoizedServiceCard service={services.creative} index={3} onExplore={handleExplore} />
+                </div>
+              )}
             </div>
 
-            <div className="[content-visibility:auto] [contain-intrinsic-size:1px_550px]">
+            <div>
               <MemoizedTechStackRadar />
             </div>
 
-            <motion.section data-cursor-card id="contact" className="relative my-6 scroll-mt-24 overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-3.5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:my-12 sm:rounded-[30px] sm:p-8 md:p-10 [content-visibility:auto] [contain-intrinsic-size:1px_500px]" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
+            <motion.section
+              data-cursor-card
+              id="contact"
+              className="relative my-6 scroll-mt-24 overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-3.5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:my-12 sm:rounded-[30px] sm:p-8 md:p-10"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.05 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
               <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
 
@@ -936,7 +955,13 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                   <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-3.5 sm:mt-8" />
                 </div>
 
-                <motion.div className="relative overflow-hidden rounded-[14px] border border-white/10 bg-black/25 p-3 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:rounded-[24px] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>
+                <motion.div
+                  className="relative overflow-hidden rounded-[14px] border border-white/10 bg-black/25 p-3 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:rounded-[24px] sm:p-6"
+                  initial={{ opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
+                >
                   <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 sm:pb-4">
                     <div>
                       <p className="text-[8px] uppercase tracking-[0.2em] text-white/32 sm:text-[10px]">A simple path</p>

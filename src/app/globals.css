@@ -90,9 +90,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    overflow-x: clip;
+  }
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
     -webkit-overflow-scrolling: touch;
+    overflow-x: clip;
   }
   @media (min-width: 768px) {
     html {
@@ -101,6 +105,15 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
+  }
+}
+
+@media (max-width: 767px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-performance-root {
+    contain: paint;
   }
 }
 
@@ -270,6 +283,16 @@
   }
   canvas {
     touch-action: pan-y !important;
+  }
+  /* Clamping extreme blur radii on mobile GPUs prevents fill-rate choke during momentum touch scrolling */
+  .blur-3xl {
+    filter: blur(28px) !important;
+  }
+  .blur-2xl {
+    filter: blur(20px) !important;
+  }
+  .blur-xl {
+    filter: blur(14px) !important;
   }
 }
 

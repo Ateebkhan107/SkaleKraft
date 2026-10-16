@@ -126,7 +126,7 @@ function AnimatedCounter({
 
 export default function ImpactMetricsBar() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-60px" });
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
 
   return (
     <section ref={containerRef} className="relative py-4 sm:py-11">
@@ -135,7 +135,7 @@ export default function ImpactMetricsBar() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative mb-3.5 sm:mb-5 flex items-end justify-between gap-6"
       >
         <div>
@@ -154,17 +154,17 @@ export default function ImpactMetricsBar() {
           return (
             <motion.div
               key={m.id}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
-                duration: 0.55,
-                delay: idx * 0.08,
+                duration: 0.45,
+                delay: idx * 0.04,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className={`group relative flex min-h-[135px] flex-col overflow-hidden p-3 transition duration-500 hover:bg-white/[0.025] sm:min-h-[225px] sm:p-5 ${idx === 0 ? "border-b border-r border-white/[0.08] lg:border-b-0" : ""} ${idx === 1 ? "border-b border-white/[0.08] lg:border-b-0 lg:border-r" : ""} ${idx === 2 ? "border-r border-white/[0.08]" : ""}`}
             >
               <div
-                className={`pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full blur-[48px] transition duration-700 group-hover:opacity-20 ${idx === 1 ? "opacity-[0.13]" : "opacity-[0.06]"}`}
+                className={`pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full blur-[20px] transition duration-700 group-hover:opacity-20 sm:-right-12 sm:-top-12 sm:h-40 sm:w-40 sm:blur-[48px] ${idx === 1 ? "opacity-[0.13]" : "opacity-[0.06]"}`}
                 style={{ backgroundColor: m.accentColor }}
               />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.025),transparent_34%)]" />

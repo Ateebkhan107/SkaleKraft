@@ -106,7 +106,7 @@ export function FluidParticlesBackground({
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.innerWidth < 768;
     const shouldAnimate = !reducedMotion;
-    const effectiveCount = reducedMotion ? 20 : isMobile ? 36 : Math.min(particleCount, 200);
+    const effectiveCount = reducedMotion ? 20 : isMobile ? 18 : Math.min(particleCount, 200);
 
     const resolveDarkMode = () =>
       theme === "dark" || (theme === "auto" && (document.documentElement.classList.contains("dark") || window.matchMedia("(prefers-color-scheme: dark)").matches));
@@ -129,10 +129,32 @@ export function FluidParticlesBackground({
       }));
     };
 
-    const targetInterval = isMobile ? 1000 / 28 : 1000 / 36;
+    const targetInterval = isMobile ? 1000 / 24 : 1000 / 36;
+
+    let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout | number = 0;
+    const handleScroll = () => {
+      if (!isMobile) return;
+      isScrolling = true;
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+      if (typeof window !== "undefined") {
+        window.clearTimeout(scrollTimeout);
+        scrollTimeout = window.setTimeout(() => {
+          isScrolling = false;
+          if (isTabVisible && shouldAnimate && !animationFrame) {
+            lastDrawTime = performance.now();
+            animationFrame = window.requestAnimationFrame(draw);
+          }
+        }, 100);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     const draw = (timestamp: number) => {
-      if (!isTabVisible) return;
+      if (!isTabVisible || (isMobile && isScrolling)) return;
 
       const elapsed = timestamp - lastDrawTime;
       if (elapsed < targetInterval && lastDrawTime !== 0) {
@@ -188,6 +210,8 @@ export function FluidParticlesBackground({
     animationFrame = window.requestAnimationFrame(draw);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (typeof window !== "undefined") window.clearTimeout(scrollTimeout);
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.cancelAnimationFrame(animationFrame);

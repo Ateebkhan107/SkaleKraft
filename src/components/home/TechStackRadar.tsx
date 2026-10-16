@@ -291,7 +291,7 @@ export default function TechStackRadar() {
           ))}
         </div>
 
-        <motion.div layout className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {filteredTech.map((tech, index) => {
               const Icon = tech.icon;
@@ -300,15 +300,14 @@ export default function TechStackRadar() {
               return (
                 <motion.div
                   key={tech.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   className={`group relative flex min-h-[210px] flex-col justify-between overflow-hidden rounded-[16px] border border-white/[0.085] bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(13,13,13,0.94)_40%,rgba(7,7,7,0.98))] p-2.5 shadow-[0_16px_45px_rgba(0,0,0,0.26)] transition duration-500 hover:-translate-y-1 hover:border-[#c19a88]/30 hover:shadow-[0_30px_90px_rgba(0,0,0,0.46)] sm:min-h-[270px] sm:rounded-[22px] sm:p-5 sm:shadow-[0_22px_65px_rgba(0,0,0,0.28)] ${isFeatured ? "lg:col-span-2" : ""}`}
                 >
                   <div
-                    className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full opacity-[0.07] blur-[55px] transition duration-700 group-hover:opacity-20"
+                    className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-[0.08] blur-[22px] transition duration-700 group-hover:opacity-20 sm:-right-16 sm:-top-16 sm:h-52 sm:w-52 sm:blur-[55px]"
                     style={{ backgroundColor: tech.accentColor }}
                   />
                   <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -363,7 +362,7 @@ export default function TechStackRadar() {
               );
             })}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
         <div className="mt-4 grid grid-cols-3 overflow-hidden rounded-xl border border-white/[0.08] bg-black/20 text-[8px] leading-3 text-white/48 backdrop-blur-xl sm:mt-6 sm:rounded-2xl sm:text-xs">
           <span className="flex items-center justify-center gap-1.5 px-2 py-3 text-center font-mono text-emerald-400/85 sm:justify-start sm:gap-2 sm:px-4 sm:py-3.5">
