@@ -104,6 +104,11 @@
   }
 }
 
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 650px;
+}
+
 @media (hover: hover) and (pointer: fine) {
   html.premium-cursor-enabled,
   html.premium-cursor-enabled * {

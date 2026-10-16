@@ -62,8 +62,15 @@ export default function Navbar() {
   });
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
@@ -230,25 +237,25 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <motion.div
             key="mobile-nav-drawer"
-            className="fixed inset-0 z-[70] flex flex-col overflow-y-auto bg-[#0B0B0B]/95 p-5 backdrop-blur-2xl md:hidden"
-            initial={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[70] flex flex-col overflow-y-auto bg-[#0B0B0B]/95 p-4 sm:p-5 backdrop-blur-2xl md:hidden"
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
           >
             {/* Drawer Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <Link
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 text-base font-semibold tracking-[0.2em] text-white"
+                className="flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-white"
               >
                 <Image
                   src="/images/skalekraft-logo.png"
                   alt="SkaleKraft logo"
-                  width={34}
-                  height={34}
-                  className="h-8 w-8 rounded-lg object-cover"
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 rounded-lg object-cover"
                 />
                 <span>
                   SKALE<span className="text-[#c19a88]">KRAFT</span>
@@ -256,17 +263,17 @@ export default function Navbar() {
               </Link>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:border-white/20 hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:border-white/20 hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             {/* Primary Navigation Links */}
-            <div className="mt-6 flex flex-col gap-2">
-              <p className="px-2 text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">
+            <div className="mt-4 flex flex-col gap-1">
+              <p className="px-2 text-[9px] font-medium uppercase tracking-[0.24em] text-white/40">
                 Navigation
               </p>
               {mobileMainLinks.map((link) => {
@@ -280,13 +287,13 @@ export default function Navbar() {
                       setIsMobileMenuOpen(false);
                       handleNavClick(e, link.href);
                     }}
-                    className={`flex h-12 items-center gap-3.5 rounded-xl px-3.5 text-base font-medium transition duration-200 ${
+                    className={`flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-xs font-medium transition duration-200 ${
                       active
                         ? "bg-white/[0.08] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
                         : "text-white/60 hover:bg-white/[0.04] hover:text-white"
                     }`}
                   >
-                    <Icon className="h-5 w-5 text-[#c19a88]" />
+                    <Icon className="h-4 w-4 text-[#c19a88]" />
                     <span>{link.label}</span>
                   </Link>
                 );
@@ -294,8 +301,8 @@ export default function Navbar() {
             </div>
 
             {/* Service Capabilities Quick Jump */}
-            <div className="mt-6 flex flex-col gap-2">
-              <p className="px-2 text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">
+            <div className="mt-4 flex flex-col gap-0.5">
+              <p className="px-2 text-[9px] font-medium uppercase tracking-[0.24em] text-white/40">
                 Capabilities
               </p>
               {serviceSectionShortcuts.map((item) => {
@@ -305,9 +312,9 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={(e) => handleShortcutClick(e, item.href)}
-                    className="flex h-11 items-center gap-3 rounded-xl px-3.5 text-sm text-white/55 transition duration-200 hover:bg-white/[0.04] hover:text-white"
+                    className="flex h-8 items-center gap-2.5 rounded-lg px-2.5 text-xs text-white/55 transition duration-200 hover:bg-white/[0.04] hover:text-white"
                   >
-                    <Icon className="h-4 w-4 shrink-0" style={{ color: item.color }} />
+                    <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: item.color }} />
                     <span className="truncate">{item.label}</span>
                   </Link>
                 );
@@ -315,16 +322,16 @@ export default function Navbar() {
             </div>
 
             {/* CTA Section */}
-            <div className="mt-8 flex flex-col gap-3 pb-8 pt-4 border-t border-white/10">
+            <div className="mt-4 flex flex-col gap-2 pb-4 pt-3 border-t border-white/10">
               <GlassmorphismCta
                 href="/contact"
                 label="Start a Project"
                 avatarSrc="/images/skalekraft-logo.png"
                 avatarAlt="SkaleKraft logo"
                 shimmerColor="rgba(193,154,136,0.85)"
-                className="w-full justify-center"
+                className="w-full justify-center !h-9 !text-xs"
               />
-              <p className="text-center text-xs text-white/40 pt-2">
+              <p className="text-center text-[11px] text-white/40 pt-1">
                 Engineering modern digital systems for ambitious brands.
               </p>
             </div>

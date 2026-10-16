@@ -26,9 +26,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  compress: true,
+  reactStrictMode: true,
   allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.1.36"],
   images: {
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       {
         protocol: "https",
@@ -42,7 +45,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ["lucide-react", "framer-motion", "three"],
+    optimizePackageImports: ["lucide-react", "framer-motion", "three", "react-icons"],
   },
   async redirects() {
     return [

@@ -24,7 +24,12 @@ const LEG_FADE_MASK =
 const HERO_ROBOT_ZOOM = 0.68;
 
 function Hero3DRobotVisualInner() {
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean | null>(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+    }
+    return null;
+  });
   const cleanupEyesRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {

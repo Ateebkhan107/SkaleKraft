@@ -27,9 +27,12 @@ import {
   ease,
 } from "./data";
 import { Hero3DRobotVisual } from "./Hero3DRobotVisual";
-import TechStackRadar from "./TechStackRadar";
 import ImpactMetricsBar from "./ImpactMetricsBar";
 import { Spotlight } from "@/components/ui/spotlight";
+
+const TechStackRadar = dynamic(() => import("./TechStackRadar"), {
+  ssr: true,
+});
 
 const ServiceModal = dynamic(() => import("./ServiceModal"), {
   ssr: false,
@@ -121,7 +124,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
         <ArrowRight className="h-3.5 w-3.5 text-white/45 transition-transform duration-300 group-hover/skip:translate-x-0.5 group-hover/skip:text-white" />
       </Link>
 
-      <div className="relative flex min-h-full w-full flex-col items-center justify-center px-4 py-20 sm:px-6 sm:py-24 lg:py-20">
+      <div className="relative flex min-h-full w-full flex-col items-center justify-center px-3.5 py-14 sm:px-6 sm:py-24 lg:py-20">
         <div className="relative mx-auto w-full max-w-7xl text-center">
           {/* Studio Selection Pill */}
           <motion.div
@@ -154,8 +157,8 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
             Choose your craft to enter a curated studio experience, or explore the entire engineering collective.
           </motion.p>
 
-          {/* Luxury 5-Card Grid */}
-          <div className="mt-10 grid min-w-0 grid-cols-1 gap-3.5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4 lg:gap-4 text-left">
+          {/* Luxury 5-Card Responsive Grid: 2-col on mobile, 5-col on desktop */}
+          <div className="mt-6 grid min-w-0 grid-cols-2 gap-2.5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4 lg:gap-4 text-left">
             {destinations.map((destination, idx) => {
               const Icon = destination.icon;
               const colorInfo = accent[destination.key] || accent.websites;
@@ -168,12 +171,12 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.18 + idx * 0.07, ease }}
                   whileHover={{ y: -6 }}
-                  className={`h-full ${isEverything ? "sm:col-span-2 lg:col-span-1" : ""}`}
+                  className={`h-full ${isEverything ? "col-span-2 sm:col-span-2 lg:col-span-1" : ""}`}
                 >
                   <Link
                     href={`/?dest=${destination.key}`}
                     onClick={(e) => { e.preventDefault(); onChoose(destination.key); }}
-                    className="group relative flex h-full min-h-[280px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-between overflow-hidden rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-5 sm:p-6 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)]"
+                    className="group relative flex h-full min-h-[175px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-between overflow-hidden rounded-[20px] sm:rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-3.5 sm:p-6 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)]"
                     style={{ "--service": colorInfo.rgb } as React.CSSProperties}
                   >
                     {/* Top Specular Edge Catch */}
@@ -185,43 +188,43 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
                     {/* Card Top Row: Medallion + Index / Indicator */}
                     <div className="relative z-10 flex items-center justify-between">
                       <div
-                        className="flex h-12 w-12 sm:h-13 sm:w-13 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_rgba(0,0,0,0.35)] transition-all duration-500 group-hover:scale-105 group-hover:border-white/25"
+                        className="flex h-10 w-10 sm:h-13 sm:w-13 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_rgba(0,0,0,0.35)] transition-all duration-500 group-hover:scale-105 group-hover:border-white/25"
                         style={{
                           boxShadow: `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 24px rgba(${colorInfo.rgb}, 0.15)`,
                         }}
                       >
-                        <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
+                        <Icon className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:scale-110" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white/50 transition-colors">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <span className="font-mono text-[9px] sm:text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white/50 transition-colors">
                           {destination.number}
                         </span>
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-white/8 bg-white/[0.02] text-white/30 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white">
-                          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        <div className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-white/8 bg-white/[0.02] text-white/30 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white">
+                          <ArrowUpRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </div>
                       </div>
                     </div>
 
                     {/* Card Body: Tagline, Title, Subtitle */}
-                    <div className="relative z-10 my-auto py-3">
-                      <p className="font-mono text-[10px] tracking-widest uppercase text-[#c19a88]/90 group-hover:text-[#c19a88] transition-colors">
+                    <div className="relative z-10 my-auto py-2 sm:py-3">
+                      <p className="font-mono text-[8px] sm:text-[10px] tracking-widest uppercase text-[#c19a88]/90 group-hover:text-[#c19a88] transition-colors">
                         {destination.tagline}
                       </p>
-                      <h2 className="mt-1 text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors">
+                      <h2 className="mt-0.5 text-sm sm:text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors">
                         {destination.label}
                       </h2>
-                      <p className="mt-2 text-xs leading-relaxed text-white/52 group-hover:text-white/70 transition-colors line-clamp-3">
+                      <p className="mt-1 text-[11px] leading-snug text-white/52 group-hover:text-white/70 transition-colors line-clamp-2 sm:text-xs sm:leading-relaxed sm:mt-2 sm:line-clamp-3">
                         {destination.subtitle}
                       </p>
                     </div>
 
                     {/* Card Footer: Capabilities Tags */}
-                    <div className="relative z-10 pt-3 border-t border-white/6 flex flex-wrap gap-1.5">
+                    <div className="relative z-10 pt-2 sm:pt-3 border-t border-white/6 hidden xs:flex flex-wrap gap-1 sm:gap-1.5">
                       {destination.badges.map((badge) => (
                         <span
                           key={badge}
-                          className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-2 py-0.5 text-[10px] font-medium text-white/45 group-hover:border-white/12 group-hover:text-white/70 transition-colors"
+                          className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-1.5 py-0.5 text-[9px] sm:text-[10px] font-medium text-white/45 group-hover:border-white/12 group-hover:text-white/70 transition-colors"
                         >
                           {badge}
                         </span>
@@ -725,7 +728,68 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                 <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
                 <h2 className="mt-2 text-2xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
-              <div className="mt-8 grid grid-cols-1">
+              {/* Mobile Services Grid: 2x2 grid drastically reducing scroll on mobile */}
+              <div className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3.5 md:hidden">
+                {[services.websites, services.apps, services.ai, services.creative].map((srv, idx) => {
+                  const SrvIcon = srv.icon;
+                  const color = accent[srv.key];
+                  return (
+                    <motion.div
+                      key={srv.key}
+                      id={srv.key}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ duration: 0.45, delay: idx * 0.05 }}
+                      onClick={() => handleExplore(srv.key)}
+                      className="group relative flex min-h-[175px] flex-col justify-between overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.04),rgba(14,14,14,0.92)_45%,rgba(8,8,8,0.98))] p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-transform cursor-pointer"
+                    >
+                      <div
+                        className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-[0.14] blur-[36px]"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      <div className="relative z-10 flex items-center justify-between">
+                        <span
+                          className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_6px_16px_rgba(0,0,0,0.3)]"
+                          style={{ color: color.hex }}
+                        >
+                          <SrvIcon className="h-4 w-4" strokeWidth={1.8} />
+                        </span>
+                        <span className="font-mono text-[9px] uppercase tracking-wider text-white/35">
+                          0{idx + 1}
+                        </span>
+                      </div>
+
+                      <div className="relative z-10 my-2">
+                        <p className="text-[9px] uppercase tracking-[0.2em] font-medium" style={{ color: color.hex }}>
+                          {srv.label}
+                        </p>
+                        <h3 className="mt-1 text-sm font-medium leading-snug text-white line-clamp-2">
+                          {srv.title}
+                        </h3>
+                        <p className="mt-1 text-[10px] leading-relaxed text-white/50 line-clamp-2">
+                          {srv.short}
+                        </p>
+                      </div>
+
+                      <div className="relative z-10 flex items-center justify-between border-t border-white/[0.08] pt-2">
+                        <span className="text-[9px] font-medium text-white/70">
+                          Explore
+                        </span>
+                        <div
+                          className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.03]"
+                          style={{ color: color.hex }}
+                        >
+                          <ArrowRight className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop Alternating Detailed Showcase */}
+              <div className="mt-8 hidden md:grid md:grid-cols-1">
                 <MemoizedServiceCard service={services.websites} index={0} onExplore={handleExplore} />
                 <MemoizedServiceCard service={services.apps} index={1} onExplore={handleExplore} />
                 <MemoizedServiceCard service={services.ai} index={2} onExplore={handleExplore} />

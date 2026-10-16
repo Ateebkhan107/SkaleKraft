@@ -298,29 +298,29 @@ export default function ServicesPage() {
                     <div className="mt-5 border-t border-white/[0.07] pt-4">
                       <p className="text-[10px] uppercase tracking-[0.2em] text-white/35">What we deliver</p>
                     </div>
-                    <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <ul className="mt-3 grid grid-cols-2 gap-2">
                       {service.features.map((feature, fIndex) => (
                         <li
                           key={fIndex}
-                          className="flex items-start gap-2 text-xs leading-5 text-white/62 transition duration-200 group-hover:text-white/80"
+                          className="flex items-start gap-1.5 text-[11px] leading-4 text-white/62 transition duration-200 group-hover:text-white/80 sm:gap-2 sm:text-xs sm:leading-5"
                         >
                           <CheckCircle2
-                            className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                            className="mt-0.5 h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0"
                             style={{ color: service.accentColor }}
                           />
-                          <span>{feature}</span>
+                          <span className="line-clamp-2">{feature}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
-                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-3.5">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-white/35">Ideal for</p>
-                        <p className="mt-1.5 text-xs leading-5 text-white/58">{service.idealFor}</p>
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-2.5 sm:p-3.5">
+                        <p className="text-[9px] uppercase tracking-[0.18em] text-white/35 sm:text-[10px]">Ideal for</p>
+                        <p className="mt-1 text-[11px] leading-relaxed text-white/58 sm:text-xs line-clamp-3">{service.idealFor}</p>
                       </div>
-                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-3.5">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-white/35">The outcome</p>
-                        <p className="mt-1.5 text-xs leading-5 text-white/58">{service.outcome}</p>
+                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-2.5 sm:p-3.5">
+                        <p className="text-[9px] uppercase tracking-[0.18em] text-white/35 sm:text-[10px]">The outcome</p>
+                        <p className="mt-1 text-[11px] leading-relaxed text-white/58 sm:text-xs line-clamp-3">{service.outcome}</p>
                       </div>
                     </div>
                   </div>

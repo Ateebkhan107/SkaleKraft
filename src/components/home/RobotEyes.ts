@@ -84,8 +84,9 @@ export function attachRobotEyes(
   const eyeXOffset = 11.4;
 
   // 2. Create offscreen canvas for dynamic procedural eye rendering
-  const canvasWidth = 512;
-  const canvasHeight = 320;
+  // 320x200 provides crisp 4x retina density for the 70px 3D eye while reducing texture upload overhead by 60%
+  const canvasWidth = 320;
+  const canvasHeight = 200;
 
   function createEyeCanvas(): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } {
     const canvas = document.createElement('canvas');
@@ -211,9 +212,11 @@ export function attachRobotEyes(
     ctx.save();
     ctx.translate(cx, cy);
 
+    // Uniform scale factor matching canvas resolution
+    const scale = w / 512;
     // Organic vertical scale for blinking
     const clampedBlink = Math.max(0.04, blinkScale);
-    ctx.scale(1, clampedBlink);
+    ctx.scale(scale, scale * clampedBlink);
 
     // --- A. Outer Visor Aperture / Frame ---
     const frameW = 380;
@@ -371,12 +374,25 @@ export function attachRobotEyes(
   let isBlinking = false;
   let isDoubleBlink = false;
 
-  // 9. Animation Loop
+  // 9. Animation Loop with Smart Throttling
   let animId = 0;
   let isRunning = true;
+  let lastDrawnGazeX = 999;
+  let lastDrawnGazeY = 999;
+  let lastDrawnBlink = 999;
+  let lastPulseTime = 0;
 
   const renderFrame = (now: number) => {
     if (!isRunning) return;
+
+    // Pause when app is stopped (offscreen in viewport) or browser tab is hidden
+    const isAppStopped = Boolean((anyApp as { isStopped?: boolean }).isStopped);
+    const isTabHidden = typeof document !== 'undefined' && document.visibilityState !== 'visible';
+
+    if (isAppStopped || isTabHidden) {
+      animId = requestAnimationFrame(renderFrame);
+      return;
+    }
 
     // Smooth pupil interpolation (lerp)
     currentGazeX += (targetGazeX - currentGazeX) * 0.085;
@@ -419,26 +435,36 @@ export function attachRobotEyes(
     // Breathing luminescent pulse
     const pulseFactor = enablePulse ? 0.9 + 0.14 * Math.sin(now * 0.0024) : 1.0;
 
-    // Modulate PointLight and halo opacities
+    // Modulate PointLight and halo opacities (instantaneous 3D parameters)
     visorPointLight.intensity = 1.1 * pulseFactor * (currentBlinkScale > 0.4 ? 1 : 0.4);
     haloMaterial.opacity = 0.42 * pulseFactor * currentBlinkScale;
 
-    // Draw left and right eyes
-    // Pupils converge slightly towards center
-    const leftPupilX = currentGazeX * 0.92 + 0.08;
-    const rightPupilX = currentGazeX * 0.92 - 0.08;
+    // Smart dirty check: only redraw canvas and upload texture to GPU when state actually changes
+    const gazeDelta = Math.abs(currentGazeX - lastDrawnGazeX) + Math.abs(currentGazeY - lastDrawnGazeY);
+    const blinkDelta = Math.abs(currentBlinkScale - lastDrawnBlink);
+    const pulseElapsed = now - lastPulseTime;
 
-    drawEye(leftEyeData.ctx, leftPupilX, currentGazeY, currentBlinkScale, pulseFactor, true);
-    drawEye(rightEyeData.ctx, rightPupilX, currentGazeY, currentBlinkScale, pulseFactor, false);
+    if (gazeDelta > 0.002 || blinkDelta > 0.008 || isBlinking || pulseElapsed > 40) {
+      lastDrawnGazeX = currentGazeX;
+      lastDrawnGazeY = currentGazeY;
+      lastDrawnBlink = currentBlinkScale;
+      lastPulseTime = now;
 
-    leftTexture.needsUpdate = true;
-    rightTexture.needsUpdate = true;
+      const leftPupilX = currentGazeX * 0.92 + 0.08;
+      const rightPupilX = currentGazeX * 0.92 - 0.08;
 
-    // Trigger Spline auto-mode render loop
-    if (typeof anyApp._requestRenderAutoMode === 'function') {
-      anyApp._requestRenderAutoMode();
-    } else if (typeof anyApp.requestRender === 'function') {
-      anyApp.requestRender();
+      drawEye(leftEyeData.ctx, leftPupilX, currentGazeY, currentBlinkScale, pulseFactor, true);
+      drawEye(rightEyeData.ctx, rightPupilX, currentGazeY, currentBlinkScale, pulseFactor, false);
+
+      leftTexture.needsUpdate = true;
+      rightTexture.needsUpdate = true;
+
+      // Trigger Spline auto-mode render loop only when state changed
+      if (typeof anyApp._requestRenderAutoMode === 'function') {
+        anyApp._requestRenderAutoMode();
+      } else if (typeof anyApp.requestRender === 'function') {
+        anyApp.requestRender();
+      }
     }
 
     animId = requestAnimationFrame(renderFrame);
