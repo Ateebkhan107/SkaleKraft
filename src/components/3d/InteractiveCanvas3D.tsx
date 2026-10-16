@@ -52,11 +52,17 @@ export default function InteractiveCanvas3D({
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 4.2);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      powerPreference: "high-performance",
-    });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
+    } catch (e) {
+      console.warn("WebGL context creation failed:", e);
+      return;
+    }
     renderer.setSize(width, height);
     renderer.setPixelRatio(pixelRatio);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -534,9 +540,9 @@ export default function InteractiveCanvas3D({
 
       geometriesToDispose.forEach((g) => g.dispose());
       materialsToDispose.forEach((m) => m.dispose());
-      renderer.dispose();
+      renderer?.dispose();
 
-      if (renderer.domElement && container.contains(renderer.domElement)) {
+      if (renderer?.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };

@@ -151,20 +151,20 @@ export default function Navbar() {
             : "border-b border-white/10 bg-[#0B0B0B]/90 md:bg-[#0B0B0B]/72 md:backdrop-blur-xl"
         }`}
       >
-        <div className="mx-auto flex min-h-20 max-w-[1500px] items-center justify-between gap-4 px-5 py-4 md:px-10">
+        <div className="mx-auto flex min-h-16 md:min-h-20 max-w-[1500px] items-center justify-between gap-3 px-4 py-3 md:px-10 md:py-4">
           {/* Logo */}
           <Link
             href="/"
             onClick={handleLogoClick}
             aria-label="SkaleKraft Home"
-            className="flex items-center gap-3 text-lg font-semibold tracking-[0.24em] text-white shrink-0"
+            className="flex items-center gap-2.5 sm:gap-3 text-base sm:text-lg font-semibold tracking-[0.22em] sm:tracking-[0.24em] text-white shrink-0"
           >
             <Image
               src="/images/skalekraft-logo.png"
               alt="SkaleKraft logo"
               width={42}
               height={42}
-              className="h-10 w-10 rounded-xl object-cover shadow-[0_0_22px_rgba(128,89,72,0.18)]"
+              className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl object-cover shadow-[0_0_22px_rgba(128,89,72,0.18)]"
               priority
             />
             <span>
@@ -222,11 +222,11 @@ export default function Navbar() {
             {/* Mobile Menu Trigger */}
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/80 transition hover:border-white/25 hover:text-white md:hidden"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-white/10 text-white/80 transition hover:border-white/25 hover:text-white md:hidden"
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open menu"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
         </div>

@@ -89,7 +89,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="fixed inset-0 z-[70] min-h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#0B0B0B] pb-[calc(env(safe-area-inset-bottom)+2.5rem)] text-white select-none"
+      className="fixed inset-0 z-[70] flex flex-col min-h-[100dvh] h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#0B0B0B] text-white select-none pb-[calc(env(safe-area-inset-bottom)+2rem)]"
       style={{ position: "fixed", inset: 0, zIndex: 70, backgroundColor: "#0B0B0B" }}
     >
       {/* Dynamic Cursor Light Spotlight */}
@@ -103,37 +103,38 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_50%_at_50%_-12%,rgba(193,154,136,0.22),transparent_70%),radial-gradient(ellipse_60%_40%_at_50%_115%,rgba(128,89,72,0.12),transparent_70%)]" />
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.025)_1px,transparent_0)] [background-size:32px_32px] opacity-70" />
 
-
-      {/* Top Left Studio Logo Badge */}
-      <div className="absolute left-6 top-6 z-20 flex items-center gap-2.5">
-        <div className="relative h-7 w-7 overflow-hidden rounded-xl border border-white/12 bg-white/[0.04] p-1 shadow-[0_4px_12px_rgba(0,0,0,0.4)] backdrop-blur-md">
-          <Image src="/images/skalekraft-logo.png" alt="SkaleKraft" fill className="object-contain" priority />
+      {/* Top Sticky Header Bar (In-flow to prevent any overlapping with hero/cards) */}
+      <header className="sticky top-0 z-30 flex w-full shrink-0 items-center justify-between border-b border-white/[0.08] bg-[#0B0B0B]/85 px-4 py-3 backdrop-blur-2xl sm:px-8 sm:py-4">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="relative h-6 w-6 sm:h-7 sm:w-7 overflow-hidden rounded-lg sm:rounded-xl border border-white/12 bg-white/[0.04] p-0.5 sm:p-1 shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+            <Image src="/images/skalekraft-logo.png" alt="SkaleKraft" fill className="object-contain" priority />
+          </div>
+          <span className="font-mono text-[11px] sm:text-xs tracking-[0.22em] text-white/75 uppercase">
+            SKALE<span className="text-[#c19a88]">KRAFT</span>
+          </span>
         </div>
-        <span className="font-mono text-xs tracking-[0.22em] text-white/75 uppercase">
-          SKALE<span className="text-[#c19a88]">KRAFT</span>
-        </span>
-      </div>
 
-      {/* Top Right Executive Skip Pill */}
-      <Link
-        href="/?dest=everything"
-        onClick={(e) => { e.preventDefault(); onSkip(); }}
-        className="group/skip absolute right-6 top-6 z-20 flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 text-xs font-medium tracking-wider text-white/70 uppercase backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_0_20px_rgba(193,154,136,0.25)]"
-      >
-        <span>Skip Intro</span>
-        <ArrowRight className="h-3.5 w-3.5 text-white/45 transition-transform duration-300 group-hover/skip:translate-x-0.5 group-hover/skip:text-white" />
-      </Link>
+        {/* Top Right Executive Skip Pill */}
+        <Link
+          href="/?dest=everything"
+          onClick={(e) => { e.preventDefault(); onSkip(); }}
+          className="group/skip flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-medium tracking-wider text-white/70 uppercase backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_0_20px_rgba(193,154,136,0.25)]"
+        >
+          <span>Skip Intro</span>
+          <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white/45 transition-transform duration-300 group-hover/skip:translate-x-0.5 group-hover/skip:text-white" />
+        </Link>
+      </header>
 
-      <div className="relative flex min-h-full w-full flex-col items-center justify-center px-3.5 py-14 sm:px-6 sm:py-24 lg:py-20">
+      <div className="relative flex min-h-0 w-full flex-1 flex-col items-center justify-center px-3 pt-3 pb-8 sm:px-6 sm:py-20 lg:py-16">
         <div className="relative mx-auto w-full max-w-7xl text-center">
           {/* Studio Selection Pill */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3.5 py-1 text-[11px] font-medium tracking-[0.24em] text-[#c19a88] uppercase backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-0.5 text-[9px] sm:px-3.5 sm:py-1 sm:text-[11px] font-medium tracking-[0.2em] sm:tracking-[0.24em] text-[#c19a88] uppercase backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
           >
-            <Sparkles className="h-3 w-3 text-[#c19a88]" />
+            <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-[#c19a88]" />
             <span>Interactive Studio Gateway</span>
           </motion.div>
 
@@ -142,7 +143,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.08, ease }}
-            className="mt-4 text-3xl font-medium tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-b from-white via-white/95 to-white/70 bg-clip-text text-transparent"
+            className="mt-2 text-xl font-medium tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl bg-gradient-to-b from-white via-white/95 to-white/70 bg-clip-text text-transparent"
           >
             What are we building today?
           </motion.h1>
@@ -152,13 +153,13 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.16, ease }}
-            className="mx-auto mt-3 max-w-xl text-sm text-white/50 sm:text-base leading-relaxed"
+            className="mx-auto mt-1 max-w-xs sm:max-w-xl text-[11px] sm:text-base text-white/50 sm:mt-3 leading-snug sm:leading-relaxed"
           >
             Choose your craft to enter a curated studio experience, or explore the entire engineering collective.
           </motion.p>
 
           {/* Luxury 5-Card Responsive Grid: 2-col on mobile, 5-col on desktop */}
-          <div className="mt-6 grid min-w-0 grid-cols-2 gap-2.5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4 lg:gap-4 text-left">
+          <div className="mt-3.5 grid min-w-0 grid-cols-2 gap-2 sm:mt-12 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4 lg:gap-4 text-left">
             {destinations.map((destination, idx) => {
               const Icon = destination.icon;
               const colorInfo = accent[destination.key] || accent.websites;
@@ -176,7 +177,11 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
                   <Link
                     href={`/?dest=${destination.key}`}
                     onClick={(e) => { e.preventDefault(); onChoose(destination.key); }}
-                    className="group relative flex h-full min-h-[175px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-between overflow-hidden rounded-[20px] sm:rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-3.5 sm:p-6 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)]"
+                    className={`group relative flex h-full overflow-hidden rounded-[16px] sm:rounded-[26px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.05)_0%,rgba(16,16,16,0.85)_40%,rgba(9,9,9,0.98)_100%)] p-2.5 sm:p-6 backdrop-blur-2xl shadow-[0_16px_50px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.09)] transition-all duration-500 hover:border-white/25 hover:shadow-[0_28px_80px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.18)] ${
+                      isEverything
+                        ? "min-h-[50px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-center sm:justify-between"
+                        : "min-h-[120px] sm:min-h-[300px] lg:min-h-[340px] flex-col justify-between"
+                    }`}
                     style={{ "--service": colorInfo.rgb } as React.CSSProperties}
                   >
                     {/* Top Specular Edge Catch */}
@@ -185,51 +190,133 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
                     {/* Ambient Hover Backglow */}
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--service),0.22),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-                    {/* Card Top Row: Medallion + Index / Indicator */}
-                    <div className="relative z-10 flex items-center justify-between">
-                      <div
-                        className="flex h-10 w-10 sm:h-13 sm:w-13 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_rgba(0,0,0,0.35)] transition-all duration-500 group-hover:scale-105 group-hover:border-white/25"
-                        style={{
-                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 24px rgba(${colorInfo.rgb}, 0.15)`,
-                        }}
-                      >
-                        <Icon className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:scale-110" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
-                      </div>
-
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <span className="font-mono text-[9px] sm:text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white/50 transition-colors">
-                          {destination.number}
-                        </span>
-                        <div className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-white/8 bg-white/[0.02] text-white/30 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white">
-                          <ArrowUpRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    {isEverything ? (
+                      <>
+                        {/* Compact Horizontal View for Card 05 on Mobile */}
+                        <div className="relative z-10 flex w-full items-center justify-between sm:hidden py-0.5">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div
+                              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]"
+                              style={{
+                                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 16px rgba(${colorInfo.rgb}, 0.15)`,
+                              }}
+                            >
+                              <Icon className="h-3.5 w-3.5" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
+                            </div>
+                            <div className="min-w-0 text-left">
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-mono text-[8px] tracking-wider text-[#c19a88] uppercase">
+                                  {destination.number}
+                                </span>
+                                <span className="text-xs font-medium tracking-tight text-white">
+                                  {destination.label}
+                                </span>
+                              </div>
+                              <p className="text-[9.5px] text-white/50 truncate">
+                                {destination.subtitle}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/40 group-hover:border-white/30 group-hover:text-white transition-colors">
+                            <ArrowUpRight className="h-2.5 w-2.5" />
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    {/* Card Body: Tagline, Title, Subtitle */}
-                    <div className="relative z-10 my-auto py-2 sm:py-3">
-                      <p className="font-mono text-[8px] sm:text-[10px] tracking-widest uppercase text-[#c19a88]/90 group-hover:text-[#c19a88] transition-colors">
-                        {destination.tagline}
-                      </p>
-                      <h2 className="mt-0.5 text-sm sm:text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors">
-                        {destination.label}
-                      </h2>
-                      <p className="mt-1 text-[11px] leading-snug text-white/52 group-hover:text-white/70 transition-colors line-clamp-2 sm:text-xs sm:leading-relaxed sm:mt-2 sm:line-clamp-3">
-                        {destination.subtitle}
-                      </p>
-                    </div>
+                        {/* Full Vertical View for Card 05 on Desktop/Tablet */}
+                        <div className="relative z-10 hidden sm:flex sm:flex-col sm:justify-between h-full w-full">
+                          <div className="flex items-center justify-between">
+                            <div
+                              className="flex h-13 w-13 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_rgba(0,0,0,0.35)] transition-all duration-500 group-hover:scale-105 group-hover:border-white/25"
+                              style={{
+                                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 24px rgba(${colorInfo.rgb}, 0.15)`,
+                              }}
+                            >
+                              <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
+                            </div>
 
-                    {/* Card Footer: Capabilities Tags */}
-                    <div className="relative z-10 pt-2 sm:pt-3 border-t border-white/6 hidden xs:flex flex-wrap gap-1 sm:gap-1.5">
-                      {destination.badges.map((badge) => (
-                        <span
-                          key={badge}
-                          className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-1.5 py-0.5 text-[9px] sm:text-[10px] font-medium text-white/45 group-hover:border-white/12 group-hover:text-white/70 transition-colors"
-                        >
-                          {badge}
-                        </span>
-                      ))}
-                    </div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white/50 transition-colors">
+                                {destination.number}
+                              </span>
+                              <div className="flex h-7 w-7 items-center justify-center rounded-full border border-white/8 bg-white/[0.02] text-white/30 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white">
+                                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="my-auto py-3">
+                            <p className="font-mono text-[10px] tracking-widest uppercase text-[#c19a88]/90 group-hover:text-[#c19a88] transition-colors">
+                              {destination.tagline}
+                            </p>
+                            <h2 className="mt-0.5 text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors">
+                              {destination.label}
+                            </h2>
+                            <p className="mt-2 text-xs leading-relaxed text-white/52 group-hover:text-white/70 transition-colors line-clamp-3">
+                              {destination.subtitle}
+                            </p>
+                          </div>
+
+                          <div className="pt-3 border-t border-white/6 flex flex-wrap gap-1.5">
+                            {destination.badges.map((badge) => (
+                              <span
+                                key={badge}
+                                className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-1.5 py-0.5 text-[10px] font-medium text-white/45 group-hover:border-white/12 group-hover:text-white/70 transition-colors"
+                              >
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* Standard Card Layout for Cards 01-04 */}
+                        <div className="relative z-10 flex items-center justify-between">
+                          <div
+                            className="flex h-8 w-8 sm:h-13 sm:w-13 items-center justify-center rounded-lg sm:rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_rgba(0,0,0,0.35)] transition-all duration-500 group-hover:scale-105 group-hover:border-white/25"
+                            style={{
+                              boxShadow: `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 24px rgba(${colorInfo.rgb}, 0.15)`,
+                            }}
+                          >
+                            <Icon className="h-3.5 w-3.5 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:scale-110" style={{ color: colorInfo.hex }} strokeWidth={1.75} />
+                          </div>
+
+                          <div className="flex items-center gap-1.5 sm:gap-2">
+                            <span className="font-mono text-[8px] sm:text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white/50 transition-colors">
+                              {destination.number}
+                            </span>
+                            <div className="flex h-5 w-5 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-white/8 bg-white/[0.02] text-white/30 transition-all duration-300 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white">
+                              <ArrowUpRight className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="relative z-10 my-auto py-1 sm:py-3">
+                          <p className="font-mono text-[7px] sm:text-[10px] tracking-widest uppercase text-[#c19a88]/90 group-hover:text-[#c19a88] transition-colors">
+                            {destination.tagline}
+                          </p>
+                          <h2 className="mt-0.5 text-xs sm:text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors">
+                            {destination.label}
+                          </h2>
+                          <p className="mt-0.5 sm:mt-2 text-[9.5px] sm:text-xs leading-snug sm:leading-relaxed text-white/50 sm:text-white/52 group-hover:text-white/70 transition-colors line-clamp-2 sm:line-clamp-3">
+                            {destination.subtitle}
+                          </p>
+                        </div>
+
+                        {/* Card Footer: Badges */}
+                        <div className="relative z-10 pt-2 sm:pt-3 border-t border-white/6 hidden sm:flex flex-wrap gap-1 sm:gap-1.5">
+                          {destination.badges.map((badge) => (
+                            <span
+                              key={badge}
+                              className="inline-flex items-center rounded-md border border-white/6 bg-white/[0.03] px-1.5 py-0.5 text-[9px] sm:text-[10px] font-medium text-white/45 group-hover:border-white/12 group-hover:text-white/70 transition-colors"
+                            >
+                              {badge}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </Link>
                 </motion.div>
               );
@@ -241,7 +328,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-10 sm:mt-12 flex items-center justify-center gap-2 text-xs text-white/35 font-mono"
+            className="mt-5 sm:mt-12 flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-white/35 font-mono"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-[#c19a88] animate-pulse" />
             <span>Select a discipline to dive in · or </span>
@@ -287,7 +374,7 @@ function CinematicHero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-24 sm:px-6 md:px-10 md:pl-56 lg:pb-12 lg:pt-28"
+      className="relative flex min-h-fit items-center overflow-hidden px-4 pb-8 pt-28 sm:px-6 sm:pt-28 md:px-10 md:pl-56 lg:pb-12 lg:pt-32"
       onMouseMove={(event) => {
         if (isMobile || !glowRef.current) return;
         const rect = event.currentTarget.getBoundingClientRect();
@@ -359,7 +446,7 @@ function Sidebar({
 }) {
   return (
     <aside
-      className="group/sidebar fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 overflow-hidden rounded-[24px] border border-white/10 bg-[#0B0B0B]/80 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_2px_rgba(0,0,0,0.5)] backdrop-blur-2xl md:block"
+      className="group/sidebar fixed left-3 top-1/2 z-40 hidden w-44 -translate-y-1/2 max-h-[calc(100dvh-6rem)] overflow-y-auto overflow-x-hidden rounded-[24px] border border-white/10 bg-[#0B0B0B]/80 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_2px_rgba(0,0,0,0.5)] backdrop-blur-2xl md:block [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       aria-label="Homepage sections"
     >
       <Spotlight

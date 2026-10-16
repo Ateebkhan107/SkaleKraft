@@ -50,7 +50,7 @@ export default function JoinPage() {
   };
 
   return (
-    <main className="relative min-h-[calc(100dvh-5rem)] flex flex-col justify-center overflow-x-hidden bg-[#0B0B0B] px-4 pt-24 pb-8 text-white sm:px-6 md:px-10 md:pt-28 lg:pt-28 lg:pb-8">
+    <main className="relative min-h-[calc(100dvh-5rem)] flex flex-col justify-center overflow-x-hidden bg-[#0B0B0B] px-4 pt-28 pb-8 text-white sm:px-6 md:px-10 md:pt-32 lg:pt-32 lg:pb-8">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(128,89,72,.16),transparent_30%),radial-gradient(circle_at_88%_82%,rgba(193,154,136,.06),transparent_28%)]" />
       <FluidParticlesBackground
         theme="dark"

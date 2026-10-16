@@ -232,7 +232,7 @@ export default function ServicesPage() {
 
         {/* Four detailed service pillars */}
         <section>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-2 lg:gap-5">
             {detailedServices.map((service, serviceIndex) => {
               const Icon = service.icon;
 
@@ -244,11 +244,11 @@ export default function ServicesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.4 }}
-                  className="group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(16,16,16,0.95)_45%,rgba(10,10,10,0.98)_100%)] p-5 shadow-[0_16px_50px_rgba(0,0,0,0.45)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:p-6"
+                  className="group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035)_0%,rgba(16,16,16,0.95)_45%,rgba(10,10,10,0.98)_100%)] p-2.5 shadow-[0_16px_50px_rgba(0,0,0,0.45)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:rounded-[24px] sm:p-5 lg:p-6"
                 >
                   {/* Top specular 3D light reflection highlight */}
                   <div
-                    className="pointer-events-none absolute inset-x-0 top-0 h-px rounded-t-[20px] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
+                    className="pointer-events-none absolute inset-x-0 top-0 h-px rounded-t-[18px] opacity-60 transition-opacity duration-500 group-hover:opacity-100 sm:rounded-t-[24px]"
                     style={{
                       background:
                         "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.2) 75%, transparent 100%)",
@@ -263,64 +263,66 @@ export default function ServicesPage() {
 
                   <div>
                     {/* Header: Icon with custom glow & badge */}
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-start justify-between gap-1.5 sm:items-center sm:gap-3">
                       <div
-                        className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-black/60 shadow-[0_4px_16px_rgba(0,0,0,0.4)] transition duration-300 group-hover:scale-105 group-hover:border-white/20"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/60 shadow-[0_4px_16px_rgba(0,0,0,0.4)] transition duration-300 group-hover:scale-105 group-hover:border-white/20 sm:h-11 sm:w-11 sm:rounded-xl"
                         style={{
                           boxShadow: `0 0 20px ${service.accentColor}25`,
                         }}
                       >
-                        <Icon className="h-5.5 w-5.5" style={{ color: service.accentColor }} />
+                        <Icon className="h-4 w-4 sm:h-5.5 sm:w-5.5" style={{ color: service.accentColor }} />
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] tracking-[0.18em] text-white/30">0{serviceIndex + 1}</span>
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/40 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70 backdrop-blur-md">
+                      <div className="flex flex-col items-end gap-0.5 sm:flex-row sm:items-center sm:gap-2">
+                        <span className="font-mono text-[9px] tracking-wider text-white/30 sm:text-[10px] sm:tracking-[0.18em]">0{serviceIndex + 1}</span>
+                        <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-wider text-white/70 backdrop-blur-md sm:gap-1.5 sm:px-2.5 sm:text-[10px]">
                           <span
-                            className="h-1.5 w-1.5 rounded-full"
+                            className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5"
                             style={{
                               backgroundColor: service.accentColor,
                               boxShadow: `0 0 6px ${service.accentColor}`,
                             }}
                           />
-                          {service.badge}
+                          <span className="truncate max-w-[55px] sm:max-w-none">{service.badge}</span>
                         </span>
                       </div>
                     </div>
 
-                    <h2 className="mt-4 text-xl font-medium tracking-tight text-white sm:text-2xl transition duration-200 group-hover:text-white">
+                    <h2 className="mt-2 text-xs font-medium tracking-tight text-white line-clamp-2 transition duration-200 group-hover:text-white sm:mt-4 sm:text-xl sm:line-clamp-none lg:text-2xl">
                       {service.title}
                     </h2>
-                    <p className="mt-2.5 text-sm leading-6 text-white/58">
+                    <p className="mt-1 text-[10px] leading-relaxed text-white/58 line-clamp-2 sm:mt-2.5 sm:text-sm sm:leading-6 sm:line-clamp-none">
                       {service.description}
                     </p>
 
-                    <div className="mt-5 border-t border-white/[0.07] pt-4">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/35">What we deliver</p>
+                    <div className="mt-2.5 border-t border-white/[0.07] pt-2 sm:mt-5 sm:pt-4">
+                      <p className="text-[8px] uppercase tracking-[0.18em] text-white/35 sm:text-[10px] sm:tracking-[0.2em]">What we deliver</p>
                     </div>
-                    <ul className="mt-3 grid grid-cols-2 gap-2">
+                    <ul className="mt-1.5 grid grid-cols-1 gap-1 sm:mt-3 sm:grid-cols-2 sm:gap-2">
                       {service.features.map((feature, fIndex) => (
                         <li
                           key={fIndex}
-                          className="flex items-start gap-1.5 text-[11px] leading-4 text-white/62 transition duration-200 group-hover:text-white/80 sm:gap-2 sm:text-xs sm:leading-5"
+                          className={`items-start gap-1 text-[9px] leading-tight text-white/62 transition duration-200 group-hover:text-white/80 sm:gap-2 sm:text-xs sm:leading-5 ${
+                            fIndex >= 3 ? "hidden sm:flex" : "flex"
+                          }`}
                         >
                           <CheckCircle2
-                            className="mt-0.5 h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0"
+                            className="mt-0.5 h-2.5 w-2.5 shrink-0 sm:h-3.5 sm:w-3.5"
                             style={{ color: service.accentColor }}
                           />
-                          <span className="line-clamp-2">{feature}</span>
+                          <span className="line-clamp-1 sm:line-clamp-2">{feature}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="mt-4 grid grid-cols-2 gap-2">
-                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-2.5 sm:p-3.5">
-                        <p className="text-[9px] uppercase tracking-[0.18em] text-white/35 sm:text-[10px]">Ideal for</p>
-                        <p className="mt-1 text-[11px] leading-relaxed text-white/58 sm:text-xs line-clamp-3">{service.idealFor}</p>
+                    <div className="mt-2 grid grid-cols-1 gap-1.5 sm:mt-4 sm:grid-cols-2 sm:gap-2">
+                      <div className="rounded-lg border border-white/[0.07] bg-black/20 p-1.5 sm:rounded-xl sm:p-3.5">
+                        <p className="text-[8px] uppercase tracking-[0.16em] text-white/35 sm:text-[10px] sm:tracking-[0.18em]">Ideal for</p>
+                        <p className="mt-0.5 text-[9px] leading-snug text-white/58 line-clamp-2 sm:mt-1 sm:text-xs sm:leading-relaxed sm:line-clamp-3">{service.idealFor}</p>
                       </div>
-                      <div className="rounded-xl border border-white/[0.07] bg-black/20 p-2.5 sm:p-3.5">
-                        <p className="text-[9px] uppercase tracking-[0.18em] text-white/35 sm:text-[10px]">The outcome</p>
-                        <p className="mt-1 text-[11px] leading-relaxed text-white/58 sm:text-xs line-clamp-3">{service.outcome}</p>
+                      <div className="rounded-lg border border-white/[0.07] bg-black/20 p-1.5 sm:rounded-xl sm:p-3.5">
+                        <p className="text-[8px] uppercase tracking-[0.16em] text-white/35 sm:text-[10px] sm:tracking-[0.18em]">The outcome</p>
+                        <p className="mt-0.5 text-[9px] leading-snug text-white/58 line-clamp-2 sm:mt-1 sm:text-xs sm:leading-relaxed sm:line-clamp-3">{service.outcome}</p>
                       </div>
                     </div>
                   </div>
@@ -328,10 +330,10 @@ export default function ServicesPage() {
                   {/* Interactive luxury Discuss Project CTA */}
                   <Link
                     href={`/contact?service=${encodeURIComponent(service.title)}`}
-                    className="group/btn mt-4 flex h-8.5 w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] text-xs font-medium text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-200 hover:border-[#c19a88]/40 hover:bg-[#805948]/15 hover:text-white hover:shadow-[0_0_16px_rgba(193,154,136,0.2)]"
+                    className="group/btn mt-2.5 flex h-7 w-full items-center justify-center gap-1 rounded-lg border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] text-[10px] font-medium text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-200 hover:border-[#c19a88]/40 hover:bg-[#805948]/15 hover:text-white hover:shadow-[0_0_16px_rgba(193,154,136,0.2)] sm:mt-4 sm:h-8.5 sm:gap-1.5 sm:rounded-xl sm:text-xs"
                   >
                     <span>Discuss Project</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 text-[#c19a88] transition-transform duration-200 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+                    <ArrowUpRight className="h-3 w-3 text-[#c19a88] transition-transform duration-200 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 sm:h-3.5 sm:w-3.5" />
                   </Link>
                 </motion.div>
               );
