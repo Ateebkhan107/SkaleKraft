@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
+  Bot,
   Check,
   Clapperboard,
   MonitorSmartphone,
@@ -61,6 +62,29 @@ const servicePages: Record<string, ServicePage> = {
     visualLabel: "Interactive Mobile Engine",
     ctaLabel: "Plan Your App",
     contactService: "Mobile App",
+  },
+  ai: {
+    title: "AI Systems, Agents & Automation",
+    eyebrow: "AI Strategy & Autonomous Systems",
+    headline: "Engineer practical AI that saves time and",
+    highlight: "actually works.",
+    description: "We analyze real bottlenecks and engineer practical AI automations, autonomous agents, RAG knowledge engines, and intelligent workflows that integrate directly with your tools.",
+    areas: [
+      "Autonomous AI Agents",
+      "RAG & Knowledge Engines",
+      "Workflow & CRM Automation",
+      "Intelligent Chat Interfaces",
+      "Document Parsing & AI OCR",
+      "Custom LLM API Integrations",
+    ],
+    process: ["Identify bottlenecks", "Design data & guardrails", "Build & integrate agents", "Deploy and monitor"],
+    icon: Bot,
+    visual: "neural-core",
+    accent: "#06B6D4",
+    secondary: "#22D3EE",
+    visualLabel: "Interactive Neural Core",
+    ctaLabel: "Consult an AI Engineer",
+    contactService: "AI & Automations",
   },
   creative: {
     title: "Creative, Video & Motion Design",

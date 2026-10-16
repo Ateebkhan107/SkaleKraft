@@ -655,13 +655,42 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
 
   useEffect(() => {
+    const handleGoHome = () => {
+      window.sessionStorage.setItem("skalekraftIntroSeen", "true");
+      setStage("home");
+      setIsIntroMounted(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setActiveSection("home");
+    };
+    window.addEventListener("skalekraft:go-home", handleGoHome);
+
     const handleOpenLanding = () => {
       setStage("selection");
       setIsIntroMounted(false);
       window.scrollTo({ top: 0, behavior: "instant" });
     };
     window.addEventListener("skalekraft:open-landing", handleOpenLanding);
-    return () => window.removeEventListener("skalekraft:open-landing", handleOpenLanding);
+
+    const checkHash = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && ["websites", "apps", "ai", "creative"].includes(hash)) {
+        setStage("home");
+        setAnimateHome(true);
+        setIsIntroMounted(false);
+        window.setTimeout(() => {
+          document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          setActiveSection(hash);
+        }, 300);
+      }
+    };
+    checkHash();
+    window.addEventListener("hashchange", checkHash);
+
+    return () => {
+      window.removeEventListener("skalekraft:go-home", handleGoHome);
+      window.removeEventListener("skalekraft:open-landing", handleOpenLanding);
+      window.removeEventListener("hashchange", checkHash);
+    };
   }, []);
 
   useEffect(() => {
@@ -675,10 +704,9 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
 
     if (hasSeenIntro) {
       window.history.scrollRestoration = "auto";
-      const skipTimer = window.setTimeout(() => {
-        setIsIntroMounted(false);
-      }, 0);
-      return () => window.clearTimeout(skipTimer);
+      setStage("home");
+      setIsIntroMounted(false);
+      return;
     }
 
     window.history.scrollRestoration = "manual";
@@ -810,13 +838,14 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
           <main className="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 md:px-10 md:pl-56">
             <MemoizedMetricsBar />
 
-            <div id="services" className="scroll-mt-28 py-8 sm:py-12">
-              <motion.div className="mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
-                <p className="text-xs uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
-                <h2 className="mt-2 text-2xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
+            <div id="services" className="scroll-mt-28 py-5 sm:py-12">
+              <motion.div className="mb-3 sm:mb-4 max-w-3xl" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.55, ease }}>
+                <p className="text-[10px] uppercase tracking-[0.24em] text-[#c19a88] sm:text-sm">Services</p>
+                <h2 className="mt-1 text-xl font-medium tracking-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">Choose the system you want to build.</h2>
               </motion.div>
-              {/* Mobile Services Grid: 2x2 grid drastically reducing scroll on mobile */}
-              <div className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3.5 md:hidden">
+
+              {/* Mobile Services Vertical List: Compact, sleek rows instead of a bulky grid */}
+              <div className="mt-4 flex flex-col gap-2 md:hidden">
                 {[services.websites, services.apps, services.ai, services.creative].map((srv, idx) => {
                   const SrvIcon = srv.icon;
                   const color = accent[srv.key];
@@ -824,50 +853,50 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
                     <motion.div
                       key={srv.key}
                       id={srv.key}
-                      initial={{ opacity: 0, y: 16 }}
+                      initial={{ opacity: 0, y: 12 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.45, delay: idx * 0.05 }}
+                      viewport={{ once: true, margin: "-20px" }}
+                      transition={{ duration: 0.35, delay: idx * 0.04 }}
                       onClick={() => handleExplore(srv.key)}
-                      className="group relative flex min-h-[175px] flex-col justify-between overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.04),rgba(14,14,14,0.92)_45%,rgba(8,8,8,0.98))] p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-transform cursor-pointer"
+                      className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-[14px] border border-white/[0.08] bg-[linear-gradient(135deg,rgba(255,255,255,0.035),rgba(14,14,14,0.92)_50%,rgba(8,8,8,0.98))] p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.3)] active:scale-[0.985] transition-all cursor-pointer hover:border-white/20"
                     >
                       <div
-                        className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-[0.14] blur-[36px]"
+                        className="pointer-events-none absolute -left-6 top-1/2 h-20 w-20 -translate-y-1/2 rounded-full opacity-[0.16] blur-[24px]"
                         style={{ backgroundColor: color.hex }}
                       />
-                      <div className="relative z-10 flex items-center justify-between">
-                        <span
-                          className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_6px_16px_rgba(0,0,0,0.3)]"
+
+                      <div className="relative z-10 flex items-center gap-2.5 min-w-0 flex-1">
+                        <div
+                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_4px_12px_rgba(0,0,0,0.25)] transition-transform group-hover:scale-105"
                           style={{ color: color.hex }}
                         >
                           <SrvIcon className="h-4 w-4" strokeWidth={1.8} />
-                        </span>
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-white/35">
-                          0{idx + 1}
-                        </span>
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-mono text-[8px] uppercase tracking-[0.2em] font-medium" style={{ color: color.hex }}>
+                              {srv.label}
+                            </span>
+                            <span className="font-mono text-[8px] text-white/20">·</span>
+                            <span className="font-mono text-[8px] tracking-wider text-white/30">0{idx + 1}</span>
+                          </div>
+                          <h3 className="mt-0.5 text-xs font-medium tracking-tight text-white truncate">
+                            {srv.title}
+                          </h3>
+                          <p className="text-[10px] leading-snug text-white/45 truncate">
+                            {srv.short}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="relative z-10 my-2">
-                        <p className="text-[9px] uppercase tracking-[0.2em] font-medium" style={{ color: color.hex }}>
-                          {srv.label}
-                        </p>
-                        <h3 className="mt-1 text-sm font-medium leading-snug text-white line-clamp-2">
-                          {srv.title}
-                        </h3>
-                        <p className="mt-1 text-[10px] leading-relaxed text-white/50 line-clamp-2">
-                          {srv.short}
-                        </p>
-                      </div>
-
-                      <div className="relative z-10 flex items-center justify-between border-t border-white/[0.08] pt-2">
-                        <span className="text-[9px] font-medium text-white/70">
-                          Explore
-                        </span>
+                      <div className="relative z-10 flex items-center gap-1 shrink-0 pl-1">
+                        <span className="text-[10px] font-medium text-white/40 group-hover:text-white transition-colors">Explore</span>
                         <div
-                          className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.03]"
+                          className="flex h-5 w-5 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/40 group-hover:border-white/25 group-hover:bg-white/[0.08] group-hover:text-white transition-all"
                           style={{ color: color.hex }}
                         >
-                          <ArrowRight className="h-3 w-3" />
+                          <ArrowRight className="h-2.5 w-2.5 transition-transform group-hover:translate-x-0.5" />
                         </div>
                       </div>
                     </motion.div>
@@ -888,42 +917,42 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
               <MemoizedTechStackRadar />
             </div>
 
-            <motion.section data-cursor-card id="contact" className="relative my-12 scroll-mt-24 overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:rounded-[30px] sm:p-8 md:p-10 [content-visibility:auto] [contain-intrinsic-size:1px_650px]" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
+            <motion.section data-cursor-card id="contact" className="relative my-6 scroll-mt-24 overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(145deg,#12100f,#0d0d0d_48%,#11100f)] p-3.5 shadow-[0_30px_110px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,.04)] sm:my-12 sm:rounded-[30px] sm:p-8 md:p-10 [content-visibility:auto] [contain-intrinsic-size:1px_500px]" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }} transition={{ default: { type: "spring", stiffness: 105, damping: 22 }, opacity: { duration: 0.5 } }}>
               <div className="pointer-events-none absolute -left-20 -top-28 h-80 w-80 rounded-full bg-[#805948]/15 blur-[90px]" />
               <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(circle_at_100%_100%,rgba(193,154,136,.12),transparent_68%)]" />
 
-              <div className="relative grid items-center gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
+              <div className="relative grid items-center gap-4 sm:gap-8 lg:grid-cols-[1.2fr_.8fr] lg:gap-12">
                 <div className="max-w-3xl">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10"><Sparkles className="h-3.5 w-3.5 text-[#c19a88]" /></span>
-                    <p className="text-xs uppercase tracking-[0.26em] text-[#c19a88]">Start a conversation</p>
+                  <div className="flex items-center gap-2 sm:gap-2.5">
+                    <span className="flex h-5 w-5 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10"><Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#c19a88]" /></span>
+                    <p className="text-[9.5px] uppercase tracking-[0.24em] text-[#c19a88] sm:text-xs">Start a conversation</p>
                   </div>
-                  <h2 className="mt-4 max-w-2xl text-2xl font-medium tracking-[-0.035em] text-white sm:mt-5 sm:text-4xl lg:text-5xl lg:leading-[1.08]">Your next great product starts with a clear idea.</h2>
-                  <p className="mt-3 max-w-xl text-sm leading-6 text-white/52 sm:mt-5 sm:text-base sm:leading-7">Tell us what you want to build. We&apos;ll turn the ambition into a practical roadmap—and then into a product people enjoy using.</p>
-                  <div className="mt-5 flex flex-wrap gap-2 text-xs text-white/52 sm:mt-6 sm:gap-2.5">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><Clock3 className="h-3.5 w-3.5 text-[#c19a88]" />Reply within 24 hours</span>
-                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2"><CheckCircle2 className="h-3.5 w-3.5 text-[#c19a88]" />No-obligation discovery</span>
+                  <h2 className="mt-2 max-w-2xl text-lg font-medium tracking-tight text-white sm:mt-5 sm:text-3xl lg:text-4xl lg:leading-[1.12]">Your next great product starts with a clear idea.</h2>
+                  <p className="mt-1.5 max-w-xl text-xs leading-relaxed text-white/52 sm:mt-4 sm:text-base sm:leading-7">Tell us what you want to build. We&apos;ll turn the ambition into a practical roadmap—and then into a product people enjoy using.</p>
+                  <div className="mt-3 flex flex-wrap gap-1.5 text-[9.5px] text-white/52 sm:mt-6 sm:gap-2.5 sm:text-xs">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 sm:px-3 sm:py-2"><Clock3 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#c19a88]" />Reply within 24 hours</span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 sm:px-3 sm:py-2"><CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#c19a88]" />No-obligation discovery</span>
                   </div>
-                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-6 sm:mt-8" />
+                  <GlassmorphismCta href="/contact" label="Start Your Project" avatarSrc="/images/skalekraft-logo.png" avatarAlt="SkaleKraft logo" shimmerColor="rgba(193,154,136,0.75)" className="mt-3.5 sm:mt-8" />
                 </div>
 
-                <motion.div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-black/25 p-4 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:rounded-[24px] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>
-                  <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 sm:pb-4">
+                <motion.div className="relative overflow-hidden rounded-[14px] border border-white/10 bg-black/25 p-3 shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:rounded-[24px] sm:p-6" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 105, damping: 21, delay: 0.12 }}>
+                  <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 sm:pb-4">
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-white/32">A simple path</p>
-                      <h3 className="mt-1 text-base font-medium text-white sm:mt-1.5 sm:text-lg">From idea to launch</h3>
+                      <p className="text-[8px] uppercase tracking-[0.2em] text-white/32 sm:text-[10px]">A simple path</p>
+                      <h3 className="mt-0.5 text-xs font-medium text-white sm:mt-1.5 sm:text-lg">From idea to launch</h3>
                     </div>
-                    <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.7)]" />
+                    <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.7)]" />
                   </div>
-                  <div className="mt-4 space-y-2.5 sm:mt-5 sm:space-y-3">
+                  <div className="mt-2.5 space-y-1.5 sm:mt-5 sm:space-y-3">
                     {["Understand the problem", "Shape the right solution", "Design, build and launch"].map((item, index) => (
-                      <div key={item} className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2.5 sm:rounded-2xl sm:px-3.5 sm:py-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10 text-[9px] font-medium text-[#d2a28d] sm:h-7 sm:w-7 sm:text-[10px]">0{index + 1}</span>
-                        <span className="text-xs text-white/64 sm:text-sm">{item}</span>
+                      <div key={item} className="flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.025] px-2.5 py-1.5 sm:gap-3 sm:rounded-2xl sm:px-3.5 sm:py-3">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#c19a88]/20 bg-[#805948]/10 text-[8px] font-medium text-[#d2a28d] sm:h-7 sm:w-7 sm:text-[10px]">0{index + 1}</span>
+                        <span className="text-[11px] text-white/64 sm:text-sm">{item}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/[0.06] sm:mt-5"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#805948] to-[#c19a88]" /></div>
+                  <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-white/[0.06] sm:mt-5"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#805948] to-[#c19a88]" /></div>
                 </motion.div>
               </div>
             </motion.section>

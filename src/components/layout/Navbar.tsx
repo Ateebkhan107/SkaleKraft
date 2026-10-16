@@ -13,10 +13,6 @@ import {
   Briefcase,
   Layers3,
   Info,
-  Globe,
-  Smartphone,
-  Cpu,
-  Video,
 } from "lucide-react";
 import GlassmorphismCta from "@/components/ui/glassmorphism-cta";
 
@@ -33,13 +29,6 @@ const mobileMainLinks = [
   { label: "Work", href: "/work", icon: Layers3 },
   { label: "About", href: "/about", icon: Info },
   { label: "Join the Team", href: "/join", icon: UserPlus },
-];
-
-const serviceSectionShortcuts = [
-  { label: "Custom Websites", href: "/#websites", icon: Globe, color: "#c19a88" },
-  { label: "Mobile Apps (iOS & Android)", href: "/#apps", icon: Smartphone, color: "#60a5fa" },
-  { label: "AI Systems & Agents", href: "/#ai", icon: Cpu, color: "#34d399" },
-  { label: "Creative & Video Motion", href: "/#creative", icon: Video, color: "#f472b6" },
 ];
 
 export default function Navbar() {
@@ -93,8 +82,8 @@ export default function Navbar() {
   const handleLogoClick = (e: React.MouseEvent) => {
     if (isHome) {
       e.preventDefault();
-      window.dispatchEvent(new CustomEvent("skalekraft:open-landing"));
-      window.scrollTo({ top: 0, behavior: "instant" });
+      window.dispatchEvent(new CustomEvent("skalekraft:go-home"));
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -102,8 +91,8 @@ export default function Navbar() {
     if (isHome) {
       if (href === "/") {
         e.preventDefault();
-        window.dispatchEvent(new CustomEvent("skalekraft:open-landing"));
-        window.scrollTo({ top: 0, behavior: "instant" });
+        window.dispatchEvent(new CustomEvent("skalekraft:go-home"));
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       if (href === "/work") {
@@ -117,17 +106,6 @@ export default function Navbar() {
     }
   };
 
-  const handleShortcutClick = (e: React.MouseEvent, href: string) => {
-    setIsMobileMenuOpen(false);
-    if (isHome && href.startsWith("/#")) {
-      const id = href.replace("/#", "");
-      const el = document.getElementById(id);
-      if (el) {
-        e.preventDefault();
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
 
   const isItemActive = (href: string) => {
     if (href === "/work") {
@@ -300,26 +278,6 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* Service Capabilities Quick Jump */}
-            <div className="mt-4 flex flex-col gap-0.5">
-              <p className="px-2 text-[9px] font-medium uppercase tracking-[0.24em] text-white/40">
-                Capabilities
-              </p>
-              {serviceSectionShortcuts.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={(e) => handleShortcutClick(e, item.href)}
-                    className="flex h-8 items-center gap-2.5 rounded-lg px-2.5 text-xs text-white/55 transition duration-200 hover:bg-white/[0.04] hover:text-white"
-                  >
-                    <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: item.color }} />
-                    <span className="truncate">{item.label}</span>
-                  </Link>
-                );
-              })}
-            </div>
 
             {/* CTA Section */}
             <div className="mt-4 flex flex-col gap-2 pb-4 pt-3 border-t border-white/10">
