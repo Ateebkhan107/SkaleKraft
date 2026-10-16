@@ -34,7 +34,7 @@ export const showcaseProjects = [
   },
   {
     number: "04",
-    title: "Kesar & Co.",
+    title: "Kesar & Co. (Demo)",
     category: "Premium Food E-Commerce",
     short: "A refined dry-fruits storefront combining premium product discovery, category filters, wishlist and cart flows, heritage storytelling, testimonials, and curated gifting.",
     url: "https://dryfruits-red.vercel.app/",
