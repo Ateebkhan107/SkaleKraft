@@ -78,6 +78,35 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const isHome = pathname === "/";
+  const [isGatewayActive, setIsGatewayActive] = useState(false);
+
+  useEffect(() => {
+    if (!isHome) {
+      setIsGatewayActive(false);
+      return;
+    }
+
+    const checkStage = () => {
+      const stageAttr = document.documentElement.getAttribute("data-skalekraft-stage");
+      if (stageAttr) {
+        setIsGatewayActive(stageAttr === "selection");
+        return;
+      }
+      const hasSeenIntro = window.sessionStorage.getItem("skalekraftIntroSeen") === "true";
+      const hasDest = new URLSearchParams(window.location.search).get("dest");
+      setIsGatewayActive(!hasSeenIntro && !hasDest);
+    };
+
+    checkStage();
+
+    const handleStageChange = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      setIsGatewayActive(customEvent.detail === "selection");
+    };
+
+    window.addEventListener("skalekraft:stage-change", handleStageChange);
+    return () => window.removeEventListener("skalekraft:stage-change", handleStageChange);
+  }, [isHome]);
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (isHome) {
@@ -106,13 +135,16 @@ export default function Navbar() {
     }
   };
 
-
   const isItemActive = (href: string) => {
     if (href === "/work") {
       return pathname === "/work" || pathname === "/portfolio";
     }
     return pathname === href;
   };
+
+  if (isHome && isGatewayActive) {
+    return null;
+  }
 
   return (
     <>

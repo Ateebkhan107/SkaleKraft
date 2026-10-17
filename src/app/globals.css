@@ -277,6 +277,12 @@
   }
 }
 
+/* Prevent global fixed navbar from overlapping the Interactive Studio Gateway header */
+html[data-skalekraft-stage="selection"] header.fixed.z-50,
+html[data-skalekraft-stage="selection"] div.fixed.z-\[60\] {
+  display: none !important;
+}
+
 @media (max-width: 767px) {
   * {
     -webkit-tap-highlight-color: transparent;

@@ -237,6 +237,13 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(location.pathname==="/"&&!location.search.includes("dest=")&&sessionStorage.getItem("skalekraftIntroSeen")!=="true"){document.documentElement.setAttribute("data-skalekraft-stage","selection");}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <script
           type="application/ld+json"

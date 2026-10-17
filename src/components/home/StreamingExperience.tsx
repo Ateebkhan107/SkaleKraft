@@ -104,7 +104,7 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.025)_1px,transparent_0)] [background-size:32px_32px] opacity-70" />
 
       {/* Top Sticky Header Bar (In-flow to prevent any overlapping with hero/cards) */}
-      <header className="sticky top-0 z-30 flex w-full shrink-0 items-center justify-between border-b border-white/[0.08] bg-[#0B0B0B]/85 px-4 py-3 backdrop-blur-2xl sm:px-8 sm:py-4">
+      <header className="sticky top-0 z-30 flex w-full shrink-0 items-center justify-between border-b border-white/[0.08] bg-[#0B0B0B]/85 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-2xl sm:px-8 sm:py-4">
         <div className="flex items-center gap-2 sm:gap-2.5">
           <div className="relative h-6 w-6 sm:h-7 sm:w-7 overflow-hidden rounded-lg sm:rounded-xl border border-white/12 bg-white/[0.04] p-0.5 sm:p-1 shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
             <Image src="/images/skalekraft-logo.png" alt="SkaleKraft" fill className="object-contain" priority />
@@ -115,14 +115,14 @@ function ServiceSelection({ onChoose, onSkip }: { onChoose: (destination: Destin
         </div>
 
         {/* Top Right Executive Skip Pill */}
-        <Link
-          href="/?dest=everything"
-          onClick={(e) => { e.preventDefault(); onSkip(); }}
-          className="group/skip flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-medium tracking-wider text-white/70 uppercase backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_0_20px_rgba(193,154,136,0.25)]"
+        <button
+          type="button"
+          onClick={onSkip}
+          className="group/skip relative z-20 flex cursor-pointer items-center gap-1.5 sm:gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-medium tracking-wider text-white/70 uppercase backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_0_20px_rgba(193,154,136,0.25)] active:scale-95"
         >
           <span>Skip Intro</span>
           <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white/45 transition-transform duration-300 group-hover/skip:translate-x-0.5 group-hover/skip:text-white" />
-        </Link>
+        </button>
       </header>
 
       <div className="relative flex min-h-0 w-full flex-1 flex-col items-center justify-center px-3 pt-3 pb-8 sm:px-6 sm:py-20 lg:py-16">
@@ -655,6 +655,14 @@ export default function StreamingExperience({ initialDest }: { initialDest?: Des
   const [isMobileScreen, setIsMobileScreen] = useState(false);
   // If initialDest is set (from ?dest= param), scroll to that section on mount
   const pendingTarget = useRef<string | null>(initialDest && initialDest !== "everything" ? initialDest : null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-skalekraft-stage", stage);
+    window.dispatchEvent(new CustomEvent("skalekraft:stage-change", { detail: stage }));
+    return () => {
+      document.documentElement.removeAttribute("data-skalekraft-stage");
+    };
+  }, [stage]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobileScreen(window.innerWidth < 768);
