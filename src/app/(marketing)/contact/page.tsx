@@ -265,7 +265,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="relative min-h-screen lg:h-screen lg:overflow-hidden bg-[#0B0B0B] px-3 pb-3 pt-24 sm:pt-28 lg:pt-20 md:px-6 flex flex-col justify-center text-white">
+    <main className="relative min-h-screen bg-[#0B0B0B] px-3 pb-12 pt-24 sm:pt-28 md:pt-32 md:px-6 flex flex-col justify-start text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_8%,rgba(166,111,87,.17),transparent_31%),radial-gradient(circle_at_8%_70%,rgba(255,255,255,.045),transparent_27%),linear-gradient(135deg,#080808_0%,#0b0908_52%,#0B0B0B_100%)]" />
       <FluidParticlesBackground
         theme="dark"
@@ -292,7 +292,7 @@ export default function ContactPage() {
         />
       ))}
 
-      <div className="relative mx-auto w-full max-w-[1360px] my-auto">
+      <div className="relative mx-auto w-full max-w-[1360px]">
         <Link href="/?dest=everything" className="group mb-2 inline-flex h-7.5 items-center gap-2 rounded-full border border-white/14 bg-black/35 px-3.5 text-xs font-medium text-white/75 shadow-[0_8px_24px_rgba(0,0,0,.2)] backdrop-blur-md transition duration-300 hover:border-[#c19a88]/40 hover:bg-[#805948]/12 hover:text-white">
           <ArrowLeft className="h-3.5 w-3.5 text-[#c19a88] transition-transform duration-300 group-hover:-translate-x-0.5" />
           Back to home
@@ -586,12 +586,26 @@ export default function ContactPage() {
               {/* Bottom Quick Switch Link */}
               <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[11px]">
                 {rightTab === "preview" ? (
-                  <button type="button" onClick={() => setRightTab("faq")} className="text-white/45 hover:text-[#c19a88] transition flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRightTab("faq");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="text-white/45 hover:text-[#c19a88] transition flex items-center gap-1 cursor-pointer"
+                  >
                     <span>Have questions about the process? View FAQs</span>
                     <span>→</span>
                   </button>
                 ) : (
-                  <button type="button" onClick={() => setRightTab("preview")} className="text-white/45 hover:text-[#c19a88] transition flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRightTab("preview");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="text-white/45 hover:text-[#c19a88] transition flex items-center gap-1 cursor-pointer"
+                  >
                     <span>← Back to Live Project Preview</span>
                   </button>
                 )}
